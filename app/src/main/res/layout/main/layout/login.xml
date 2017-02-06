@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="user" type="com.example.administrator.entity.User"/>
+        <variable name="behavior" type="com.example.administrator.activity.LoginActivity"/>
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <include
+            android:id="@+id/title_layout"
+            layout="@layout/title_layout" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_layout"
+            android:layout_marginTop="40dp">
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                />
+            <LinearLayout
+                android:id="@+id/usernamelayout"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/cirle_edit_bg"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="手机号/人脉号"
+                    android:layout_marginLeft="5dp"
+                    android:background="@null"
+                    android:textColor="#808080"
+                    android:textColorHint="#808080"
+                    android:text="@{user.username}"
+                    android:textSize="@dimen/text_size"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/pwdlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_below="@id/usernamelayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/cirle_edit_bg"
+                android:orientation="horizontal" >
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="5dp"
+                    android:hint="密码"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:textColor="#808080"
+                    android:textColorHint="#808080"
+                    android:text="@{user.password}"
+                    android:textSize="@dimen/text_size"/>
+            </LinearLayout>
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/pwdlayout"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="30dp"
+                android:text="登录"
+                android:onClick="@{behavior.login}"
+                android:textColor="@color/white"
+                android:background="@color/buttonColor"
+                android:textSize="@dimen/text_size"
+                />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:text="注册账号"
+                android:onClick="@{behavior.register}"
+                android:textColor="#ADADAD"
+                android:textSize="@dimen/text_size" />
+            <ImageView
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="#cbcaca"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="left"
+                android:text="忘记密码"
+                android:textColor="#ADADAD"
+                android:textSize="@dimen/text_size"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

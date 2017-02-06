@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="userinfo" type="com.example.administrator.entity.UserInfo"/>
+        <variable name="behavior" type="com.example.administrator.activity.FriensLoopActivity"/>
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <ImageView
+            android:id="@+id/img_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/head_img" />
+        <TextView
+            android:id="@+id/set_cover_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="轻触设置相册封面"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:layout_marginBottom="20dip"
+            android:textSize="@dimen/text_size"
+            android:visibility="visible" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="74dp"
+            android:layout_below="@id/img_bg"
+            android:layout_marginTop="-50dip"
+            android:orientation="horizontal" >
+            <RelativeLayout
+                android:id="@+id/my_header_layout"
+                android:layout_width="80dip"
+                android:layout_height="80dip"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dip" >
+                <ImageView
+                    android:layout_width="70dip"
+                    android:layout_height="71dip"
+                    android:layout_marginLeft="2dip"
+                    android:scaleType="fitXY"
+                    app:image="@{userinfo.headsmall}"
+                    android:src="@mipmap/contact_default_header" />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/login_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="10dip"
+                android:layout_toLeftOf="@+id/my_header_layout"
+                android:maxWidth="150dip"
+                android:lines="1"
+                android:text="@{userinfo.nickname}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/img_bg"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dip"
+            android:layout_marginLeft="20dip"
+            android:maxLines="2"
+            android:text="@{userinfo.sign}"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:textColor="#686868"
+            android:textSize="@dimen/text_size" />
+    </RelativeLayout>
+</layout>

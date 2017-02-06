@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <!--公共部分-->
+    <color name="white">#ffffff</color>
+    <color name="buttonColor">#00ff00</color>
+    <color name="black">#000000</color>
+    <color name="backgroud_color">#e9e9e9</color>
+    <color name="backgroud_color_hui">#ebebeb</color>
+    <color name="biaoqian_textcolor">#f2658d</color>
+    <color name="application_friends_loop_user_name">#1f2f58</color>
+    <color name="application_friends_loop_more">#0096ff</color>
+    <!--main-->
+    <color name="bottom_bar_normal_bg">#fcfcfc</color>
+    <color name="common_botton_bar_blue">#46c01b</color>
+    <!--chat_fragment-->
+    <color name="transparent">#00000000</color>
+    <!--chats_item-->
+    <color name="text_color">#777777</color>
+    <color name="order_item_hint_color">#999999</color>
+    <color name="chat_username_text_color">#111111</color>
+    <!--edit_profile-->
+    <color name="text_title_color">#656565</color>
+    <!--friends_long_click_bg_color-->
+    <color name="application_transparent_bg">#80000000</color>
+    <!--friends_loop_item-->
+    <color name="font_color">#2d2d2d</color>
+</resources>

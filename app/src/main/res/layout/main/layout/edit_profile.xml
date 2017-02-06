@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="userinfo" type="com.example.administrator.entity.UserInfo"/>
+        <variable name="behavior" type="com.example.administrator.activity.EditProfileActivity"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/backgroud_color_hui">
+        <include
+            android:id="@+id/title_layout"
+            layout="@layout/title_layout" />
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dip"
+            android:fadingEdge="none"
+            android:scrollbars="none"
+            >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dip"
+                    android:paddingBottom="5dip"
+                    android:paddingLeft="17dip"
+                    android:paddingRight="17dip"
+                    android:visibility="visible"
+                    android:onClick="@{behavior.openImagePicker}">
+                    <TextView
+                        android:id="@+id/new_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:minWidth="80dip"
+                        android:text="头像"
+                        android:textColor="@color/text_title_color"
+                        android:textSize="@dimen/text_size" />
+
+                    <ImageView
+                        android:id="@+id/new_header_icon"
+                        style="@style/listview_header_style"
+                        android:layout_alignParentRight="true"
+                        android:scaleType="fitXY"
+                        app:image="@{userinfo.headsmall}"
+                        android:src="@mipmap/contact_default_header" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginRight="10dip"
+                    android:background="@drawable/complete_blod_splite"
+                    />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingLeft="9dip"
+                    android:paddingRight="9dip"
+                    android:orientation="vertical"
+                    android:visibility="visible" >
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dip"
+                        android:background="@drawable/devider_line"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:padding="9dip"
+                        android:onClick="@{behavior.openWriteNickname}">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:minWidth="80dip"
+                            android:text="昵称"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/nickname_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:drawableRight="@mipmap/deep_gray_arrow"
+                            android:gravity="right|center_vertical"
+                            android:hint="必填 "
+                            android:text="@{userinfo.nickname}"
+                            android:lines="1"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dip"
+                    android:background="@color/white"
+                    android:paddingLeft="9dip"
+                    android:paddingRight="9dip"
+                    android:orientation="vertical"
+                    android:visibility="visible" >
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dip"
+                        android:clickable="true"
+                        android:background="@drawable/devider_line"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:paddingLeft="9dip"
+                        android:paddingRight="9dip"
+                        android:onClick="@{behavior.openSexSelect}">
+                        <TextView
+                            android:id="@+id/sex_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:minWidth="80dip"
+                            android:text="性别"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/sex_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_toRightOf="@+id/sex_text"
+                            android:drawableRight="@mipmap/deep_gray_arrow"
+                            android:gravity="right|center_vertical"
+                            android:hint="选填 "
+                            android:lines="1"
+                            android:text="@{userinfo.gender}"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dip"
+                        android:background="@drawable/devider_line"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:padding="9dip"
+                        android:onClick="@{behavior.openCitySelect}">
+                        <TextView
+                            android:id="@+id/addr_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:minWidth="80dip"
+                            android:text="地区"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/addr_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_toRightOf="@+id/addr_text"
+                            android:drawableRight="@mipmap/deep_gray_arrow"
+                            android:gravity="right|center_vertical"
+                            android:hint="选填 "
+                            android:text="@{userinfo.province+userinfo.city}"
+                            android:lines="1"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/sign_layout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="45dip"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:padding="9dip"
+                        android:onClick="@{behavior.openWriteSign}">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:minWidth="80dip"
+                            android:text="个性签名"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+
+                        <TextView
+                            android:id="@+id/sign_content"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:drawableRight="@mipmap/deep_gray_arrow"
+                            android:gravity="center_vertical|right"
+                            android:hint="选填"
+                            android:lines="1"
+                            android:text="@{userinfo.sign}"
+                            android:textColor="@color/text_title_color"
+                            android:textSize="@dimen/text_size" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

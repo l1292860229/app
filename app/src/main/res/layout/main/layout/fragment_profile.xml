@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="userinfo" type="com.example.administrator.entity.UserInfo"/>
+        <variable name="username" type="String"/>
+        <variable name="behavior" type="com.example.administrator.fragment.ProfileFragment"/>
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:paddingBottom="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroud_color_hui"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/fx_btn_list_item_bg"
+                android:clickable="true"
+                android:paddingBottom="8dp"
+                android:onClick="@{behavior.openEditProfile}"
+                android:paddingTop="8dp">
+                <ImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginLeft="15dp"
+                    app:image="@{userinfo.headsmall}"
+                    android:src="@mipmap/contact_default_header" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@{userinfo.nickname}"
+                    android:lines="1"
+                    android:layout_toRightOf="@id/iv_avatar"
+                    android:textColor="#353535"
+                    android:textSize="@dimen/text_size" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/iv_avatar"
+                    android:text="@{username}"
+                    android:textColor="#AAAAAA"
+                    android:textSize="@dimen/text_size_14" />
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="32dp"
+                    android:src="@mipmap/fx_icon_qrcode"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/fx_btn_list_item_bg"
+                android:clickable="true"
+                android:paddingLeft="12dp">
+                <ImageView
+                    android:id="@+id/iv_xiangce"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/fx_icon_album" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_xiangce"
+                    android:text="商机发布"
+                    android:textColor="#353535"
+                    android:textSize="@dimen/text_size" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="12dp"
+                    android:background="#dadada" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/fx_btn_list_item_bg"
+                android:clickable="true"
+                android:paddingLeft="12dp">
+                <ImageView
+                    android:id="@+id/iv_shoucang"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/fx_icon_save" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_shoucang"
+                    android:text="收藏"
+                    android:textColor="#353535"
+                    android:textSize="@dimen/text_size" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="12dp"
+                    android:background="#dadada" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/fx_btn_list_item_bg"
+                android:clickable="true"
+                android:layout_marginTop="18dp"
+                android:paddingLeft="12dp">
+
+                <ImageView
+                    android:id="@+id/iv_tuiguangzhongxin"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/qianbao" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_tuiguangzhongxin"
+                    android:text="钱包"
+                    android:textColor="#353535"
+                    android:textSize="@dimen/text_size" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="12dp"
+                    android:background="#dadada" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/re_tuiguangeweima"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/fx_btn_list_item_bg"
+                android:clickable="true"
+                android:paddingLeft="12dp">
+
+                <ImageView
+                    android:id="@+id/iv_tuiguangeweima"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/find_sao" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_tuiguangeweima"
+                    android:text="推广二维码"
+                    android:textColor="#353535"
+                    android:textSize="@dimen/text_size" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="12dp"
+                    android:background="#dadada" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/re_huiyanshenji"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/fx_btn_list_item_bg"
+                android:clickable="true"
+                android:paddingLeft="12dp">
+
+                <ImageView
+                    android:id="@+id/iv_huiyanshenji"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/my_bank" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_huiyanshenji"
+                    android:text="会员升级"
+                    android:textColor="#353535"
+                    android:textSize="@dimen/text_size" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="12dp"
+                    android:background="#dadada" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/re_setting"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/fx_btn_list_item_bg"
+                android:clickable="true"
+                android:paddingLeft="12dp"
+                android:onClick="@{behavior.openSetting}">
+
+                <ImageView
+                    android:id="@+id/iv_setting"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:src="@mipmap/fx_icon_settings" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@id/iv_setting"
+                    android:text="设置"
+                    android:textColor="#353535"
+                    android:textSize="@dimen/text_size" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>
