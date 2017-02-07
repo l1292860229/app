@@ -19,6 +19,7 @@
             android:fadingEdgeLength="0dp"
             android:layout_weight="1"/>
         <LinearLayout
+            android:id="@+id/type_bottom_menu"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/bottom_bar_normal_bg"
@@ -95,6 +96,55 @@
                     android:layout_height="40dp"
                     android:background="@drawable/selected_huodong"
                     android:textSize="20dp" />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/comment_bottom_menu"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+            <RelativeLayout
+                android:id="@+id/bottom_menu"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:background="@color/backgroud_color"
+                android:visibility="gone" >
+                <ImageView
+                    android:id="@+id/splite"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:background="@drawable/devider_line"/>
+                <ImageView
+                    android:id="@+id/pic"
+                    android:layout_width="30dip"
+                    android:layout_height="30dip"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dip"
+                    android:background="@mipmap/w_brow_icon" />
+                <EditText
+                    android:id="@+id/edit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/send"
+                    android:layout_toRightOf="@+id/pic"
+                    android:background="@drawable/cirle_edit_bg"
+                    android:hint="说点什么"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="5dip"
+                    android:layout_marginTop="20dp" />
+                <Button
+                    android:id="@+id/send"
+                    android:layout_width="50dp"
+                    android:layout_height="30dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/send_msg_btn"
+                    android:text="发送"
+                    android:textColor="@color/white" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

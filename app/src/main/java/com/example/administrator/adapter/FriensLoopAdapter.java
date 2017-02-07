@@ -22,6 +22,7 @@ import com.example.administrator.databinding.FriendsLoopItemBinding;
 import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.util.DateUtil;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.StringUtil;
@@ -37,9 +38,11 @@ public class FriensLoopAdapter extends BaseAdapter{
     private Context context;
     private List<FriendsLoopItem> list;
     private LinearLayout temp;
-    public FriensLoopAdapter(Context context, List<FriendsLoopItem> list) {
+    private IUFriensLoopView friensLoopView;
+    public FriensLoopAdapter(Context context, List<FriendsLoopItem> list,IUFriensLoopView friensLoopView) {
         this.context = context;
         this.list = list;
+        this.friensLoopView = friensLoopView;
     }
     public void setData(List<FriendsLoopItem> list){
         this.list = list;
@@ -121,10 +124,22 @@ public class FriensLoopAdapter extends BaseAdapter{
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(temp!=null){
-
                     temp.setVisibility(View.GONE);
                 }
+                friensLoopView.hidePinLun();
                 return true;
+            }
+        });
+        binding.content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                friensLoopView.hidePinLun();
+            }
+        });
+        binding.commentLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                friensLoopView.hidePinLun();
             }
         });
         binding.functionBtn.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +160,14 @@ public class FriensLoopAdapter extends BaseAdapter{
                 TranslateAnimation animation = new TranslateAnimation(StringUtil.dip2px(context,155), 0, 0, 0);
                 animation.setDuration(500);
                 bindingFinal.jumpLayout.startAnimation(animation);
+            }
+        });
+        //点击咨讯时的操作
+        binding.commentBtnLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                friensLoopView.showPinLun();
+                bindingFinal.jumpLayout.setVisibility(View.GONE);
             }
         });
         //处理图片的显示

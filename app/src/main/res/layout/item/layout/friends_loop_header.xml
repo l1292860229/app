@@ -9,7 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="#F8F8F8">
         <ImageView
             android:id="@+id/img_bg"
             android:layout_width="fill_parent"
@@ -20,7 +21,7 @@
             android:id="@+id/set_cover_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="轻触设置相册封面"
+            android:text="设置相册封面"
             android:layout_centerInParent="true"
             android:textColor="@color/white"
             android:layout_marginBottom="20dip"

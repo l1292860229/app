@@ -42,7 +42,7 @@ public class UserInfo {
     private String ka6id;
     //推荐人id
     private String tid;
-
+    //朋友圈背景图
     private String cover;
 
     public String getUid() {

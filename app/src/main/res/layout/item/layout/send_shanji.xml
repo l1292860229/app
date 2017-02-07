@@ -11,7 +11,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/chat_layout"
+            android:id="@+id/sendfriensloop_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -31,11 +31,6 @@
                 android:textColor="@color/white"
                 android:textSize="15dip" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="0.2dp"
-            android:background="@color/black" />
 
         <TextView
             android:layout_width="fill_parent"

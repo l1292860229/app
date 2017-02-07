@@ -14,4 +14,6 @@ public interface IUFriensLoopView extends IUPublicView {
     void initHeader();
     void loadsuccess(ArrayList<FriendsLoopItem> mlist);
     void refreshsuccess(List<FriendsLoopItem> mlist);
+    void showPinLun();
+    void hidePinLun();
 }

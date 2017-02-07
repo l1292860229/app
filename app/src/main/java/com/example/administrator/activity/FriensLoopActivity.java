@@ -4,10 +4,12 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,10 +19,12 @@ import com.example.administrator.adapter.FriensLoopAdapter;
 import com.example.administrator.databinding.FriendsLoopHeaderBinding;
 import com.example.administrator.databinding.FriensLoopBinding;
 import com.example.administrator.entity.FriendsLoopItem;
+import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.presenter.FriensLoopPresenter;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.ImageUitl;
+import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
 import com.tandong.sa.bv.BelowView;
 import com.tandong.sa.view.AutoReFreshListView;
@@ -54,7 +58,7 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         friensLoopPresenter.init(null);
     }
     public void init(ArrayList<FriendsLoopItem> mlist) {
-        friensLoopAdapter = new FriensLoopAdapter(context,mlist);
+        friensLoopAdapter = new FriensLoopAdapter(context,mlist,FriensLoopActivity.this);
         dataList = mlist;
         mListView.setAdapter(friensLoopAdapter);
         mListView.setOnRefreshListener(new AutoReFreshListView.OnRefreshListener() {// 上拉刷新
@@ -72,9 +76,16 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
 
     @Override
     public void initHeader() {
+        UserInfo userInfo = GetDataUtil.getUserInfo(context);
         FriendsLoopHeaderBinding friendsLoopHeaderBinding =  DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.friends_loop_header,null,false);
         friendsLoopHeaderBinding.setBehavior(this);
-        friendsLoopHeaderBinding.setUserinfo(GetDataUtil.getUserInfo(context));
+        friendsLoopHeaderBinding.setUserinfo(userInfo);
+        if(!StringUtil.isNull(userInfo.getCover())){
+            friendsLoopHeaderBinding.setCoverHint.setVisibility(View.GONE);
+            ImageUitl.setImage(friendsLoopHeaderBinding.imgBg,userInfo.getCover());
+        }else{
+            friendsLoopHeaderBinding.imgBg.setImageDrawable(getResources().getDrawable(R.mipmap.head_img));
+        }
         mListView.addHeaderView(friendsLoopHeaderBinding.getRoot());
     }
 
@@ -93,6 +104,39 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         friensLoopAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void showPinLun() {
+        binding.bottomMenu.setVisibility(View.VISIBLE);
+        TranslateAnimation animation = new TranslateAnimation(binding.bottomMenu.getWidth(), 0, 0, 0);
+        animation.setDuration(500);
+        animation.setAnimationListener(mAnimationListener);
+        binding.bottomMenu.startAnimation(animation);
+        binding.typeBottomMenu.setVisibility(View.GONE);
+    }
+    Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+        }
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            //动画加载完成之后，获输入框获得焦点，并弹出输入法
+            binding.bottomMenu.clearAnimation();
+            binding.edit.setFocusable(true);
+            binding.edit.setFocusableInTouchMode(true);
+            binding.edit.requestFocus();
+            InputMethodManager inputManager =(InputMethodManager)binding.edit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.showSoftInput(binding.edit, 0);
+
+        }
+    };
+    @Override
+    public void hidePinLun() {
+        binding.bottomMenu.setVisibility(View.GONE);
+        binding.typeBottomMenu.setVisibility(View.VISIBLE);
+    }
     private void initView(){
         ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("商机圈");
         ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
@@ -110,7 +154,14 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
             @Override
             public void onClick(View view) {
                 blv.showBelowView(view, true, 30, 0);
-                Log.e("onClick","BelowView blvonClick");
+                View v =  blv.getBelowView();
+                v.findViewById(R.id.sendfriensloop_layout).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        UIUtil.showMessage(context,"发布动态");
+                        blv.dismissBelowView();
+                    }
+                });
             }
         });
         mTabs = new Button[5];
