@@ -1,11 +1,14 @@
 package com.example.administrator.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
 import com.ab.util.AbDialogUtil;
 import com.example.administrator.R;
+import com.jaiky.imagespickers.ImageConfig;
+import com.jaiky.imagespickers.ImageSelector;
 
 /**
  * Created by Administrator on 2017/1/21.
@@ -63,5 +66,28 @@ public class UIUtil {
      */
     public static void hideLoading(Context context) {
         AbDialogUtil.removeDialog(context);
+    }
+
+    /**
+     * 单张相片选择器
+     * @param context
+     */
+    public static void openImagePicker(Activity context){
+        ImageConfig imageConfig
+                = new ImageConfig.Builder(new GlideLoader())
+                .steepToolBarColor(context.getResources().getColor(R.color.black))
+                .titleBgColor(context.getResources().getColor(R.color.black))
+                .titleSubmitTextColor(context.getResources().getColor(R.color.white))
+                .titleTextColor(context.getResources().getColor(R.color.white))
+                // 开启单选   （默认为多选）
+                .singleSelect()
+                // 开启拍照功能 （默认关闭）
+                .showCamera()
+                // 拍照后存放的图片路径（默认 /temp/picture） （会自动创建）
+                .filePath("/temp/picture")
+                //单选自定义裁剪
+                .crop()
+                .build();
+        ImageSelector.open(context, imageConfig);   // 开启图片选择器
     }
 }

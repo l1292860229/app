@@ -144,6 +144,7 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/send_msg_btn"
                     android:text="发送"
+                    android:onClick="@{behavior.sentReply}"
                     android:textColor="@color/white" />
             </RelativeLayout>
         </LinearLayout>

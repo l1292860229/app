@@ -1,8 +1,11 @@
 package com.example.administrator.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +56,18 @@ public class ImageAdapter extends BaseAdapter {
                 intent.putExtra(ImagePagerActivity.IMAGES,pictures);
                 intent.putExtra(ImagePagerActivity.IMAGE_POSITION,position);
                 context.startActivity(intent);
+            }
+        });
+        binding.pic.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new AlertDialog.Builder(context).setItems(new String[]{"收藏"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.e("setOnLongClickListener","i="+i);
+                    }
+                }).show();
+                return false;
             }
         });
         return binding.getRoot();

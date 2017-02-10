@@ -10,12 +10,19 @@ public class CommentUser implements Serializable {
 	private int id;
 	private String uid;
 	private String nickname;
-	private String fuid;
+	private String fid;
 	private String fnickname;
 	private String content;
 	private String headsmall;
 	private long createtime;
-
+	public CommentUser(){};
+	public CommentUser(String uid,String nickname,String fuid,String fnickname,String content){
+		this.uid = uid;
+		this.nickname = nickname;
+		this.fid = fuid;
+		this.fnickname = fnickname;
+		this.content = content;
+	}
 	public int getId() {
 		return id;
 	}
@@ -40,12 +47,12 @@ public class CommentUser implements Serializable {
 		this.nickname = nickname;
 	}
 
-	public String getFuid() {
-		return fuid;
+	public String getFid() {
+		return fid;
 	}
 
-	public void setFuid(String fuid) {
-		this.fuid = fuid;
+	public void setFid(String fid) {
+		this.fid = fid;
 	}
 
 	public String getFnickname() {
@@ -86,7 +93,7 @@ public class CommentUser implements Serializable {
 				"id=" + id +
 				", uid='" + uid + '\'' +
 				", nickname='" + nickname + '\'' +
-				", fuid='" + fuid + '\'' +
+				", fuid='" + fid + '\'' +
 				", fnickname='" + fnickname + '\'' +
 				", content='" + content + '\'' +
 				", headsmall='" + headsmall + '\'' +

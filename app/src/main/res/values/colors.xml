@@ -12,13 +12,13 @@
     <color name="biaoqian_textcolor">#f2658d</color>
     <color name="application_friends_loop_user_name">#1f2f58</color>
     <color name="application_friends_loop_more">#0096ff</color>
+    <color name="text_color">#777777</color>
     <!--main-->
     <color name="bottom_bar_normal_bg">#fcfcfc</color>
     <color name="common_botton_bar_blue">#46c01b</color>
     <!--chat_fragment-->
     <color name="transparent">#00000000</color>
     <!--chats_item-->
-    <color name="text_color">#777777</color>
     <color name="order_item_hint_color">#999999</color>
     <color name="chat_username_text_color">#111111</color>
     <!--edit_profile-->

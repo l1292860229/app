@@ -23,10 +23,8 @@ import com.example.administrator.databinding.EditProfileBinding;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUEditProfileView;
 import com.example.administrator.presenter.EditProfilePresenter;
-import com.example.administrator.util.GlideLoader;
 import com.example.administrator.util.ImageUitl;
 import com.example.administrator.util.UIUtil;
-import com.jaiky.imagespickers.ImageConfig;
 import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
 
@@ -184,22 +182,7 @@ public class EditProfileActivity extends AppCompatActivity implements IUEditProf
      * @param view
      */
     public void openImagePicker(View view){
-        ImageConfig imageConfig
-                = new ImageConfig.Builder(new GlideLoader())
-                .steepToolBarColor(getResources().getColor(R.color.black))
-                .titleBgColor(getResources().getColor(R.color.black))
-                .titleSubmitTextColor(getResources().getColor(R.color.white))
-                .titleTextColor(getResources().getColor(R.color.white))
-                // 开启单选   （默认为多选）
-                .singleSelect()
-                // 开启拍照功能 （默认关闭）
-                .showCamera()
-                // 拍照后存放的图片路径（默认 /temp/picture） （会自动创建）
-                .filePath("/temp/picture")
-                //单选自定义裁剪
-                .crop()
-                .build();
-        ImageSelector.open(EditProfileActivity.this, imageConfig);   // 开启图片选择器
+        UIUtil.openImagePicker(EditProfileActivity.this);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

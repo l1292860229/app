@@ -1,6 +1,8 @@
 package com.example.administrator.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -8,7 +10,6 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
@@ -23,10 +24,12 @@ import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUFriensLoopView;
+import com.example.administrator.presenter.FriensLoopPresenter;
 import com.example.administrator.util.DateUtil;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.StringUtil;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,10 +42,13 @@ public class FriensLoopAdapter extends BaseAdapter{
     private List<FriendsLoopItem> list;
     private LinearLayout temp;
     private IUFriensLoopView friensLoopView;
-    public FriensLoopAdapter(Context context, List<FriendsLoopItem> list,IUFriensLoopView friensLoopView) {
+    private FriensLoopPresenter friensLoopPresenter;
+    public FriensLoopAdapter(Context context, List<FriendsLoopItem> list
+            ,IUFriensLoopView friensLoopView,FriensLoopPresenter friensLoopPresenter) {
         this.context = context;
         this.list = list;
         this.friensLoopView = friensLoopView;
+        this.friensLoopPresenter = friensLoopPresenter;
     }
     public void setData(List<FriendsLoopItem> list){
         this.list = list;
@@ -63,7 +69,7 @@ public class FriensLoopAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final  int position, View convertView, ViewGroup parent) {
         FriendsLoopItemBinding binding = null;
         if (convertView == null) {
             binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.friends_loop_item, parent, false);
@@ -110,6 +116,25 @@ public class FriensLoopAdapter extends BaseAdapter{
                 }
             }
         });
+        //内容的长按事件
+        bindingFinal.content.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new AlertDialog.Builder(context).setItems(new String[]{"复制", "收藏"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                switch(i){
+                                    case 0:
+                                        GetDataUtil.copy(context,friendsLoopItem.getContent());
+                                    break;
+                                    case 1:
+                                        break;
+                                }
+                            }
+                        }).show();
+                return false;
+            }
+        });
         final UserInfo userInfo = GetDataUtil.getUserInfo(context);
         //如果是自己发的就显示删除按钮
         if (userInfo.getUid().equals(friendsLoopItem.getUid())) {
@@ -120,28 +145,16 @@ public class FriensLoopAdapter extends BaseAdapter{
         //显示评论点赞按钮
         binding.jumpLayout.setVisibility(View.GONE);
         //关闭评论点赞按钮
-        binding.bodyer.setOnTouchListener(new View.OnTouchListener() {
+        binding.bodyer.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View view) {
                 if(temp!=null){
                     temp.setVisibility(View.GONE);
                 }
                 friensLoopView.hidePinLun();
-                return true;
             }
         });
-        binding.content.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                friensLoopView.hidePinLun();
-            }
-        });
-        binding.commentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                friensLoopView.hidePinLun();
-            }
-        });
+        final ArrayList<FriendsLoopItem> friendsLoopItemList = (ArrayList<FriendsLoopItem>) list;
         binding.functionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,18 +173,28 @@ public class FriensLoopAdapter extends BaseAdapter{
                 TranslateAnimation animation = new TranslateAnimation(StringUtil.dip2px(context,155), 0, 0, 0);
                 animation.setDuration(500);
                 bindingFinal.jumpLayout.startAnimation(animation);
-            }
-        });
-        //点击咨讯时的操作
-        binding.commentBtnLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                friensLoopView.showPinLun();
-                bindingFinal.jumpLayout.setVisibility(View.GONE);
+                bindingFinal.zanBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (friendsLoopItem.getIspraise()==1) {
+                            friensLoopPresenter.setSharePraise(friendsLoopItemList,position,friendsLoopItem.getUid(),friendsLoopItem.getNickname(),false);
+                        }else if(friendsLoopItem.getIspraise()==0){
+                            friensLoopPresenter.setSharePraise(friendsLoopItemList,position,friendsLoopItem.getUid(),friendsLoopItem.getNickname(),true);
+                        }
+                    }
+                });
             }
         });
         //处理图片的显示
         binding.gridview.setAdapter(new ImageAdapter(context,friendsLoopItem.getPicture()));
+        //点击咨讯时的操作
+        binding.commentBtnLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                friensLoopView.showPinLun(position,null,null,null);
+                bindingFinal.jumpLayout.setVisibility(View.GONE);
+            }
+        });
         //点赞处理
         CommentUser[] zanList = friendsLoopItem.getPraiselist();
         binding.zanLayout.removeAllViews();
@@ -225,7 +248,7 @@ public class FriensLoopAdapter extends BaseAdapter{
             binding.zanIcon.setVisibility(View.GONE);
         }
         //评论处理
-        CommentUser[] replylist = list.get(position).getReplylist();
+        final CommentUser[] replylist = list.get(position).getReplylist();
         binding.commentLayout.removeAllViews();
         if (replylist!=null && replylist.length>0) {
             binding.otherLayout.setVisibility(View.VISIBLE);
@@ -247,7 +270,13 @@ public class FriensLoopAdapter extends BaseAdapter{
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 tv.setLayoutParams(param);
                 tv.setBackground(context.getResources().getDrawable(R.drawable.friends_long_click_bg_color));
-                String replyStr = replylist[i].getNickname()+":"+replylist[i].getContent();
+                String replyStr;
+                //如果fid不为0表示回复别人
+                if(replylist[i].getFid()==null||replylist[i].getFid().equals("0")){
+                    replyStr = replylist[i].getNickname()+":"+replylist[i].getContent();
+                }else{
+                    replyStr = replylist[i].getNickname()+"回复"+replylist[i].getFnickname()+":"+replylist[i].getContent();
+                }
 //                SpannableString spannableString = EmojiUtil.getExpressionString(context,replyStr, "emoji_[\\d]{0,3}");
                 SpannableString spannableString =  new SpannableString(replyStr);
                 spannableString.setSpan(new ClickableSpan() {
@@ -261,9 +290,31 @@ public class FriensLoopAdapter extends BaseAdapter{
                     public void onClick(View widget) {
                     }
                 },0,replylist[i].getNickname().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if(replylist[i].getFid()!=null&&!replylist[i].getFid().equals("0")){
+                    int start = (replylist[i].getNickname()+"回复").length();
+                    int end  = start+replylist[i].getFnickname().length();
+                    spannableString.setSpan(new ClickableSpan() {
+                        @Override
+                        public void updateDrawState(TextPaint ds) {
+                            super.updateDrawState(ds);
+                            ds.setColor(context.getResources().getColor(R.color.application_friends_loop_user_name));
+                            ds.setUnderlineText(false);      //设置下划线
+                        }
+                        @Override
+                        public void onClick(View widget) {
+                        }
+                    },start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
                 tv.setText(spannableString);
                 tv.setMovementMethod(LinkMovementMethod.getInstance());
                 layout.addView(tv);
+                //设置回复
+                layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        friensLoopView.showPinLun(position,replylist[pos].getUid(),replylist[pos].getNickname(),"回复"+replylist[pos].getNickname());
+                    }
+                });
                 binding.commentLayout.addView(layout);
             }
             if(isHide){

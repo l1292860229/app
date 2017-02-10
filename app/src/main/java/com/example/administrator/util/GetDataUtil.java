@@ -1,5 +1,7 @@
 package com.example.administrator.util;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -32,6 +34,9 @@ public class GetDataUtil {
         userinfoEditor.putString(Constants.USERINFO, userInfo);
         userinfoEditor.commit();
     }
+    public static void setUserInfo(Context context,UserInfo userInfo){
+        setUserInfo(context,GsonUtil.objectToJson(userInfo));
+    }
     public static void removeIsRemember(Context context){
         SharedPreferences mPreferences = context.getSharedPreferences(Constants.USERINFO, 0);
         mPreferences.edit().remove(Constants.USERINFO).commit();
@@ -56,5 +61,9 @@ public class GetDataUtil {
             // Should never happen!
             throw new RuntimeException(e);
         }
+    }
+    public static void copy(Context context,String string) {
+        ClipboardManager c = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        c.setPrimaryClip(ClipData.newPlainText("copytext", string));
     }
 }

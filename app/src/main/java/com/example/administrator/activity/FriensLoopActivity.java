@@ -1,7 +1,9 @@
 package com.example.administrator.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -14,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ab.fragment.AbAlertDialogFragment;
+import com.ab.util.AbDialogUtil;
 import com.example.administrator.R;
 import com.example.administrator.adapter.FriensLoopAdapter;
 import com.example.administrator.databinding.FriendsLoopHeaderBinding;
@@ -26,6 +30,8 @@ import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.ImageUitl;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
+import com.jaiky.imagespickers.ImageSelector;
+import com.jaiky.imagespickers.ImageSelectorActivity;
 import com.tandong.sa.bv.BelowView;
 import com.tandong.sa.view.AutoReFreshListView;
 
@@ -40,12 +46,15 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
     private AutoReFreshListView mListView;
     FriensLoopAdapter friensLoopAdapter;
     FriensLoopBinding binding;
+    FriendsLoopHeaderBinding friendsLoopHeaderBinding;
     FriensLoopPresenter friensLoopPresenter;
     Context context;
     String type;
     private Button[] mTabs;
     private int page=1;
     private ArrayList<FriendsLoopItem> dataList = new ArrayList<>();
+    private int position;
+    private String toUid,toName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +67,7 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         friensLoopPresenter.init(null);
     }
     public void init(ArrayList<FriendsLoopItem> mlist) {
-        friensLoopAdapter = new FriensLoopAdapter(context,mlist,FriensLoopActivity.this);
+        friensLoopAdapter = new FriensLoopAdapter(context,mlist,FriensLoopActivity.this,friensLoopPresenter);
         dataList = mlist;
         mListView.setAdapter(friensLoopAdapter);
         mListView.setOnRefreshListener(new AutoReFreshListView.OnRefreshListener() {// 上拉刷新
@@ -74,10 +83,13 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         });
     }
 
+    /**
+     * 背景的头部信息
+     */
     @Override
     public void initHeader() {
         UserInfo userInfo = GetDataUtil.getUserInfo(context);
-        FriendsLoopHeaderBinding friendsLoopHeaderBinding =  DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.friends_loop_header,null,false);
+        friendsLoopHeaderBinding =  DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.friends_loop_header,null,false);
         friendsLoopHeaderBinding.setBehavior(this);
         friendsLoopHeaderBinding.setUserinfo(userInfo);
         if(!StringUtil.isNull(userInfo.getCover())){
@@ -89,6 +101,35 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         mListView.addHeaderView(friendsLoopHeaderBinding.getRoot());
     }
 
+    /**
+     * 点击是否更换背景
+     * @param view
+     */
+    public void updateBg(View view){
+        AbDialogUtil.showAlertDialog(context, "更换背景", "是否更换背景？", new AbAlertDialogFragment.AbDialogOnClickListener() {
+            @Override
+            public void onPositiveClick() {
+                UIUtil.openImagePicker(FriensLoopActivity.this);
+            }
+            @Override
+            public void onNegativeClick() {}
+        });
+    }
+
+    /**
+     * 发送评论
+     * @param view
+     */
+    public void sentReply(View view){
+        String str = binding.edit.getText().toString();
+        hidePinLun();
+        binding.edit.setText("");
+        friensLoopPresenter.sentReply(dataList,position,toUid,toName,str);
+    }
+    /**
+     * 加载成功时显示数据
+     * @param mlist
+     */
     @Override
     public void loadsuccess(ArrayList<FriendsLoopItem> mlist) {
         mListView.onLoadMoreComplete();
@@ -97,6 +138,10 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         friensLoopAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 刷新成功时加载数据
+     * @param mlist
+     */
     @Override
     public void refreshsuccess(List<FriendsLoopItem> mlist) {
         mListView.onRefreshComplete();
@@ -104,14 +149,23 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         friensLoopAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 显示评论控件
+     */
     @Override
-    public void showPinLun() {
+    public void showPinLun(int position,String toUid,String toName,String hid) {
         binding.bottomMenu.setVisibility(View.VISIBLE);
         TranslateAnimation animation = new TranslateAnimation(binding.bottomMenu.getWidth(), 0, 0, 0);
         animation.setDuration(500);
         animation.setAnimationListener(mAnimationListener);
         binding.bottomMenu.startAnimation(animation);
         binding.typeBottomMenu.setVisibility(View.GONE);
+        this.position = position;
+        this.toUid = toUid;
+        this.toName = toName;
+        if(!StringUtil.isNull(hid)){
+            binding.edit.setHint(hid);
+        }
     }
     Animation.AnimationListener mAnimationListener = new Animation.AnimationListener() {
         @Override
@@ -127,16 +181,25 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
             binding.edit.setFocusable(true);
             binding.edit.setFocusableInTouchMode(true);
             binding.edit.requestFocus();
-            InputMethodManager inputManager =(InputMethodManager)binding.edit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.showSoftInput(binding.edit, 0);
-
+            InputMethodManager  inputManager =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.showSoftInput(binding.edit, InputMethodManager.RESULT_UNCHANGED_SHOWN);
         }
     };
+
+    /**
+     * 隐藏评论控件
+     */
     @Override
     public void hidePinLun() {
         binding.bottomMenu.setVisibility(View.GONE);
         binding.typeBottomMenu.setVisibility(View.VISIBLE);
+        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
+
+    /**
+     * 初始化控件以及参数
+     */
     private void initView(){
         ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("商机圈");
         ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
@@ -158,7 +221,8 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
                 v.findViewById(R.id.sendfriensloop_layout).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        UIUtil.showMessage(context,"发布动态");
+                        Intent intent = new Intent(context,SendFriensLoopActivity.class);
+                        startActivity(intent);
                         blv.dismissBelowView();
                     }
                 });
@@ -210,6 +274,26 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
     public void hideLoading() {
         UIUtil.hideLoading(this);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case ImageSelector.IMAGE_REQUEST_CODE:
+                    if (data != null) {
+                        // 获取选中的图片路径列表 Get Images Path List
+                        List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+                        for (String path : pathList) {
+                            friensLoopPresenter.setImageBg(path);
+                            friendsLoopHeaderBinding.imgBg.setImageBitmap(BitmapFactory.decodeFile(path));
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_UP
