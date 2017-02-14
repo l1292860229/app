@@ -21,7 +21,6 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,7 @@ import com.tandong.sa.zmImageview.ZoomImageView;
 
 
 /**
- * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
+ * 这个是加载大图的类
  */
 public class ImagePagerActivity extends AppCompatActivity {
 
@@ -118,7 +117,6 @@ public class ImagePagerActivity extends AppCompatActivity {
 			imageView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					Log.e("ZoomImageView","ZoomImageView");
 					ImagePagerActivity.this.finish();
 				}
 			});

@@ -90,4 +90,28 @@ public class UIUtil {
                 .build();
         ImageSelector.open(context, imageConfig);   // 开启图片选择器
     }
+
+    /**
+     * 多张相片选择器
+     * @param context
+     */
+    public static void openImagePickers(Activity context,int max){
+        ImageConfig imageConfig
+                = new ImageConfig.Builder(new GlideLoader())
+                .steepToolBarColor(context.getResources().getColor(R.color.black))
+                .titleBgColor(context.getResources().getColor(R.color.black))
+                .titleSubmitTextColor(context.getResources().getColor(R.color.white))
+                .titleTextColor(context.getResources().getColor(R.color.white))
+                // 开启单选   （默认为多选）
+                .mutiSelect()
+                .mutiSelectMaxSize(max)
+                // 开启拍照功能 （默认关闭）
+                .showCamera()
+                // 拍照后存放的图片路径（默认 /temp/picture） （会自动创建）
+                .filePath("/temp/picture")
+                //单选自定义裁剪
+                .crop()
+                .build();
+        ImageSelector.open(context, imageConfig);   // 开启图片选择器
+    }
 }
