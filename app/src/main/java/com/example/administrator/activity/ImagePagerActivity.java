@@ -16,11 +16,13 @@
 package com.example.administrator.activity;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,9 @@ import com.tandong.sa.zUImageLoader.core.display.FadeInBitmapDisplayer;
 import com.tandong.sa.zUImageLoader.core.listener.SimpleImageLoadingListener;
 import com.tandong.sa.zmImageview.ZoomImageView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 /**
  * 这个是加载大图的类
@@ -47,11 +52,13 @@ public class ImagePagerActivity extends AppCompatActivity {
 	private static final String STATE_POSITION = "STATE_POSITION";
 	public static final  String IMAGES = "images";
 	public static final  String IMAGE_POSITION = "image_position";
-
+	public static final String IS_DELETE = "is_delete";
 	DisplayImageOptions options;
 
 	ViewPager pager;
 	ImageLoader imageLoader;
+	private boolean isdelete=false;
+	private ImagePagerAdapter imagePagerAdapter;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,11 +69,10 @@ public class ImagePagerActivity extends AppCompatActivity {
 		assert bundle != null;
 		Picture[] imageUrls = (Picture[]) bundle.getSerializable(IMAGES);
 		int pagerPosition = bundle.getInt(IMAGE_POSITION, 0);
-
 		if (savedInstanceState != null) {
 			pagerPosition = savedInstanceState.getInt(STATE_POSITION);
 		}
-
+		isdelete = bundle.getBoolean(IS_DELETE,false);
 		options = new DisplayImageOptions.Builder()
 			.showImageForEmptyUri(R.mipmap.ic_empty)
 			.showImageOnFail(R.mipmap.ic_error)
@@ -77,9 +83,9 @@ public class ImagePagerActivity extends AppCompatActivity {
 			.considerExifParams(true)
 			.displayer(new FadeInBitmapDisplayer(300))
 			.build();
-
 		pager = (ViewPager) findViewById(R.id.pager);
-		pager.setAdapter(new ImagePagerAdapter(imageUrls));
+		imagePagerAdapter = new ImagePagerAdapter(imageUrls);
+		pager.setAdapter(imagePagerAdapter);
 		pager.setCurrentItem(pagerPosition);
 	}
 
@@ -89,30 +95,73 @@ public class ImagePagerActivity extends AppCompatActivity {
 	}
 
 	private class ImagePagerAdapter extends PagerAdapter {
-
+		final public static int URL_TYPE=1;
+		final public static int LOCAL_TYPE=2;
 		private Picture[] images;
 		private LayoutInflater inflater;
-
 		ImagePagerAdapter(Picture[] images) {
 			this.images = images;
 			inflater = getLayoutInflater();
 		}
-
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((View) object);
 		}
-
 		@Override
 		public int getCount() {
 			return images.length;
 		}
 
 		@Override
-		public Object instantiateItem(ViewGroup view, int position) {
-			View imageLayout = inflater.inflate(R.layout.item_pager_image, view, false);
+		public Object instantiateItem(final ViewGroup view,final int position) {
+			final View imageLayout = inflater.inflate(R.layout.item_pager_image, view, false);
 			assert imageLayout != null;
 			ZoomImageView imageView = (ZoomImageView) imageLayout.findViewById(R.id.image);
+			if (isdelete) {
+				imageLayout.findViewById(R.id.del_layout).setVisibility(View.VISIBLE);
+				imageLayout.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						ImagePagerActivity.this.finish();
+					}
+				});
+				imageLayout.findViewById(R.id.del_btn).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						//移除掉删除的界面
+						ArrayList<Picture> pictureArrayList = new ArrayList<>(Arrays.asList(images));
+						pictureArrayList.remove(pictureArrayList.size()-1-position);
+						//如果图片都被移除光了，就退出
+						if(pictureArrayList.size()==0){
+							ImagePagerActivity.this.finish();
+							return;
+						}
+						images = new Picture[pictureArrayList.size()];
+						pictureArrayList.toArray(images);
+						imagePagerAdapter.notifyDataSetChanged();
+						pager.setAdapter(imagePagerAdapter);
+					}
+				});
+			}
+			switch (images[images.length-1-position].getType()){
+				case URL_TYPE://如果是网络图片
+					showUrlImage(imageView,position,imageLayout);
+					break;
+				case LOCAL_TYPE://如果是本地图片
+					showLocalImage(imageView,images[images.length-1-position].getSmallUrl());
+					break;
+			}
+			view.addView(imageLayout, 0);
+			return imageLayout;
+		}
+
+		/**
+		 * 显示网络上的图片
+		 * @param imageView
+		 * @param position
+         * @param imageLayout
+         */
+		private void showUrlImage(ZoomImageView imageView,int position,View imageLayout){
 			final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
 			imageView.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -126,7 +175,6 @@ public class ImagePagerActivity extends AppCompatActivity {
 				public void onLoadingStarted(String imageUri, View view) {
 					spinner.setVisibility(View.VISIBLE);
 				}
-
 				@Override
 				public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
 					String message = null;
@@ -155,10 +203,16 @@ public class ImagePagerActivity extends AppCompatActivity {
 					spinner.setVisibility(View.GONE);
 				}
 			});
-			view.addView(imageLayout, 0);
-			return imageLayout;
-		}
 
+		}
+		/**
+		 * 显示本地上的图片
+		 */
+		public void showLocalImage(ZoomImageView imageView, String s){
+			Log.e("showLocalImage","s="+s);
+			imageView.setImageBitmap(BitmapFactory.decodeFile(s));
+			imageView.setOnClickListener(null);
+		}
 		@Override
 		public boolean isViewFromObject(View view, Object object) {
 			return view.equals(object);

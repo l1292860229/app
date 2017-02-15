@@ -12,7 +12,8 @@ public class Picture implements Serializable {
 	private String originUrl;
 	private String smallUrl;
 	private int type=1;
-	private View.OnClickListener onClickListener;
+	//序列化时，忽略这个字段
+	private transient View.OnClickListener onClickListener;
 	public Picture(){}
 	public Picture(String small, String origin) {
 		super();

@@ -48,6 +48,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:paddingTop="8dp"
+                        android:maxLength="140"
                         android:textColor="@color/black"
                         android:textColorHint="@color/text_color"
                         android:textSize="@dimen/text_size" />

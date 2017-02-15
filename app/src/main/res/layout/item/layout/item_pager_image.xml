@@ -6,21 +6,48 @@
     android:layout_height="fill_parent"
     android:padding="1dip"
     android:background="@color/black">
-
-    <com.tandong.sa.zmImageview.ZoomImageView
-        android:id="@+id/image"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:scaleType="centerInside"
-        gesture-image:min-scale="0.1"
-        gesture-image:max-scale="10.0"
-        gesture-image:strict="false"/>
-    <ProgressBar
-        android:id="@+id/loading"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
-
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/del_layout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="vertical"
+            android:layout_gravity="top"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back_btn"/>
+            <TextView
+                android:id="@+id/del_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="删除"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+        <com.tandong.sa.zmImageview.ZoomImageView
+            android:id="@+id/image"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            gesture-image:min-scale="0.1"
+            gesture-image:max-scale="10.0"
+            gesture-image:strict="false"/>
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </LinearLayout>
 </FrameLayout>

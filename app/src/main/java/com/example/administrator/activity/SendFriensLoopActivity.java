@@ -97,8 +97,8 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
                     if (data != null) {
                         // 获取选中的图片路径列表 Get Images Path List
                         List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
-                        Max = 9-pictureList.size();
-                        if(pictureList.size()==9){
+                        Max = 10-pictureList.size()-pathList.size();
+                        if(Max==0){
                             pictureList.remove(0);
                         }else{
                             addAddImage();

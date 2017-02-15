@@ -19,6 +19,8 @@ import com.example.administrator.entity.Picture;
 import com.example.administrator.util.ImageUitl;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -72,7 +74,7 @@ public class ImageAdapter extends BaseAdapter {
                 showUrlImage(binding,position);
                 break;
             case LOCAL_TYPE://如果是本地图片
-                showLocalImage(binding,pictures[pictures.length-1-position].getSmallUrl());
+                showLocalImage(binding,position);
                 break;
             case DRAWABLE_TYPE://如果是资源图片
                 showDrawableImage(binding,pictures[pictures.length-1-position].getSmallUrl(),
@@ -89,15 +91,6 @@ public class ImageAdapter extends BaseAdapter {
      */
     public void  showUrlImage(PictureItemBinding binding,final int position){
         ImageUitl.setImage(binding.pic,pictures[pictures.length-1-position].getSmallUrl());
-        binding.pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,ImagePagerActivity.class);
-                intent.putExtra(ImagePagerActivity.IMAGES,pictures);
-                intent.putExtra(ImagePagerActivity.IMAGE_POSITION,position);
-                context.startActivity(intent);
-            }
-        });
         binding.pic.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -110,14 +103,41 @@ public class ImageAdapter extends BaseAdapter {
                 return false;
             }
         });
+        binding.pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,ImagePagerActivity.class);
+                intent.putExtra(ImagePagerActivity.IMAGES,pictures);
+                intent.putExtra(ImagePagerActivity.IMAGE_POSITION,position);
+                context.startActivity(intent);
+            }
+        });
     }
 
     /**
      * 显示本地上的图片
      */
-    public void showLocalImage(PictureItemBinding binding,String s){
-        binding.pic.setImageBitmap(BitmapFactory.decodeFile(s));
-        binding.pic.setOnClickListener(null);
+    public void showLocalImage(PictureItemBinding binding,final int position){
+        binding.pic.setImageBitmap(BitmapFactory.decodeFile(pictures[pictures.length-1-position].getSmallUrl()));
+        binding.pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //移除Drawable上的图片
+                ArrayList<Picture> pictureArrayList = new ArrayList<>(Arrays.asList(pictures));
+                for (int i = pictureArrayList.size() - 1; i >= 0; i--) {
+                    if (pictureArrayList.get(i).getType()==DRAWABLE_TYPE) {
+                        pictureArrayList.remove(i);
+                    }
+                }
+                Picture[] images = new Picture[pictureArrayList.size()];
+                pictureArrayList.toArray(images);
+                Intent intent = new Intent(context,ImagePagerActivity.class);
+                intent.putExtra(ImagePagerActivity.IMAGES,images);
+                intent.putExtra(ImagePagerActivity.IS_DELETE,true);
+                intent.putExtra(ImagePagerActivity.IMAGE_POSITION,position);
+                context.startActivity(intent);
+            }
+        });
     }
 
     /**
