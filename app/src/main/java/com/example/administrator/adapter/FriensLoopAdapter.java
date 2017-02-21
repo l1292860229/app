@@ -17,6 +17,8 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ab.fragment.AbAlertDialogFragment;
+import com.ab.util.AbDialogUtil;
 import com.example.administrator.BR;
 import com.example.administrator.R;
 import com.example.administrator.databinding.FriendsLoopItemBinding;
@@ -78,6 +80,7 @@ public class FriensLoopAdapter extends BaseAdapter{
             binding = DataBindingUtil.getBinding(convertView);
         }
         binding.setVariable(BR.friendsLoopItem, list.get(position));
+        //设置常量
         final FriendsLoopItem friendsLoopItem = list.get(position);
         final  FriendsLoopItemBinding bindingFinal = binding;
         //如果有地址就显示
@@ -139,6 +142,19 @@ public class FriensLoopAdapter extends BaseAdapter{
         //如果是自己发的就显示删除按钮
         if (userInfo.getUid().equals(friendsLoopItem.getUid())) {
             binding.delBtn.setVisibility(View.VISIBLE);
+            binding.delBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AbDialogUtil.showAlertDialog(context, null, "你确实要删除该内容吗", new AbAlertDialogFragment.AbDialogOnClickListener() {
+                        @Override
+                        public void onPositiveClick() {
+                            friensLoopPresenter.delData(friendsLoopItem.getId());
+                        }
+                        @Override
+                        public void onNegativeClick() {}
+                    });
+                }
+            });
         }else{
             binding.delBtn.setVisibility(View.GONE);
         }

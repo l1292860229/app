@@ -1,5 +1,6 @@
 package com.example.administrator.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,7 @@ import android.widget.BaseAdapter;
 
 import com.example.administrator.R;
 import com.example.administrator.activity.ImagePagerActivity;
+import com.example.administrator.activity.SendFriensLoopActivity;
 import com.example.administrator.databinding.PictureItemBinding;
 import com.example.administrator.entity.Picture;
 import com.example.administrator.util.ImageUitl;
@@ -32,11 +34,18 @@ public class ImageAdapter extends BaseAdapter {
     final public static int LOCAL_TYPE=2;
     final public static int DRAWABLE_TYPE=3;
     private  Picture[] pictures;
+    private Activity activity;
     private Context context;
-    public ImageAdapter(Context context, List<Picture> pictures){
+    public ImageAdapter(Activity context, List<Picture> pictures){
         this.pictures= new Picture[pictures.size()];
         pictures.toArray(this.pictures);
         this.context = context;
+        this.activity = context;
+    }
+    public ImageAdapter(Activity context, Picture[] pictures){
+        this.pictures = pictures;
+        this.context = context;
+        this.activity = context;
     }
     public ImageAdapter(Context context, Picture[] pictures){
         this.pictures = pictures;
@@ -131,11 +140,11 @@ public class ImageAdapter extends BaseAdapter {
                 }
                 Picture[] images = new Picture[pictureArrayList.size()];
                 pictureArrayList.toArray(images);
-                Intent intent = new Intent(context,ImagePagerActivity.class);
+                Intent intent = new Intent(activity,ImagePagerActivity.class);
                 intent.putExtra(ImagePagerActivity.IMAGES,images);
                 intent.putExtra(ImagePagerActivity.IS_DELETE,true);
                 intent.putExtra(ImagePagerActivity.IMAGE_POSITION,position);
-                context.startActivity(intent);
+                activity.startActivityForResult(intent, SendFriensLoopActivity.IMAGEBACK);
             }
         });
     }

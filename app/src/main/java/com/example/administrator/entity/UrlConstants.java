@@ -22,4 +22,8 @@ public class UrlConstants {
     public static final String FRIEND_SHAREREPLY = SERVER_PREFIX + "/friend/api/shareReply";
     //赞的地址
     public static final String FRIEND_SHAREPRAISE = SERVER_PREFIX + "/friend/api/sharePraise";
+    //删除朋友的地址
+    public static final String FRIEND_SHAREPRAISE_DEL = SERVER_PREFIX + "/friend/api/delete";
+    //发送朋友圈的地址
+    public static final String FRIEND_SHAREPRAISE_ADD = SERVER_PREFIX + "/friend/api/add";
 }

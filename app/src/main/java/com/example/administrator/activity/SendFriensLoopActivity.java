@@ -17,12 +17,14 @@ import com.example.administrator.adapter.ImageAdapter;
 import com.example.administrator.databinding.SendFriensloopBinding;
 import com.example.administrator.entity.Picture;
 import com.example.administrator.interfaceview.IUSendFriensLoopView;
+import com.example.administrator.presenter.SendFriensLoopPresenter;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
 import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +32,11 @@ import java.util.List;
  */
 
 public class SendFriensLoopActivity extends AppCompatActivity implements IUSendFriensLoopView {
+    final public static int IMAGEBACK=0;
+    final public static String  IMAGE_PICTURE_LIST="image_picture_List";
+    final public static String  SHOW="1";
+    final public static String  HIDE="0";
+
     SendFriensloopBinding binding;
     Context context;
     private String[] biaoqian = new String[]{"生活","企业","微商","活动","其它"};
@@ -37,12 +44,14 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
     private List<Picture> pictureList = new ArrayList<>();
     private ImageAdapter imageAdapter;
     private int Max=9;//最大选择照片数
+    private SendFriensLoopPresenter sendFriensLoopPresenter;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = SendFriensLoopActivity.this;
         binding =  DataBindingUtil.setContentView(this, R.layout.send_friensloop);
         init();
+        sendFriensLoopPresenter = new SendFriensLoopPresenter(this,this);
     }
 
     @Override
@@ -61,6 +70,8 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
         tvRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sendFriensLoopPresenter.sendFriensLoop(binding.content.getText().toString()
+                ,null,null,null,type,null,SHOW,pictureList);
             }
         });
         //动态设置标签
@@ -110,6 +121,18 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
                         }
                     }
                     break;
+                case IMAGEBACK:
+                    if (data != null) {
+                        Picture[] temp = (Picture[]) data.getSerializableExtra(IMAGE_PICTURE_LIST);
+                        pictureList = new ArrayList<>(Arrays.asList(temp));
+                        Max = 9-pictureList.size();
+                        if(pictureList.size()<9){
+                            addAddImage();
+                        }
+                        imageAdapter = new ImageAdapter(SendFriensLoopActivity.this,pictureList);
+                        binding.gridview.setAdapter(imageAdapter);
+                    }
+                    break;
             }
         }
     }
@@ -126,5 +149,14 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
                 }
             }));
         }
+    }
+
+    @Override
+    public void showLoading() {
+        UIUtil.showLoading(this,"正在提交,请稍候");
+    }
+    @Override
+    public void hideLoading() {
+        UIUtil.hideLoading(this);
     }
 }

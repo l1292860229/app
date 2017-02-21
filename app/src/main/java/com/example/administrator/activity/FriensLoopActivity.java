@@ -2,6 +2,8 @@ package com.example.administrator.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
 import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -43,6 +45,8 @@ import java.util.List;
  */
 
 public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoopView {
+    //刷新数据的广播
+    final public static String  REFRESH_FRIENSLOOP_DATA="refresh_friensloop_data_action";
     private AutoReFreshListView mListView;
     FriensLoopAdapter friensLoopAdapter;
     FriensLoopBinding binding;
@@ -81,8 +85,30 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
                 friensLoopPresenter.loadData(++page,type);
             }
         });
+        registerReceiver();
     }
 
+    /**
+     * 注册通知
+     */
+    private void registerReceiver(){
+        IntentFilter filter  = new IntentFilter();
+        filter.addAction(REFRESH_FRIENSLOOP_DATA);
+        registerReceiver(receiver,filter);
+    }
+
+    /**
+     * 处理通知
+     */
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action  = intent.getAction();
+            if (action.equals(REFRESH_FRIENSLOOP_DATA)) {
+                friensLoopPresenter.refreshData(type);
+            }
+        }
+    };
     /**
      * 背景的头部信息
      */
@@ -143,7 +169,7 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
      * @param mlist
      */
     @Override
-    public void refreshsuccess(List<FriendsLoopItem> mlist) {
+    public void refreshsuccess(ArrayList<FriendsLoopItem> mlist) {
         mListView.onRefreshComplete();
         friensLoopAdapter.setData(mlist);
         friensLoopAdapter.notifyDataSetChanged();

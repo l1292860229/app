@@ -15,6 +15,7 @@
  *******************************************************************************/
 package com.example.administrator.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,18 @@ public class ImagePagerActivity extends AppCompatActivity {
 		outState.putInt(STATE_POSITION, pager.getCurrentItem());
 	}
 
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if(event.getAction()==KeyEvent.ACTION_UP&&
+				event.getKeyCode()==KeyEvent.KEYCODE_BACK){
+			Intent intent = new Intent();
+			intent.putExtra(SendFriensLoopActivity.IMAGE_PICTURE_LIST,imagePagerAdapter.getData());
+			setResult(RESULT_OK,intent);
+			ImagePagerActivity.this.finish();
+		}
+		return super.dispatchKeyEvent(event);
+	}
+
 	private class ImagePagerAdapter extends PagerAdapter {
 		final public static int URL_TYPE=1;
 		final public static int LOCAL_TYPE=2;
@@ -102,6 +115,9 @@ public class ImagePagerActivity extends AppCompatActivity {
 		ImagePagerAdapter(Picture[] images) {
 			this.images = images;
 			inflater = getLayoutInflater();
+		}
+		public Picture[] getData(){
+			return images;
 		}
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
@@ -122,6 +138,9 @@ public class ImagePagerActivity extends AppCompatActivity {
 				imageLayout.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						Intent intent = new Intent();
+						intent.putExtra(SendFriensLoopActivity.IMAGE_PICTURE_LIST,images);
+						setResult(RESULT_OK,intent);
 						ImagePagerActivity.this.finish();
 					}
 				});
@@ -133,6 +152,9 @@ public class ImagePagerActivity extends AppCompatActivity {
 						pictureArrayList.remove(pictureArrayList.size()-1-position);
 						//如果图片都被移除光了，就退出
 						if(pictureArrayList.size()==0){
+							Intent intent = new Intent();
+							intent.putExtra(SendFriensLoopActivity.IMAGE_PICTURE_LIST,new Picture[]{});
+							setResult(RESULT_OK,intent);
 							ImagePagerActivity.this.finish();
 							return;
 						}
@@ -209,7 +231,6 @@ public class ImagePagerActivity extends AppCompatActivity {
 		 * 显示本地上的图片
 		 */
 		public void showLocalImage(ZoomImageView imageView, String s){
-			Log.e("showLocalImage","s="+s);
 			imageView.setImageBitmap(BitmapFactory.decodeFile(s));
 			imageView.setOnClickListener(null);
 		}

@@ -1,8 +1,10 @@
 package com.example.administrator.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
+import com.example.administrator.activity.FriensLoopActivity;
 import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
 import com.example.administrator.entity.UrlConstants;
@@ -88,7 +90,7 @@ public class FriensLoopPresenter {
                         try {
                             json = new JSONObject(data);
                             FriendsLoopItem[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),FriendsLoopItem[].class);
-                            friensLoopView.loadsuccess(new ArrayList<FriendsLoopItem>(Arrays.asList(mlist)));
+                            friensLoopView.loadsuccess(new ArrayList<>(Arrays.asList(mlist)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -115,7 +117,7 @@ public class FriensLoopPresenter {
                         try {
                             json = new JSONObject(data);
                             FriendsLoopItem[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),FriendsLoopItem[].class);
-                            friensLoopView.refreshsuccess(Arrays.asList(mlist));
+                            friensLoopView.refreshsuccess(new ArrayList<>(Arrays.asList(mlist)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -215,6 +217,23 @@ public class FriensLoopPresenter {
                         commentUsers.toArray(tempCommentUser);
                         dataList.get(position).setPraiselist(tempCommentUser);
                         friensLoopView.refreshsuccess(dataList);
+                    }
+                    @Override
+                    public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+                                          Throwable arg3) {
+                        UIUtil.showMessage(context,"网络异常");
+                    }
+                });
+    }
+    public void delData(int fsid){
+        RequestParams params = new RequestParams();
+        params.put("uid", userInfo.getUid());
+        params.put("fsid", fsid);
+        client.post(UrlConstants.FRIEND_SHAREPRAISE_DEL, params,
+                new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
+                        context.sendBroadcast(new Intent(FriensLoopActivity.REFRESH_FRIENSLOOP_DATA));
                     }
                     @Override
                     public void onFailure(int arg0, Header[] arg1, byte[] arg2,
