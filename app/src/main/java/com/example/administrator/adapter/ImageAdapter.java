@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 
 import com.example.administrator.R;
 import com.example.administrator.activity.ImagePagerActivity;
@@ -19,6 +20,7 @@ import com.example.administrator.activity.SendFriensLoopActivity;
 import com.example.administrator.databinding.PictureItemBinding;
 import com.example.administrator.entity.Picture;
 import com.example.administrator.util.ImageUitl;
+import com.example.administrator.util.StringUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class ImageAdapter extends BaseAdapter {
     final public static int URL_TYPE=1;
     final public static int LOCAL_TYPE=2;
     final public static int DRAWABLE_TYPE=3;
+    final public static int URL_NOTCLICK_TYPE=4;
     private  Picture[] pictures;
     private Activity activity;
     private Context context;
@@ -42,10 +45,10 @@ public class ImageAdapter extends BaseAdapter {
         this.context = context;
         this.activity = context;
     }
-    public ImageAdapter(Activity context, Picture[] pictures){
-        this.pictures = pictures;
+    public ImageAdapter(Context context,  List<Picture> pictures){
+        this.pictures= new Picture[pictures.size()];
+        pictures.toArray(this.pictures);
         this.context = context;
-        this.activity = context;
     }
     public ImageAdapter(Context context, Picture[] pictures){
         this.pictures = pictures;
@@ -89,10 +92,24 @@ public class ImageAdapter extends BaseAdapter {
                 showDrawableImage(binding,pictures[pictures.length-1-position].getSmallUrl(),
                         pictures[pictures.length-1-position].getOnClickListener());
                 break;
+            case URL_NOTCLICK_TYPE://如果是网络图片,但不可点击
+                showUrlNotClickImage(binding,position);
+                break;
         }
         return binding.getRoot();
     }
-
+    /**
+     * 显示网络上的图片
+     * @param binding
+     * @param position
+     */
+    public void  showUrlNotClickImage(PictureItemBinding binding,final int position){
+        ImageUitl.setImage(binding.pic,pictures[pictures.length-1-position].getSmallUrl());
+        RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, StringUtil.dip2px(context,17));
+        binding.pic.setLayoutParams(param);
+        binding.pic.setOnLongClickListener(null);
+        binding.pic.setOnClickListener(null);
+    }
     /**
      * 显示网络上的图片
      * @param binding

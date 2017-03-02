@@ -9,6 +9,7 @@ import com.example.administrator.entity.UrlConstants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUSendFriensLoopView;
 import com.example.administrator.util.GetDataUtil;
+import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
 import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class SendFriensLoopPresenter {
     private SendFriensLoopActivity context;
-    private AsyncHttpClient client = new AsyncHttpClient();
+    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
     private IUSendFriensLoopView sendFriensLoopView;
     UserInfo userInfo;
     public SendFriensLoopPresenter(SendFriensLoopActivity context,IUSendFriensLoopView sendFriensLoopView){
@@ -54,6 +55,8 @@ public class SendFriensLoopPresenter {
         params.put("type",type);
         params.put("bid", bid);
         params.put("isshow", isShow);
+        //安全较验
+        NetworkUtil.safeDate(params);
         sendFriensLoopView.showLoading();
         client.post(UrlConstants.FRIEND_SHAREPRAISE_ADD, params,
                 new AsyncHttpResponseHandler() {

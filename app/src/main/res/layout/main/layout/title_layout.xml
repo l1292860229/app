@@ -3,7 +3,7 @@
     android:id="@+id/title_layout"
     android:layout_width="fill_parent"
     android:layout_height="45dp"
-    android:background="#262626" >
+    android:background="#262626">
     <LinearLayout
         android:id="@+id/left_btn"
         android:layout_width="wrap_content"

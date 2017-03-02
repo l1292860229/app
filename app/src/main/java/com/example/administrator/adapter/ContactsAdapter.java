@@ -2,30 +2,29 @@ package com.example.administrator.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.List;
+import com.example.administrator.R;
+import com.example.administrator.databinding.ContactItemBinding;
+import com.example.administrator.entity.UserInfo;
+
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2017/1/22.
  */
 
-public class ListAdapter<T> extends BaseAdapter {
+public class ContactsAdapter extends BaseAdapter {
     private Context context;
-    private List<T> list;
-    private int layoutId;//单布局
-    private int variableId;
-    public ListAdapter(Context context, List<T> list, int layoutId, int variableId) {
+    private ArrayList<UserInfo> list;
+    public ContactsAdapter(Context context, ArrayList<UserInfo> list) {
         this.context = context;
         this.list = list;
-        this.layoutId = layoutId;
-        this.variableId = variableId;
     }
-    public void setData( List<T> list){
+    public void setData( ArrayList<UserInfo> list){
         this.list = list;
     }
     @Override
@@ -45,13 +44,15 @@ public class ListAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewDataBinding binding = null;
+        ContactItemBinding binding = null;
         if (convertView == null) {
-            binding = DataBindingUtil.inflate(LayoutInflater.from(context), layoutId, parent, false);
+            binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.contact_item, parent, false);
         } else {
             binding = DataBindingUtil.getBinding(convertView);
         }
-        binding.setVariable(variableId, list.get(position));
+        UserInfo userInfo = list.get(position);
+        binding.setNickname(userInfo.getNickname());
+        binding.setHeadsmall(userInfo.getHeadsmall());
         return binding.getRoot();
     }
 }

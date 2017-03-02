@@ -1,14 +1,12 @@
 package com.example.administrator.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.BroadcastReceiver;
 import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -44,7 +42,7 @@ import java.util.List;
  * Created by Administrator on 2017/1/25.
  */
 
-public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoopView {
+public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView {
     //刷新数据的广播
     final public static String  REFRESH_FRIENSLOOP_DATA="refresh_friensloop_data_action";
     private AutoReFreshListView mListView;
@@ -68,7 +66,7 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         binding =  DataBindingUtil.setContentView(this,R.layout.friens_loop);
         mListView = binding.mListView;
         initView();
-        friensLoopPresenter.init(null);
+        friensLoopPresenter.getData(null,FriensLoopPresenter.INITDATA,1);
     }
     public void init(ArrayList<FriendsLoopItem> mlist) {
         friensLoopAdapter = new FriensLoopAdapter(context,mlist,FriensLoopActivity.this,friensLoopPresenter);
@@ -76,13 +74,13 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         mListView.setAdapter(friensLoopAdapter);
         mListView.setOnRefreshListener(new AutoReFreshListView.OnRefreshListener() {// 上拉刷新
             public void onRefresh() {
-                friensLoopPresenter.refreshData(type);
+                friensLoopPresenter.getData(type,FriensLoopPresenter.REFRESHDATA,1);
             }
         });
         mListView.setOnLoadListener(new AutoReFreshListView.OnLoadMoreListener() {// 下拉加载更多
             @Override
             public void onLoadMore() {
-                friensLoopPresenter.loadData(++page,type);
+                friensLoopPresenter.getData(type,FriensLoopPresenter.LOADDATA,++page);
             }
         });
         registerReceiver();
@@ -97,6 +95,14 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         registerReceiver(receiver,filter);
     }
 
+    @Override
+    protected void onDestroy() {
+        if(receiver!=null){
+            unregisterReceiver(receiver);
+        }
+        super.onDestroy();
+    }
+
     /**
      * 处理通知
      */
@@ -105,7 +111,7 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         public void onReceive(Context context, Intent intent) {
             String action  = intent.getAction();
             if (action.equals(REFRESH_FRIENSLOOP_DATA)) {
-                friensLoopPresenter.refreshData(type);
+                friensLoopPresenter.getData(type,FriensLoopPresenter.REFRESHDATA,1);
             }
         }
     };
@@ -290,17 +296,12 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
         mTabs[currentTabIndex].setSelected(false);
         mTabs[index].setSelected(true);
         currentTabIndex = index;
-        friensLoopPresenter.init(type);
+        friensLoopPresenter.getData(type,FriensLoopPresenter.INITDATA,1);
     }
     @Override
     public void showLoading() {
-        UIUtil.showLoading(this,"加载中...");
+        super.showLoading("加载中...");
     }
-    @Override
-    public void hideLoading() {
-        UIUtil.hideLoading(this);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -318,14 +319,5 @@ public class FriensLoopActivity extends AppCompatActivity implements IUFriensLoo
                     break;
             }
         }
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_UP
-                && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            this.finish();
-        }
-        return super.dispatchKeyEvent(event);
     }
 }

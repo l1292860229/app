@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.administrator"
-    android:versionCode="20170124"
-    android:versionName="1.11.3">
+    package="com.example.administrator">
 
     <application
         android:allowBackup="true"
@@ -47,6 +45,8 @@
         <activity android:name=".activity.GroupFriensActivity">
         </activity>
         <activity android:name=".activity.BBSActivity">
+        </activity>
+        <activity android:name=".activity.IndustryActivity">
         </activity>
     </application>
     <!--添加WiFi以及访问网络的权限：-->

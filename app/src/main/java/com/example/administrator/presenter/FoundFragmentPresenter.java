@@ -7,6 +7,7 @@ import com.example.administrator.entity.UrlConstants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUFoundFragmentView;
 import com.example.administrator.util.GsonUtil;
+import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
@@ -29,7 +30,7 @@ import static com.example.administrator.util.GetDataUtil.getUserInfo;
 public class FoundFragmentPresenter {
     private Context context;
     private IUFoundFragmentView foundFragmentView;
-    private AsyncHttpClient client = new AsyncHttpClient();
+    private AsyncHttpClient client =NetworkUtil.instanceAsyncHttpClient();
     public FoundFragmentPresenter(Context context,IUFoundFragmentView foundFragmentView){
         this.context = context;
         this.foundFragmentView = foundFragmentView;
@@ -47,6 +48,8 @@ public class FoundFragmentPresenter {
         params.put("kai6id", userInfo.getKa6id());
         params.put("token", userInfo.getToken());
         params.put("id", userInfo.getYpid());
+        //安全较验
+        NetworkUtil.safeDate(params);
         client.post(UrlConstants.USER_GETMENU, params,
                 new AsyncHttpResponseHandler() {
                     @Override

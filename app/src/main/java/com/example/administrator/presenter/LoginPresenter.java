@@ -2,7 +2,6 @@ package com.example.administrator.presenter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.example.administrator.activity.LoginActivity;
 import com.example.administrator.activity.MainActivity;
@@ -10,6 +9,7 @@ import com.example.administrator.entity.Constants;
 import com.example.administrator.entity.UrlConstants;
 import com.example.administrator.interfaceview.IUloginView;
 import com.example.administrator.util.GetDataUtil;
+import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
 import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
@@ -26,7 +26,7 @@ import org.json.JSONObject;
 public class LoginPresenter {
     private IUloginView loginView;
     private LoginActivity context;
-    private AsyncHttpClient client = new AsyncHttpClient();
+    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
     public LoginPresenter(LoginActivity context,IUloginView loginView){
         this.loginView = loginView;
         this.context = context;
@@ -48,13 +48,14 @@ public class LoginPresenter {
         RequestParams params = new RequestParams();
         params.put("phone", username);
         params.put("password", password);
+        //安全较验
+        NetworkUtil.safeDate(params);
         loginView.showLoading();
-        client.post(UrlConstants.LOGIN, params,
+        client.post(UrlConstants.USER_LOGIN, params,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
                         String data = new String(arg2).replace("(","").replace(")","");
-                        Log.e("onSuccess","data="+data);
                         loginView.hideLoading();
                         try {
                             JSONObject json = new JSONObject(data);

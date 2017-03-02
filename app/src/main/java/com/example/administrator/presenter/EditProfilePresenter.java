@@ -8,6 +8,7 @@ import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUEditProfileView;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
+import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
 import com.tandong.sa.loopj.AsyncHttpClient;
@@ -32,7 +33,7 @@ import static com.example.administrator.util.GetDataUtil.getUserInfo;
 public class EditProfilePresenter {
     private EditProfileActivity context;
     private IUEditProfileView editProfileView;
-    private AsyncHttpClient client = new AsyncHttpClient();
+    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
     public EditProfilePresenter(EditProfileActivity context,IUEditProfileView editProfileView){
         this.context = context;
         this.editProfileView = editProfileView;
@@ -70,6 +71,8 @@ public class EditProfilePresenter {
         params.put("city", city);
         params.put("token", userInfo.getToken());
         params.put("id", userInfo.getYpid());
+        //安全较验
+        NetworkUtil.safeDate(params);
         editProfileView.showLoading();
         client.post(UrlConstants.USER_EDIT, params,
                 new AsyncHttpResponseHandler() {

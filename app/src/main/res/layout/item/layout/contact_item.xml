@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="headsmall" type="String"/>
+        <variable name="nickname" type="String"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        <RelativeLayout
+            android:id="@+id/user_detail_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp" >
+            <RelativeLayout
+                android:id="@+id/headerlayout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="7dp" >
+                <ImageView
+                    android:id="@+id/headerimage"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:scaleType="fitXY"
+                    app:image="@{headsmall}"
+                    android:src="@mipmap/contact_default_header" />
+                <com.example.administrator.UIView.ImageGridView
+                    android:id="@+id/group_header"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:horizontalSpacing="1dip"
+                    android:verticalSpacing="1dip"
+                    android:padding="1dip"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_toRightOf="@id/headerlayout"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="20"
+                    android:text="@{nickname}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size" />
+                <TextView
+                    android:id="@+id/job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="20"
+                    android:textColor="@color/text_title_color"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone"/>
+                <TextView
+                    android:id="@+id/company"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="20"
+                    android:textColor="@color/text_title_color"
+                    android:textSize="@dimen/text_size_12"
+                    android:visibility="gone"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

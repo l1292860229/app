@@ -2,7 +2,6 @@ package com.example.administrator.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.example.administrator.activity.FriensLoopActivity;
 import com.example.administrator.entity.CommentUser;
@@ -12,6 +11,7 @@ import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
+import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
 import com.tandong.sa.loopj.AsyncHttpClient;
@@ -32,34 +32,51 @@ import java.util.Arrays;
  */
 
 public class FriensLoopPresenter {
+    final public static int  INITDATA = 0;
+    final public static int  LOADDATA = 1;
+    final public static int  REFRESHDATA = 2;
     Context context;
     IUFriensLoopView friensLoopView;
-    private AsyncHttpClient client = new AsyncHttpClient();
+    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
     UserInfo userInfo;
     public FriensLoopPresenter(Context context,IUFriensLoopView friensLoopView){
         this.context = context;
         this.friensLoopView = friensLoopView;
         userInfo = GetDataUtil.getUserInfo(context);
     }
-    public void init(String type){
+    public void getData(String type,final int getDataType,int page){
         RequestParams params = new RequestParams();
         if(!StringUtil.isNull(type)){
             params.put("type", type);
         }
+        params.put("page", page);
         params.put("uid", userInfo.getUid());
-        friensLoopView.showLoading();
+        //安全较验
+        NetworkUtil.safeDate(params);
+        if(getDataType==INITDATA){
+            friensLoopView.showLoading();
+        }
         client.post(UrlConstants.FRIEND_SHARELIST, params,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
                         friensLoopView.hideLoading();
                         String data = new String(arg2);
-                        Log.e("init","data="+data);
                         JSONObject json = null;
                         try {
                             json = new JSONObject(data);
                             FriendsLoopItem[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),FriendsLoopItem[].class);
-                            friensLoopView.init(new ArrayList<FriendsLoopItem>(Arrays.asList(mlist)));
+                           switch (getDataType){
+                               case INITDATA:
+                                   friensLoopView.init(new ArrayList<>(Arrays.asList(mlist)));
+                                   break;
+                               case LOADDATA:
+                                   friensLoopView.loadsuccess(new ArrayList<>(Arrays.asList(mlist)));
+                                   break;
+                               case REFRESHDATA:
+                                   friensLoopView.refreshsuccess(new ArrayList<>(Arrays.asList(mlist)));
+                                   break;
+                           }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             UIUtil.showMessage(context,"数据异常");
@@ -74,61 +91,6 @@ public class FriensLoopPresenter {
                     }
                 });
     }
-    public void loadData(int page,String type){
-        RequestParams params = new RequestParams();
-        if(!StringUtil.isNull(type)){
-            params.put("type", type);
-        }
-        params.put("page", page);
-        params.put("uid", userInfo.getUid());
-        client.post(UrlConstants.FRIEND_SHARELIST, params,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-                        String data = new String(arg2);
-                        JSONObject json = null;
-                        try {
-                            json = new JSONObject(data);
-                            FriendsLoopItem[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),FriendsLoopItem[].class);
-                            friensLoopView.loadsuccess(new ArrayList<>(Arrays.asList(mlist)));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    @Override
-                    public void onFailure(int arg0, Header[] arg1, byte[] arg2,
-                                          Throwable arg3) {
-                        UIUtil.showMessage(context,"网络异常");
-                    }
-                });
-    }
-    public void refreshData(String type){
-        RequestParams params = new RequestParams();
-        if(!StringUtil.isNull(type)){
-            params.put("type", type);
-        }
-        params.put("uid", userInfo.getUid());
-        client.post(UrlConstants.FRIEND_SHARELIST, params,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-                        String data = new String(arg2);
-                        JSONObject json = null;
-                        try {
-                            json = new JSONObject(data);
-                            FriendsLoopItem[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),FriendsLoopItem[].class);
-                            friensLoopView.refreshsuccess(new ArrayList<>(Arrays.asList(mlist)));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    @Override
-                    public void onFailure(int arg0, Header[] arg1, byte[] arg2,
-                                          Throwable arg3) {
-                        UIUtil.showMessage(context,"网络异常");
-                    }
-                });
-    }
     public void setImageBg(final String imagePath){
         RequestParams params = new RequestParams();
         if(!StringUtil.isNull(imagePath)){
@@ -139,6 +101,8 @@ public class FriensLoopPresenter {
             }
         }
         params.put("uid", userInfo.getUid());
+        //安全较验
+        NetworkUtil.safeDate(params);
         client.post(UrlConstants.FRIEND_SETCOVER, params,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -170,6 +134,8 @@ public class FriensLoopPresenter {
             params.put("fuid", toUid);
         }
         params.put("fsid", dataList.get(position).getId());
+        //安全较验
+        NetworkUtil.safeDate(params);
         client.post(UrlConstants.FRIEND_SHAREREPLY, params,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -194,6 +160,8 @@ public class FriensLoopPresenter {
         RequestParams params = new RequestParams();
         params.put("uid", userInfo.getUid());
         params.put("fsid", dataList.get(position).getId());
+        //安全较验
+        NetworkUtil.safeDate(params);
         client.post(UrlConstants.FRIEND_SHAREPRAISE, params,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -229,6 +197,8 @@ public class FriensLoopPresenter {
         RequestParams params = new RequestParams();
         params.put("uid", userInfo.getUid());
         params.put("fsid", fsid);
+        //安全较验
+        NetworkUtil.safeDate(params);
         client.post(UrlConstants.FRIEND_SHAREPRAISE_DEL, params,
                 new AsyncHttpResponseHandler() {
                     @Override

@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 public class RegisterPresenter {
     private RegisterActivity context;
-    private AsyncHttpClient client = new AsyncHttpClient();
+    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
     private IUPublicView publicView;
     public RegisterPresenter(RegisterActivity context,IUPublicView publicView){
         this.context = context;
@@ -52,8 +52,10 @@ public class RegisterPresenter {
         params.put("password", password);
         params.add("id",context.getResources().getString(R.string.ypid));
         params.put("name", nickname);
+        //安全较验
+        NetworkUtil.safeDate(params);
         publicView.showLoading();
-        client.post(UrlConstants.REGIST, params,
+        client.post(UrlConstants.USER_REGIST, params,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
