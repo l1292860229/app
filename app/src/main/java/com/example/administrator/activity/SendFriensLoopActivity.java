@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,11 +26,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.administrator.entity.Picture.PictureType.DRAWABLE_TYPE;
+import static com.example.administrator.entity.Picture.PictureType.LOCAL_TYPE;
+
 /**
  * Created by Administrator on 2017/2/10.
  */
 
-public class SendFriensLoopActivity extends AppCompatActivity implements IUSendFriensLoopView {
+public class SendFriensLoopActivity extends BaseActivity implements IUSendFriensLoopView {
     final public static int IMAGEBACK=0;
     final public static String  IMAGE_PICTURE_LIST="image_picture_List";
     final public static String  SHOW="1";
@@ -115,7 +117,7 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
                             addAddImage();
                         }
                         for (String path : pathList) {
-                            pictureList.add(new Picture(path, path, ImageAdapter.LOCAL_TYPE));
+                            pictureList.add(new Picture(path, path, LOCAL_TYPE));
                             imageAdapter.setData(pictureList);
                             imageAdapter.notifyDataSetChanged();
                         }
@@ -142,7 +144,7 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
      */
     public void addAddImage(){
         if(pictureList.size()==0||!pictureList.get(0).getSmallUrl().equals("smiley_add_btn")){
-            pictureList.add(0,new Picture("smiley_add_btn", "smiley_add_btn", ImageAdapter.DRAWABLE_TYPE, new View.OnClickListener() {
+            pictureList.add(0,new Picture("smiley_add_btn", "smiley_add_btn", DRAWABLE_TYPE, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     UIUtil.openImagePickers(SendFriensLoopActivity.this,Max);
@@ -153,10 +155,6 @@ public class SendFriensLoopActivity extends AppCompatActivity implements IUSendF
 
     @Override
     public void showLoading() {
-        UIUtil.showLoading(this,"正在提交,请稍候");
-    }
-    @Override
-    public void hideLoading() {
-        UIUtil.hideLoading(this);
+        super.showLoading("正在提交,请稍候");
     }
 }

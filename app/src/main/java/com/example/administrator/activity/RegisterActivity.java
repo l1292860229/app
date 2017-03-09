@@ -2,7 +2,6 @@ package com.example.administrator.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.method.HideReturnsTransformationMethod;
@@ -15,13 +14,12 @@ import com.example.administrator.R;
 import com.example.administrator.databinding.RegisterBinding;
 import com.example.administrator.interfaceview.IUPublicView;
 import com.example.administrator.presenter.RegisterPresenter;
-import com.example.administrator.util.UIUtil;
 
 /**
  * Created by Administrator on 2017/1/21.
  */
 
-public class RegisterActivity extends AppCompatActivity implements IUPublicView {
+public class RegisterActivity extends BaseActivity implements IUPublicView {
     RegisterBinding registerBinding;
     private final String TAG="RegisterActivity";
     RegisterPresenter registerPresenter;
@@ -86,10 +84,6 @@ public class RegisterActivity extends AppCompatActivity implements IUPublicView 
     }
     @Override
     public void showLoading() {
-        UIUtil.showLoading(this,"正在注册,请稍候");
-    }
-    @Override
-    public void hideLoading() {
-        UIUtil.hideLoading(this);
+        super.showLoading("正在注册,请稍候");
     }
 }

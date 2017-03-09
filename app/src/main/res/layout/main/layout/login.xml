@@ -76,7 +76,7 @@
                 android:text="登录"
                 android:onClick="@{behavior.login}"
                 android:textColor="@color/white"
-                android:background="@color/buttonColor"
+                android:background="@drawable/btn_yuanjiao_yellow"
                 android:textSize="@dimen/text_size"
                 />
         </RelativeLayout>

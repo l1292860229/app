@@ -32,4 +32,6 @@ public class UrlConstants {
     public static final String SESSION_SESSIONLIST = SERVER_PREFIX + "/session/api/userSessionList";
     //万人群列表的的地址
     public static final String BBS_BBSLIST = SERVER_PREFIX + "/Bbs/api/bbslist";
+    //添加万人群，行业圈地址
+    public static final String BBS_BBSADD = SERVER_PREFIX + "/Bbs/api/bbsadd";
 }

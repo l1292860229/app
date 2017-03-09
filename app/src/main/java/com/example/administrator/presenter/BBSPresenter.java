@@ -1,7 +1,6 @@
 package com.example.administrator.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.administrator.entity.Bbs;
 import com.example.administrator.entity.UrlConstants;
@@ -27,8 +26,6 @@ import java.util.Arrays;
  */
 
 public class BBSPresenter {
-    public final static int BBS = 1;
-    public final static int INDUSTRY = 2;
     private Context context;
     private IUBBSView bbsView;
     private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
@@ -38,20 +35,11 @@ public class BBSPresenter {
         this.bbsView = bbsView;
         userInfo = GetDataUtil.getUserInfo(context);
     }
-    public void init(int type,boolean isprivate){
+    public void init(){
         RequestParams params = new RequestParams();
         params.put("uid",userInfo.getUid());
-        switch (type){
-            case BBS:
-                params.put("quid", userInfo.getQuid());
-                break;
-            case INDUSTRY:
-                if(isprivate){
-                    params.put("quid", userInfo.getPhone());
-                }
-                break;
-        }
-        params.put("type", (type-1));
+        params.put("quid", userInfo.getQuid());
+        params.put("type", Bbs.Bbstype.MILLION.ordinal());
         //安全较验
         NetworkUtil.safeDate(params);
         bbsView.showLoading();
@@ -61,7 +49,6 @@ public class BBSPresenter {
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
                         String data = new String(arg2).replace("(","").replace(")","");
                         bbsView.hideLoading();
-                        Log.e("init","data="+data);
                         try {
                             JSONObject json = new JSONObject(data);
                             bbsView.init(new ArrayList<>(Arrays.asList( GsonUtil.parseJsonWithGson(json.getString("data"),Bbs[].class))));

@@ -8,6 +8,7 @@ import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
 import com.example.administrator.entity.UrlConstants;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
@@ -27,14 +28,13 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.example.administrator.enumset.GetDataType.INITDATA;
+
 /**
  * Created by Administrator on 2017/1/27.
  */
 
 public class FriensLoopPresenter {
-    final public static int  INITDATA = 0;
-    final public static int  LOADDATA = 1;
-    final public static int  REFRESHDATA = 2;
     Context context;
     IUFriensLoopView friensLoopView;
     private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
@@ -44,7 +44,7 @@ public class FriensLoopPresenter {
         this.friensLoopView = friensLoopView;
         userInfo = GetDataUtil.getUserInfo(context);
     }
-    public void getData(String type,final int getDataType,int page){
+    public void getData(String type, final GetDataType getDataType, int page){
         RequestParams params = new RequestParams();
         if(!StringUtil.isNull(type)){
             params.put("type", type);
@@ -60,7 +60,6 @@ public class FriensLoopPresenter {
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-                        friensLoopView.hideLoading();
                         String data = new String(arg2);
                         JSONObject json = null;
                         try {
@@ -68,6 +67,7 @@ public class FriensLoopPresenter {
                             FriendsLoopItem[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),FriendsLoopItem[].class);
                            switch (getDataType){
                                case INITDATA:
+                                   friensLoopView.hideLoading();
                                    friensLoopView.init(new ArrayList<>(Arrays.asList(mlist)));
                                    break;
                                case LOADDATA:

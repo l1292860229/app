@@ -16,6 +16,7 @@ public class FriendsLoopItem implements Serializable {
 	private String headsmall;
 	private String content;
 	private Picture[] picture;
+	private String shareurl;
 	private String lng;
 	private String lat;
 	private String address;
@@ -152,6 +153,13 @@ public class FriendsLoopItem implements Serializable {
 		this.praiselist = praiselist;
 	}
 
+	public String getShareurl() {
+		return shareurl;
+	}
+
+	public void setShareurl(String shareurl) {
+		this.shareurl = shareurl;
+	}
 	@Override
 	public String toString() {
 		return "FriendsLoopItem{" +

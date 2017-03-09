@@ -57,7 +57,7 @@ public class NetworkUtil {
         if(sb==null){
             sb = new StringBuilder();
         }else{
-            sb.delete(0,sb.length());
+            sb.setLength(0);
         }
     }
     public static AsyncHttpClient instanceAsyncHttpClient(){

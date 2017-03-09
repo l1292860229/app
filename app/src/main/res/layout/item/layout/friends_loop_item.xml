@@ -81,6 +81,29 @@
                 android:verticalSpacing="4dip"
                 android:padding="4dip" />
             <RelativeLayout
+                android:id="@+id/url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:background="#b7b7b7"
+                android:layout_marginBottom="20dp"
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/image_url"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/setting_notify_icon"/>
+                <TextView
+                    android:id="@+id/url_text"
+                    android:layout_toRightOf="@+id/image_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerInParent="true"
+                    android:textSize="18dp"/>
+            </RelativeLayout>
+            <RelativeLayout
                 android:id="@+id/function_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="35dip"
@@ -166,7 +189,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="咨讯"
+                            android:text="评论"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_size_14" />
                     </LinearLayout>

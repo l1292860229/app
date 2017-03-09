@@ -5,13 +5,20 @@ import android.view.View;
 import java.io.Serializable;
 
 public class Picture implements Serializable {
+	 public  enum  PictureType{
+		URL_TYPE,
+		LOCAL_TYPE,
+		DRAWABLE_TYPE,
+		URL_NOTCLICK_TYPE,
+		MIPMAP_TYPE
+	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String originUrl;
 	private String smallUrl;
-	private int type=1;
+	private PictureType type=PictureType.URL_TYPE;
 	//序列化时，忽略这个字段
 	private transient View.OnClickListener onClickListener;
 	public Picture(){}
@@ -20,13 +27,13 @@ public class Picture implements Serializable {
 		this.smallUrl = small;
 		this.originUrl = origin;
 	}
-	public Picture(String small, String origin,int type) {
+	public Picture(String small, String origin,PictureType type) {
 		super();
 		this.smallUrl = small;
 		this.originUrl = origin;
 		this.type = type;
 	}
-	public Picture(String small, String origin,int type,View.OnClickListener onClickListener) {
+	public Picture(String small, String origin,PictureType type,View.OnClickListener onClickListener) {
 		super();
 		this.smallUrl = small;
 		this.originUrl = origin;
@@ -49,11 +56,11 @@ public class Picture implements Serializable {
 		this.smallUrl = smallUrl;
 	}
 
-	public int getType() {
+	public PictureType getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(PictureType type) {
 		this.type = type;
 	}
 

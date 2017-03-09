@@ -3,8 +3,8 @@ package com.example.administrator.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.R;
@@ -12,15 +12,15 @@ import com.example.administrator.databinding.LoginBinding;
 import com.example.administrator.entity.User;
 import com.example.administrator.interfaceview.IUloginView;
 import com.example.administrator.presenter.LoginPresenter;
-import com.example.administrator.util.UIUtil;
 
 /**
  * Created by Administrator on 2017/1/21.
  */
 
-public class LoginActivity extends AppCompatActivity implements IUloginView {
+public class LoginActivity extends BaseActivity implements IUloginView {
     LoginBinding loginBinding;
     LoginPresenter loginPresenter;
+    public final static String ISCLOSE="colse";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +31,20 @@ public class LoginActivity extends AppCompatActivity implements IUloginView {
     }
 
     @Override
-    public void init(String username,String password) {
+    public void init(String username,String password,boolean close) {
         User user  = new User(username,password);
         loginBinding.setUser(user);
         ((TextView)loginBinding.titleLayout.findViewById(R.id.titlecontext)).setText("登录");
+        if(close){
+            ImageView leftbtn = ((ImageView)loginBinding.titleLayout.findViewById(R.id.left_icon));
+            leftbtn.setImageResource(R.drawable.back_btn);
+            leftbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginActivity.this.finish();
+                }
+            });
+        }
     }
     @Override
     public String getUserName() {
@@ -46,11 +56,7 @@ public class LoginActivity extends AppCompatActivity implements IUloginView {
     }
     @Override
     public void showLoading() {
-        UIUtil.showLoading(this,"正在登录,请稍候");
-    }
-    @Override
-    public void hideLoading() {
-        UIUtil.hideLoading(this);
+        super.showLoading("正在登录,请稍候");
     }
 
     /**

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -24,16 +25,21 @@ import com.example.administrator.R;
 import com.example.administrator.databinding.FriendsLoopItemBinding;
 import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
+import com.example.administrator.entity.Shareurl;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.presenter.FriensLoopPresenter;
 import com.example.administrator.util.DateUtil;
 import com.example.administrator.util.GetDataUtil;
+import com.example.administrator.util.GsonUtil;
+import com.example.administrator.util.ImageUitl;
 import com.example.administrator.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2017/1/22.
@@ -87,8 +93,37 @@ public class FriensLoopAdapter extends BaseAdapter{
         if (!StringUtil.isNull(friendsLoopItem.getAddress())) {
             binding.locationAddr.setVisibility(View.VISIBLE);
         }
-        //设置发表内容
-        binding.content.setText(friendsLoopItem.getContent());
+        //设置发表内容,判断是否有链接
+        String patternStr = "(http://[\\S\\.]+[:\\d]?[/\\S]+\\??[\\S=\\S&?]+[^\u4e00-\u9fa5])|((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)";
+        Pattern pattern = Pattern.compile(patternStr);
+        Matcher m = pattern.matcher(friendsLoopItem.getContent());
+        SpannableString ss = new SpannableString(friendsLoopItem.getContent());
+        while(m.find()){
+            final String urlStr = m.group();
+            int start=friendsLoopItem.getContent().indexOf(urlStr),end=start+urlStr.length();
+            ss.setSpan(new ClickableSpan() {
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setColor(Color.BLUE);       //设置文件颜色
+                    ds.setUnderlineText(true);      //设置下划线
+                }
+                @Override
+                public void onClick(View widget) {
+                }
+            }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        binding.content.setText(ss);
+        //设置链接
+        String shareurlStr = friendsLoopItem.getShareurl();
+        if(!StringUtil.isNull(shareurlStr) && !shareurlStr.equals("\"\"")){
+            binding.url.setVisibility(View.VISIBLE);
+            Shareurl shareurl = GsonUtil.parseJsonWithGson(shareurlStr.replace("\\\"","\""),Shareurl.class);
+            if(!StringUtil.isNull(shareurl.getImageurl())){
+                ImageUitl.setImage(binding.imageUrl,shareurl.getImageurl());
+            }
+            binding.urlText.setText(shareurl.getTitle());
+        }
         //设置发表时间
         binding.time.setText(DateUtil.calculaterReleasedTime(context,new Date(friendsLoopItem.getCreatetime()*1000),friendsLoopItem.getCreatetime()*1000,0));
         //当文本内容大于6行的时候
@@ -323,14 +358,14 @@ public class FriensLoopAdapter extends BaseAdapter{
                 }
                 tv.setText(spannableString);
                 tv.setMovementMethod(LinkMovementMethod.getInstance());
-                layout.addView(tv);
                 //设置回复
-                layout.setOnClickListener(new View.OnClickListener() {
+                tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         friensLoopView.showPinLun(position,replylist[pos].getUid(),replylist[pos].getNickname(),"回复"+replylist[pos].getNickname());
                     }
                 });
+                layout.addView(tv);
                 binding.commentLayout.addView(layout);
             }
             if(isHide){

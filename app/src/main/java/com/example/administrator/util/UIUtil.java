@@ -2,13 +2,18 @@ package com.example.administrator.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ab.util.AbDialogUtil;
 import com.example.administrator.R;
 import com.jaiky.imagespickers.ImageConfig;
 import com.jaiky.imagespickers.ImageSelector;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Administrator on 2017/1/21.
@@ -113,5 +118,57 @@ public class UIUtil {
                 .crop()
                 .build();
         ImageSelector.open(context, imageConfig);   // 开启图片选择器
+    }
+    /**
+     * 显示drawable的图片，并做相应的点击事件
+     * @param s
+     * @param clickListener
+     */
+    public static void showDrawableImage(ImageView imageView, String s,View.OnClickListener clickListener){
+        Field field = null;
+        try {
+            field =R.drawable.class.getDeclaredField(s);
+            int resId = field.getInt(null);
+            imageView.setImageResource(resId);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        imageView.setOnClickListener(clickListener);
+    }
+    /**
+     * 显示Mipmap的图片，并做相应的点击事件
+     * @param s
+     * @param clickListener
+     */
+    public static void showMipmapImage(ImageView imageView, String s,View.OnClickListener clickListener){
+        Field field = null;
+        try {
+            field =R.mipmap.class.getDeclaredField(s);
+            int resId = field.getInt(null);
+            imageView.setImageResource(resId);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        imageView.setOnClickListener(clickListener);
+    }
+
+    /**
+     * 显示本地上的图片
+     */
+    public static void showLocalImage(ImageView imageView, String s,View.OnClickListener clickListener){
+        imageView.setImageBitmap(BitmapFactory.decodeFile(s));
+        imageView.setOnClickListener(clickListener);
+    }
+    /**
+     * 显示网络上的图片
+     */
+    public static void  showUrlImage(ImageView imageView, String s, View.OnClickListener clickListener, View.OnLongClickListener longClickListener){
+        ImageUitl.setImage(imageView,s);
+        imageView.setOnLongClickListener(longClickListener);
+        imageView.setOnClickListener(clickListener);
     }
 }

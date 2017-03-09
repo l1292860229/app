@@ -10,6 +10,7 @@ public class Constants {
     public static final String  USERNAME ="username";
     public static final String  PASSWORD ="password";
     public static final String  USERINFO ="userinfo";
+    public static final String  FIRSTOPENAPP ="firstopenapp";
     //系统设置
     public static final String  SYSTEM_SETTING ="system_setting";
     public static final String  SYSTEM_SETTING_PRIVACY =SYSTEM_SETTING+"_privacy";

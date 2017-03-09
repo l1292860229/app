@@ -16,6 +16,8 @@ import com.example.administrator.entity.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.administrator.entity.Picture.PictureType.URL_NOTCLICK_TYPE;
+
 /**
  * Created by Administrator on 2017/1/22.
  */
@@ -58,7 +60,7 @@ public class GroupFriensAdapter extends BaseAdapter {
         binding.groupHeader.setVisibility(View.VISIBLE);
         List<Picture> pictureList = new ArrayList<>();
         for (UserInfo userInfo : room.getList()) {
-            pictureList.add(new Picture(userInfo.getHeadsmall(),userInfo.getHeadsmall(),ImageAdapter.URL_NOTCLICK_TYPE));
+            pictureList.add(new Picture(userInfo.getHeadsmall(),userInfo.getHeadsmall(),URL_NOTCLICK_TYPE));
             if(pictureList.size()>=9){
                 break;
             }

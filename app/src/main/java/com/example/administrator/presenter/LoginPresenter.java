@@ -35,7 +35,8 @@ public class LoginPresenter {
         SharedPreferences mPreferences = context.getSharedPreferences(Constants.REMEMBER_USERNAME_PASSWORD, 0);
         String username = mPreferences.getString(Constants.USERNAME,"");
         String password = mPreferences.getString(Constants.PASSWORD,"");
-        loginView.init(username,password);
+        boolean close =  context.getIntent().getBooleanExtra(LoginActivity.ISCLOSE,false);
+        loginView.init(username,password,close);
     }
     public void login(){
         final String username = loginView.getUserName();
@@ -76,6 +77,7 @@ public class LoginPresenter {
                                 Intent intent = new Intent();
                                 intent.setClass(context, MainActivity.class);
                                 context.startActivity(intent);
+                                context.setResult(context.RESULT_OK);
                                 context.finish();
                             }
                         } catch (JSONException e) {

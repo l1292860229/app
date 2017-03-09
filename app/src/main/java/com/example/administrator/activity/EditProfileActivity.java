@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,13 +29,25 @@ import com.jaiky.imagespickers.ImageSelectorActivity;
 
 import java.util.List;
 
+
 /**
  * Created by Administrator on 2017/1/24.
  */
 
-public class EditProfileActivity extends AppCompatActivity implements IUEditProfileView {
-    private static final int WRITE_NICKNAME =1;
-    private static final int WRITE_SIGN =2;
+public class EditProfileActivity extends BaseActivity implements IUEditProfileView {
+    private enum Write{
+        WRITE,
+        WRITE_NICKNAME,
+        WRITE_SIGN,
+        WRITE_COMPANYWEBSITE,
+        WRITE_INDUSTRY,
+        WRITE_COMPANY,
+        WRITE_COMPANYADDRESS,
+        WRITE_JOB,
+        WRITE_PROVIDE,
+        WRITE_DEMAND,
+        WRITE_TELEPHONE
+    }
     EditProfileBinding binding;
     Context context;
     AbSampleDialogFragment abSampleDialogFragment;
@@ -71,10 +82,22 @@ public class EditProfileActivity extends AppCompatActivity implements IUEditProf
         tvRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nickname  =binding.nicknameContent.getText().toString();
-                String gender = binding.sexContent.getText().toString();
-                String sgin = binding.signContent.getText().toString();
-                editProfilePresenter.updateUserInfo(imagePath,nickname,gender,sgin,province,city);
+                UserInfo userInfo = new UserInfo();
+                userInfo.setNickname(binding.nicknameContent.getText().toString());
+                userInfo.setGender(binding.sexContent.getText().toString());
+                userInfo.setSign(binding.signContent.getText().toString());
+                userInfo.setProvince(province);
+                userInfo.setCity(city);
+                userInfo.setHeadsmall(imagePath);
+                userInfo.setCompanywebsite(binding.companywebsite.getText().toString());
+                userInfo.setIndustry(binding.industry.getText().toString());
+                userInfo.setCompany(binding.company.getText().toString());
+                userInfo.setCompanyaddress(binding.companyaddress.getText().toString());
+                userInfo.setJob(binding.job.getText().toString());
+                userInfo.setProvide(binding.provide.getText().toString());
+                userInfo.setDemand(binding.demand.getText().toString());
+                userInfo.setTelephone(binding.telephone.getText().toString());
+                editProfilePresenter.updateUserInfo(userInfo);
             }
         });
     }
@@ -85,22 +108,43 @@ public class EditProfileActivity extends AppCompatActivity implements IUEditProf
         this.finish();
     }
     public void openWriteNickname(View view){
-        Intent intent = new Intent();
-        intent.putExtra("name",binding.nicknameContent.getText().toString());
-        intent.putExtra("title","昵称");
-        intent.putExtra("type",WriteNameActivity.SINGLE);
-        intent.putExtra("verify",true);
-        intent.setClass(context, WriteNameActivity.class);
-        startActivityForResult(intent,WRITE_NICKNAME);
+        openWindow(binding.nicknameContent.getText().toString(),"昵称",WriteNameActivity.SINGLE,true, Write.WRITE_NICKNAME);
     }
     public void openWriteSign(View view){
+        openWindow(binding.signContent.getText().toString(),"个性签名",WriteNameActivity.MULTI,false, Write.WRITE_SIGN);
+    }
+    public void openWriteCompanywebsite(View view){
+        openWindow(binding.companywebsite.getText().toString(),"公司主页",WriteNameActivity.MULTI,false, Write.WRITE_COMPANYWEBSITE);
+    }
+    public void openWriteIndustry(View view){
+        openWindow(binding.industry.getText().toString(),"行业",WriteNameActivity.SINGLE,false, Write.WRITE_INDUSTRY);
+    }
+    public void openWriteCompany(View view){
+        openWindow(binding.company.getText().toString(),"公司",WriteNameActivity.SINGLE,false, Write.WRITE_COMPANY);
+    }
+    public void openWriteCompanyaddress(View view){
+        openWindow(binding.companyaddress.getText().toString(),"公司地址",WriteNameActivity.MULTI,false, Write.WRITE_COMPANYADDRESS);
+    }
+    public void openJob(View view){
+        openWindow(binding.job.getText().toString(),"职位",WriteNameActivity.SINGLE,false,Write.WRITE_JOB);
+    }
+    public void openWriteProvide(View view){
+        openWindow(binding.provide.getText().toString(),"可供",WriteNameActivity.MULTI,false,Write.WRITE_PROVIDE);
+    }
+    public void openWriteDemand(View view){
+        openWindow(binding.demand.getText().toString(),"需求",WriteNameActivity.MULTI,false,Write.WRITE_DEMAND);
+    }
+    public void openWriteTelephone(View view){
+        openWindow(binding.telephone.getText().toString(),"电话号码",WriteNameActivity.SINGLE,false,Write.WRITE_TELEPHONE);
+    }
+    public void openWindow(String name,String title,String type,boolean verify,Write backcode){
         Intent intent = new Intent();
-        intent.putExtra("name",binding.signContent.getText().toString());
-        intent.putExtra("title","个性签名");
-        intent.putExtra("type",WriteNameActivity.MULTI);
-        intent.putExtra("verify",false);
+        intent.putExtra("name",name);
+        intent.putExtra("title",title);
+        intent.putExtra("type",type);
+        intent.putExtra("verify",verify);
         intent.setClass(context, WriteNameActivity.class);
-        startActivityForResult(intent,WRITE_SIGN);
+        startActivityForResult(intent,backcode.ordinal());
     }
     public void openSexSelect(View view){
         DialogTextBinding dialogTextBinding =  DataBindingUtil.inflate(LayoutInflater.from(this),R.layout.dialog_text,null,false);
@@ -187,34 +231,55 @@ public class EditProfileActivity extends AppCompatActivity implements IUEditProf
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
-            switch (requestCode){
-                case ImageSelector.IMAGE_REQUEST_CODE:
-                    if (data != null) {
-                        // 获取选中的图片路径列表 Get Images Path List
-                        List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
-                        for (String path : pathList) {
-                            imagePath = path;
-                            binding.newHeaderIcon.setImageBitmap(BitmapFactory.decodeFile(path));
-                        }
+            if(requestCode== ImageSelector.IMAGE_REQUEST_CODE){
+                if (data != null) {
+                    // 获取选中的图片路径列表 Get Images Path List
+                    List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
+                    for (String path : pathList) {
+                        imagePath = path;
+                        binding.newHeaderIcon.setImageBitmap(BitmapFactory.decodeFile(path));
                     }
-                    break;
-                case WRITE_NICKNAME:
-                    binding.nicknameContent.setText(data.getStringExtra("name"));
-                    break;
-                case WRITE_SIGN:
-                    binding.signContent.setText(data.getStringExtra("name"));
-                    break;
+                }
+            }else{
+                Write write = Write.values()[requestCode];
+                switch (write){
+                    case WRITE_NICKNAME:
+                        binding.nicknameContent.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_SIGN:
+                        binding.signContent.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_COMPANYWEBSITE:
+                        binding.companywebsite.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_INDUSTRY:
+                        binding.industry.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_COMPANY:
+                        binding.company.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_COMPANYADDRESS:
+                        binding.companyaddress.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_JOB:
+                        binding.job.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_PROVIDE:
+                        binding.provide.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_DEMAND:
+                        binding.demand.setText(data.getStringExtra("name"));
+                        break;
+                    case WRITE_TELEPHONE:
+                        binding.telephone.setText(data.getStringExtra("name"));
+                        break;
+                }
             }
         }
     }
 
     @Override
     public void showLoading() {
-        UIUtil.showLoading(this,"正在修改中....");
-    }
-
-    @Override
-    public void hideLoading() {
-        UIUtil.hideLoading(this);
+        super.showLoading("正在修改中....");
     }
 }

@@ -5,7 +5,7 @@ package com.example.administrator.interfaceview;
  */
 
 public interface IUloginView extends IUPublicView {
-    void init(String username,String password);
+    void init(String username,String password,boolean close);
     String getUserName();
     String getPassword();
 }

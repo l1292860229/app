@@ -5,6 +5,8 @@
     <data>
         <variable name="headsmall" type="String"/>
         <variable name="nickname" type="String"/>
+        <variable name="job" type="String"/>
+        <variable name="company" type="String"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,6 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLength="20"
+                    android:text="@{job}"
                     android:textColor="@color/text_title_color"
                     android:textSize="@dimen/text_size_12"
                     android:visibility="gone"/>
@@ -66,6 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLength="20"
+                    android:text="@{company}"
                     android:textColor="@color/text_title_color"
                     android:textSize="@dimen/text_size_12"
                     android:visibility="gone"/>

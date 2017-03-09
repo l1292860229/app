@@ -1,15 +1,16 @@
 package com.example.administrator.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.R;
+import com.example.administrator.adapter.BbsAdapter;
 import com.example.administrator.databinding.GroupItemBinding;
 import com.example.administrator.entity.Bbs;
 import com.example.administrator.interfaceview.IUBBSView;
@@ -43,16 +44,22 @@ public class BBSActivity extends BaseActivity implements IUBBSView {
         ImageView tvright = ((ImageView)binding.titleLayout.findViewById(R.id.right_btn2));
         tvright.setVisibility(View.VISIBLE);
         tvright.setBackground(ContextCompat.getDrawable(context,R.drawable.add_icon_btn));
+        tvright.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,AddBbsAndIndustryActivity.class);
+                intent.putExtra(AddBbsAndIndustryActivity.ISSHOWMONEY,false);
+                startActivity(intent);
+            }
+        });
         bbsPresenter = new BBSPresenter(context,this);
-        bbsPresenter.init(BBSPresenter.BBS,true);
+        bbsPresenter.init();
     }
 
     @Override
     public void init(ArrayList<Bbs> bbsArrayList) {
-            this.bbsArrayList = bbsArrayList;
-        for (Bbs bbs : bbsArrayList) {
-            Log.e("init","bbs="+bbs);
-        }
+        this.bbsArrayList = bbsArrayList;
+        binding.groupList.setAdapter(new BbsAdapter(context,bbsArrayList));
     }
 
     @Override

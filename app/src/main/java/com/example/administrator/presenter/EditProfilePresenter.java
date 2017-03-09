@@ -47,30 +47,36 @@ public class EditProfilePresenter {
         }
         editProfileView.init(userInfo);
     }
-    public void updateUserInfo(String imagePath,String nickname,String gender,
-                               String sign,String province,String city){
+    public void updateUserInfo(UserInfo newUserInfo){
         UserInfo userInfo = getUserInfo(context);
         RequestParams params = new RequestParams();
-        if(!StringUtil.isNull(imagePath)){
+        if(!StringUtil.isNull(newUserInfo.getHeadsmall())){
             try {
-                params.put("pic", new File(imagePath));
+                params.put("pic", new File(newUserInfo.getHeadsmall()));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
-        if (gender.equals("女")) {
-            gender = "1";
+        if (newUserInfo.getGender().equals("女")) {
+            newUserInfo.setGender("1");
         }else{
-            gender = "0";
+            newUserInfo.setGender("0");
         }
         params.put("uid", userInfo.getUid());
-        params.put("nickname", nickname);
-        params.put("gender", gender);
-        params.put("sign", sign);
-        params.put("province", province);
-        params.put("city", city);
+        params.put("nickname", newUserInfo.getNickname());
+        params.put("gender", newUserInfo.getGender());
+        params.put("sign", newUserInfo.getSign());
+        params.put("province", newUserInfo.getProvince());
+        params.put("city", newUserInfo.getCity());
         params.put("token", userInfo.getToken());
-        params.put("id", userInfo.getYpid());
+        params.put("companywebsite", newUserInfo.getCompanywebsite());
+        params.put("industry", newUserInfo.getIndustry());
+        params.put("company", newUserInfo.getCompany());
+        params.put("companyaddress", newUserInfo.getCompanyaddress());
+        params.put("job", newUserInfo.getJob());
+        params.put("provide", newUserInfo.getProvide());
+        params.put("demand", newUserInfo.getDemand());
+        params.put("telephone", newUserInfo.getTelephone());
         //安全较验
         NetworkUtil.safeDate(params);
         editProfileView.showLoading();
@@ -92,6 +98,14 @@ public class EditProfilePresenter {
                             userInfo.setProvince(temp.getProvince());
                             userInfo.setCity(temp.getCity());
                             userInfo.setSign(temp.getSign());
+                            userInfo.setCompanywebsite(temp.getCompanywebsite());
+                            userInfo.setIndustry(temp.getIndustry());
+                            userInfo.setCompany(temp.getCompany());
+                            userInfo.setCompanyaddress(temp.getCompanyaddress());
+                            userInfo.setJob(temp.getJob());
+                            userInfo.setProvide(temp.getProvide());
+                            userInfo.setDemand(temp.getDemand());
+                            userInfo.setTelephone(temp.getTelephone());
                             GetDataUtil.setUserInfo(context,GsonUtil.objectToJson(userInfo));
                             editProfileView.close();
                             UIUtil.showMessage(context,"修改成功");

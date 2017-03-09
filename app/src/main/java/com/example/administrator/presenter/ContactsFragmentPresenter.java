@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.administrator.entity.UrlConstants;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
@@ -20,14 +21,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.example.administrator.enumset.GetDataType.INITDATA;
+
 /**
  * Created by Administrator on 2017/2/28.
  */
 
 public class ContactsFragmentPresenter {
-    final public static int  INITDATA = 0;
-    final public static int  LOADDATA = 1;
-    final public static int  REFRESHDATA = 2;
     private Context context;
     private IUContactsFragmentView contactsFragmentView;
     private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
@@ -37,7 +37,7 @@ public class ContactsFragmentPresenter {
         this.context = context;
         userInfo = GetDataUtil.getUserInfo(context);
     }
-    public void getDate(int page,int o,final int getDataType){
+    public void getDate(int page,int o,final GetDataType getDataType){
         RequestParams params = new RequestParams();
         params.put("id",userInfo.getYpid());
         params.put("uid",userInfo.getUid());
@@ -54,12 +54,12 @@ public class ContactsFragmentPresenter {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
                         String data = new String(arg2).replace("(","").replace(")","");
-                        contactsFragmentView.hideLoading();
                         try {
                             JSONObject json = new JSONObject(data);
                             UserInfo[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),UserInfo[].class);
                             switch (getDataType){
                                 case INITDATA:
+                                    contactsFragmentView.hideLoading();
                                     contactsFragmentView.init(new ArrayList<>(Arrays.asList(mlist)));
                                     break;
                                 case LOADDATA:

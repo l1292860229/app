@@ -24,6 +24,7 @@ import com.example.administrator.databinding.FriendsLoopHeaderBinding;
 import com.example.administrator.databinding.FriensLoopBinding;
 import com.example.administrator.entity.FriendsLoopItem;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.presenter.FriensLoopPresenter;
 import com.example.administrator.util.GetDataUtil;
@@ -64,9 +65,10 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
         ImageUitl.init(context);
         friensLoopPresenter = new FriensLoopPresenter(context,this);
         binding =  DataBindingUtil.setContentView(this,R.layout.friens_loop);
+        binding.setBehavior(this);
         mListView = binding.mListView;
         initView();
-        friensLoopPresenter.getData(null,FriensLoopPresenter.INITDATA,1);
+        friensLoopPresenter.getData(null, GetDataType.INITDATA,1);
     }
     public void init(ArrayList<FriendsLoopItem> mlist) {
         friensLoopAdapter = new FriensLoopAdapter(context,mlist,FriensLoopActivity.this,friensLoopPresenter);
@@ -74,13 +76,13 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
         mListView.setAdapter(friensLoopAdapter);
         mListView.setOnRefreshListener(new AutoReFreshListView.OnRefreshListener() {// 上拉刷新
             public void onRefresh() {
-                friensLoopPresenter.getData(type,FriensLoopPresenter.REFRESHDATA,1);
+                friensLoopPresenter.getData(type,GetDataType.REFRESHDATA,1);
             }
         });
         mListView.setOnLoadListener(new AutoReFreshListView.OnLoadMoreListener() {// 下拉加载更多
             @Override
             public void onLoadMore() {
-                friensLoopPresenter.getData(type,FriensLoopPresenter.LOADDATA,++page);
+                friensLoopPresenter.getData(type,GetDataType.LOADDATA,++page);
             }
         });
         registerReceiver();
@@ -111,7 +113,7 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
         public void onReceive(Context context, Intent intent) {
             String action  = intent.getAction();
             if (action.equals(REFRESH_FRIENSLOOP_DATA)) {
-                friensLoopPresenter.getData(type,FriensLoopPresenter.REFRESHDATA,1);
+                friensLoopPresenter.getData(type,GetDataType.REFRESHDATA,1);
             }
         }
     };
@@ -296,7 +298,7 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
         mTabs[currentTabIndex].setSelected(false);
         mTabs[index].setSelected(true);
         currentTabIndex = index;
-        friensLoopPresenter.getData(type,FriensLoopPresenter.INITDATA,1);
+        friensLoopPresenter.getData(type,GetDataType.INITDATA,1);
     }
     @Override
     public void showLoading() {

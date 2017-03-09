@@ -17,7 +17,7 @@ package com.example.administrator.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -27,12 +27,15 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.administrator.R;
 import com.example.administrator.entity.Picture;
 import com.example.administrator.util.ImageUitl;
+import com.example.administrator.util.UIUtil;
 import com.tandong.sa.zUImageLoader.core.DisplayImageOptions;
 import com.tandong.sa.zUImageLoader.core.ImageLoader;
 import com.tandong.sa.zUImageLoader.core.assist.FailReason;
@@ -63,6 +66,12 @@ public class ImagePagerActivity extends AppCompatActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//改变状态栏的颜色
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			Window window = this.getWindow();
+			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			window.setStatusBarColor(this.getResources().getColor(R.color.black));
+		}
 		setContentView(R.layout.ac_image_pager);
 		ImageUitl.init(ImagePagerActivity.this);
 		imageLoader = ImageLoader.getInstance();
@@ -108,8 +117,6 @@ public class ImagePagerActivity extends AppCompatActivity {
 	}
 
 	private class ImagePagerAdapter extends PagerAdapter {
-		final public static int URL_TYPE=1;
-		final public static int LOCAL_TYPE=2;
 		private Picture[] images;
 		private LayoutInflater inflater;
 		ImagePagerAdapter(Picture[] images) {
@@ -172,6 +179,9 @@ public class ImagePagerActivity extends AppCompatActivity {
 				case LOCAL_TYPE://如果是本地图片
 					showLocalImage(imageView,images[images.length-1-position].getSmallUrl());
 					break;
+				case MIPMAP_TYPE://如果是mipmap
+					showMipmapImage(imageView,images[images.length-1-position].getSmallUrl());
+					break;
 			}
 			view.addView(imageLayout, 0);
 			return imageLayout;
@@ -231,8 +241,25 @@ public class ImagePagerActivity extends AppCompatActivity {
 		 * 显示本地上的图片
 		 */
 		public void showLocalImage(ZoomImageView imageView, String s){
-			imageView.setImageBitmap(BitmapFactory.decodeFile(s));
-			imageView.setOnClickListener(null);
+			UIUtil.showLocalImage(imageView,s,null);
+		}
+		/**
+		 * 显示本地上的图片
+		 */
+		public void showMipmapImage(ZoomImageView imageView, String s){
+			UIUtil.showMipmapImage(imageView,s,null);
+			try {
+				//如果刚好是登录页面的图片就跳到登录页面
+				if(R.mipmap.class.getDeclaredField(s).getInt(null)==R.mipmap.denglv){
+					Intent intent = new Intent(ImagePagerActivity.this,LoginMainActivity.class);
+					startActivity(intent);
+					ImagePagerActivity.this.finish();
+                }
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			}
 		}
 		@Override
 		public boolean isViewFromObject(View view, Object object) {

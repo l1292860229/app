@@ -46,7 +46,11 @@
         </activity>
         <activity android:name=".activity.BBSActivity">
         </activity>
-        <activity android:name=".activity.IndustryActivity">
+        <activity android:name=".activity.IndustryViewActivity">
+        </activity>
+        <activity android:name=".activity.LoginMainActivity">
+        </activity>
+        <activity android:name=".activity.AddBbsAndIndustryActivity">
         </activity>
     </application>
     <!--添加WiFi以及访问网络的权限：-->

@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import com.example.administrator.R;
 import com.example.administrator.databinding.ContactItemBinding;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.util.StringUtil;
 
 import java.util.ArrayList;
 
@@ -53,6 +54,18 @@ public class ContactsAdapter extends BaseAdapter {
         UserInfo userInfo = list.get(position);
         binding.setNickname(userInfo.getNickname());
         binding.setHeadsmall(userInfo.getHeadsmall());
+        binding.setJob(userInfo.getJob());
+        binding.setCompany(userInfo.getCompany());
+        if(StringUtil.isNull(userInfo.getJob())){
+            binding.job.setVisibility(View.GONE);
+        }else{
+            binding.job.setVisibility(View.VISIBLE);
+        }
+        if(StringUtil.isNull(userInfo.getCompany())){
+            binding.company.setVisibility(View.GONE);
+        }else{
+            binding.company.setVisibility(View.VISIBLE);
+        }
         return binding.getRoot();
     }
 }

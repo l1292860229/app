@@ -44,6 +44,23 @@ public class UserInfo {
     private String tid;
     //朋友圈背景图
     private String cover;
+    //公司主页
+    private String companywebsite;
+    //行业
+    private String industry;
+    //公司
+    private String company;
+    //公司地址
+    private String companyaddress;
+    //职位
+    private String job;
+    //可供
+    private String provide;
+    //需求
+    private String demand;
+    //电话号码
+    private String telephone;
+
 
     public String getUid() {
         return uid;
@@ -195,6 +212,70 @@ public class UserInfo {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public String getCompanywebsite() {
+        return companywebsite;
+    }
+
+    public void setCompanywebsite(String companywebsite) {
+        this.companywebsite = companywebsite;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getCompanyaddress() {
+        return companyaddress;
+    }
+
+    public void setCompanyaddress(String companyaddress) {
+        this.companyaddress = companyaddress;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getProvide() {
+        return provide;
+    }
+
+    public void setProvide(String provide) {
+        this.provide = provide;
+    }
+
+    public String getDemand() {
+        return demand;
+    }
+
+    public void setDemand(String demand) {
+        this.demand = demand;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     @Override

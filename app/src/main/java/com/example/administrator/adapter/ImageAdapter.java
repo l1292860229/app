@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,23 +18,20 @@ import com.example.administrator.activity.ImagePagerActivity;
 import com.example.administrator.activity.SendFriensLoopActivity;
 import com.example.administrator.databinding.PictureItemBinding;
 import com.example.administrator.entity.Picture;
-import com.example.administrator.util.ImageUitl;
 import com.example.administrator.util.StringUtil;
+import com.example.administrator.util.UIUtil;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.example.administrator.entity.Picture.PictureType.DRAWABLE_TYPE;
 
 /**
  * Created by Administrator on 2017/2/4.
  */
 
 public class ImageAdapter extends BaseAdapter {
-    final public static int URL_TYPE=1;
-    final public static int LOCAL_TYPE=2;
-    final public static int DRAWABLE_TYPE=3;
-    final public static int URL_NOTCLICK_TYPE=4;
     private  Picture[] pictures;
     private Activity activity;
     private Context context;
@@ -104,11 +100,9 @@ public class ImageAdapter extends BaseAdapter {
      * @param position
      */
     public void  showUrlNotClickImage(PictureItemBinding binding,final int position){
-        ImageUitl.setImage(binding.pic,pictures[pictures.length-1-position].getSmallUrl());
         RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, StringUtil.dip2px(context,17));
         binding.pic.setLayoutParams(param);
-        binding.pic.setOnLongClickListener(null);
-        binding.pic.setOnClickListener(null);
+        UIUtil.showUrlImage(binding.pic,pictures[pictures.length-1-position].getSmallUrl(),null,null);
     }
     /**
      * 显示网络上的图片
@@ -116,36 +110,33 @@ public class ImageAdapter extends BaseAdapter {
      * @param position
      */
     public void  showUrlImage(PictureItemBinding binding,final int position){
-        ImageUitl.setImage(binding.pic,pictures[pictures.length-1-position].getSmallUrl());
-        binding.pic.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(context).setItems(new String[]{"收藏"}, new DialogInterface.OnClickListener() {
+        UIUtil.showUrlImage(binding.pic,pictures[pictures.length-1-position].getSmallUrl(),
+                new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.e("setOnLongClickListener","i="+i);
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context,ImagePagerActivity.class);
+                        intent.putExtra(ImagePagerActivity.IMAGES,pictures);
+                        intent.putExtra(ImagePagerActivity.IMAGE_POSITION,position);
+                        context.startActivity(intent);
                     }
-                }).show();
-                return false;
-            }
-        });
-        binding.pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context,ImagePagerActivity.class);
-                intent.putExtra(ImagePagerActivity.IMAGES,pictures);
-                intent.putExtra(ImagePagerActivity.IMAGE_POSITION,position);
-                context.startActivity(intent);
-            }
-        });
+                },new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        new AlertDialog.Builder(context).setItems(new String[]{"收藏"}, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.e("setOnLongClickListener","i="+i);
+                            }
+                        }).show();
+                        return false;
+                    }
+                });
     }
-
     /**
      * 显示本地上的图片
      */
     public void showLocalImage(PictureItemBinding binding,final int position){
-        binding.pic.setImageBitmap(BitmapFactory.decodeFile(pictures[pictures.length-1-position].getSmallUrl()));
-        binding.pic.setOnClickListener(new View.OnClickListener() {
+        UIUtil.showLocalImage(binding.pic,pictures[pictures.length-1-position].getSmallUrl(),new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //移除Drawable上的图片
@@ -165,24 +156,10 @@ public class ImageAdapter extends BaseAdapter {
             }
         });
     }
-
     /**
      * 显示drawable的图片，并做相应的点击事件
-     * @param binding
-     * @param s
-     * @param clickListener
      */
-    public void showDrawableImage(PictureItemBinding binding, String s, View.OnClickListener clickListener){
-        Field field = null;
-        try {
-            field =R.drawable.class.getDeclaredField(s);
-            int resId = field.getInt(null);
-            binding.pic.setImageResource(resId);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        binding.pic.setOnClickListener(clickListener);
+    public void showDrawableImage(PictureItemBinding binding, String s, View.OnClickListener onClickListener){
+        UIUtil.showDrawableImage(binding.pic,s, onClickListener);
     }
 }

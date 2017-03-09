@@ -14,7 +14,7 @@ import com.ab.view.sliding.AbSlidingTabView;
 import com.example.administrator.R;
 import com.example.administrator.activity.BBSActivity;
 import com.example.administrator.activity.GroupFriensActivity;
-import com.example.administrator.activity.IndustryActivity;
+import com.example.administrator.activity.IndustryViewActivity;
 import com.example.administrator.activity.NewFriensActivity;
 import com.example.administrator.databinding.FatherContactFragmentBinding;
 import com.example.administrator.interfaceview.IUFatherContactsFragmentView;
@@ -79,7 +79,7 @@ public class FatherContactsFragment extends Fragment implements IUFatherContacts
     }
     public void openIndustry(View view){
         Intent intent = new Intent();
-        intent.setClass(context, IndustryActivity.class);
+        intent.setClass(context, IndustryViewActivity.class);
         startActivity(intent);
     }
 }

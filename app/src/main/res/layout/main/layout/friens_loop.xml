@@ -27,19 +27,21 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
             <RelativeLayout
+                android:id="@+id/btn_container_shop"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
                 <Button
-                    android:id="@+id/live"
+                    android:id="@+id/btn_zhuye"
                     android:onClick="onTabClicked"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/selected_live"
-                    android:textSize="20dp" />
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:textColor="@drawable/selector_friendloop_botton_text_color"
+                    android:text="全部"
+                    android:textSize="16dp" />
             </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/btn_container_address_list"
                 android:layout_width="0dp"
@@ -51,23 +53,26 @@
                     android:onClick="onTabClicked"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/selected_qiye"
-                    android:textSize="20dp" />
+                    android:background="@null"
+                    android:textColor="@drawable/selector_friendloop_botton_text_color"
+                    android:text="企业"
+                    android:textSize="16dp" />
 
             </RelativeLayout>
             <RelativeLayout
-                android:id="@+id/btn_container_shop"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
                 <Button
-                    android:id="@+id/btn_zhuye"
+                    android:id="@+id/live"
                     android:onClick="onTabClicked"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/selected_shop"
-                    android:textSize="20dp" />
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:background="@null"
+                    android:textColor="@drawable/selector_friendloop_botton_text_color"
+                    android:text="生活"
+                    android:textSize="16dp" />
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/btn_container_find"
@@ -80,8 +85,10 @@
                     android:onClick="onTabClicked"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/selected_weishan"
-                    android:textSize="20dp" />
+                    android:background="@null"
+                    android:textColor="@drawable/selector_friendloop_botton_text_color"
+                    android:text="微商"
+                    android:textSize="16dp" />
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/btn_container_profile"
@@ -94,8 +101,10 @@
                     android:onClick="onTabClicked"
                     android:layout_width="50dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/selected_huodong"
-                    android:textSize="20dp" />
+                    android:background="@null"
+                    android:textColor="@drawable/selector_friendloop_botton_text_color"
+                    android:text="活动"
+                    android:textSize="16dp" />
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout

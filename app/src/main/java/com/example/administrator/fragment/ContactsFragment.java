@@ -14,6 +14,7 @@ import com.example.administrator.R;
 import com.example.administrator.adapter.ContactsAdapter;
 import com.example.administrator.databinding.GroupItemNotitleBinding;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;
 import com.example.administrator.presenter.ContactsFragmentPresenter;
 import com.example.administrator.util.ImageUitl;
@@ -57,7 +58,7 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        presenter.getDate(page,friends,ContactsFragmentPresenter.INITDATA);
+//        presenter.getDate(page,friends,GetDataType.INITDATA);
     }
 
     @Override
@@ -67,13 +68,13 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
         mListView.setAdapter(userInfoListAdapter);
         mListView.setOnRefreshListener(new AutoReFreshListView.OnRefreshListener() {// 上拉刷新
             public void onRefresh() {
-                presenter.getDate(1,friends,ContactsFragmentPresenter.REFRESHDATA);
+                presenter.getDate(1,friends, GetDataType.REFRESHDATA);
             }
         });
         mListView.setOnLoadListener(new AutoReFreshListView.OnLoadMoreListener() {// 下拉加载更多
             @Override
             public void onLoadMore() {
-                presenter.getDate(++page,friends,ContactsFragmentPresenter.LOADDATA);
+                presenter.getDate(++page,friends,GetDataType.LOADDATA);
             }
         });
     }
