@@ -1,16 +1,12 @@
 package com.example.administrator.presenter;
 
-import android.content.Context;
-
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.Bbs;
 import com.example.administrator.entity.UrlConstants;
-import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUBBSView;
-import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -25,15 +21,11 @@ import java.util.Arrays;
  * Created by Administrator on 2017/3/2.
  */
 
-public class BBSPresenter {
-    private Context context;
+public class BBSPresenter extends BasePresenter {
     private IUBBSView bbsView;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    private UserInfo userInfo;
-    public BBSPresenter(Context context,IUBBSView bbsView){
-        this.context = context;
+    public BBSPresenter(BaseActivity context, IUBBSView bbsView){
+        super(context);
         this.bbsView = bbsView;
-        userInfo = GetDataUtil.getUserInfo(context);
     }
     public void init(){
         RequestParams params = new RequestParams();
@@ -53,7 +45,7 @@ public class BBSPresenter {
                             JSONObject json = new JSONObject(data);
                             bbsView.init(new ArrayList<>(Arrays.asList( GsonUtil.parseJsonWithGson(json.getString("data"),Bbs[].class))));
                         } catch (JSONException e) {
-                            UIUtil.showMessage(context,"获取失败");
+                            UIUtil.showMessage(context,"数据异常");
                             e.printStackTrace();
                         }
                     }

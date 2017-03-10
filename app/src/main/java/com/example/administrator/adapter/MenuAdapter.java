@@ -13,6 +13,7 @@ import com.example.administrator.BR;
 import com.example.administrator.R;
 import com.example.administrator.activity.FriensLoopActivity;
 import com.example.administrator.activity.ScanActivity;
+import com.example.administrator.activity.WebViewActivity;
 import com.example.administrator.databinding.MenuListItemBinding;
 import com.example.administrator.entity.Menu;
 
@@ -48,7 +49,7 @@ public class MenuAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         MenuListItemBinding binding = null;
         if (convertView == null) {
             binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.menu_list_item, parent, false);
@@ -56,6 +57,14 @@ public class MenuAdapter extends BaseAdapter {
             binding = DataBindingUtil.getBinding(convertView);
         }
         binding.setVariable(BR.menu, list.get(position));
+        binding.menubody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.URL,list.get(position).getUrl());
+                context.startActivity(intent);
+            }
+        });
         if (list.get(position).getTitle().equals("商机圈")) {
             binding.topLayout.setVisibility(View.VISIBLE);
             binding.imageUrl.setBackground(ContextCompat.getDrawable(context,R.mipmap.outlander_icon));
@@ -81,6 +90,8 @@ public class MenuAdapter extends BaseAdapter {
             });
         }else if(list.get(position).getTitle().equals("附近的店")){
             binding.imageUrl.setBackground(ContextCompat.getDrawable(context,R.mipmap.fujindedian));
+        }else if(list.get(position).getTitle().equals("一元夺宝")){
+            binding.imageUrl.setBackground(ContextCompat.getDrawable(context,R.mipmap.yiyuan));
             binding.bottomLayout.setVisibility(View.VISIBLE);
         }else if(list.get(position).getTitle().equals("购物")){
             binding.imageUrl.setBackground(ContextCompat.getDrawable(context,R.mipmap.gouwuche));

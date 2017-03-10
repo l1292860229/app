@@ -52,7 +52,11 @@ public class ContactsAdapter extends BaseAdapter {
             binding = DataBindingUtil.getBinding(convertView);
         }
         UserInfo userInfo = list.get(position);
-        binding.setNickname(userInfo.getNickname());
+        if(StringUtil.isNull(userInfo.getRemark())){
+            binding.setNickname(userInfo.getNickname());
+        }else{
+            binding.setNickname(userInfo.getRemark());
+        }
         binding.setHeadsmall(userInfo.getHeadsmall());
         binding.setJob(userInfo.getJob());
         binding.setCompany(userInfo.getCompany());

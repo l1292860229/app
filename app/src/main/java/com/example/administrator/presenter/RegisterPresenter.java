@@ -1,7 +1,7 @@
 package com.example.administrator.presenter;
 
-import com.example.administrator.R;
 import com.example.administrator.activity.RegisterActivity;
+import com.example.administrator.entity.Constants;
 import com.example.administrator.entity.UrlConstants;
 import com.example.administrator.interfaceview.IUPublicView;
 import com.example.administrator.util.NetworkUtil;
@@ -50,7 +50,7 @@ public class RegisterPresenter {
         params.put("name", nickname);
         params.put("tjr", tjr);
         params.put("password", password);
-        params.add("id",context.getResources().getString(R.string.ypid));
+        params.add("id", Constants.ID);
         params.put("name", nickname);
         //安全较验
         NetworkUtil.safeDate(params);

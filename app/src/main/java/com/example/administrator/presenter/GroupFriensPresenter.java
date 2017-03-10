@@ -1,16 +1,12 @@
 package com.example.administrator.presenter;
 
-import android.content.Context;
-
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.Room;
 import com.example.administrator.entity.UrlConstants;
-import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUGroupFriensView;
-import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -25,15 +21,11 @@ import java.util.Arrays;
  * Created by Administrator on 2017/3/2.
  */
 
-public class GroupFriensPresenter {
-    private Context context;
+public class GroupFriensPresenter extends BasePresenter {
     private IUGroupFriensView groupFriensView;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    private UserInfo userInfo;
-    public GroupFriensPresenter(Context context,IUGroupFriensView groupFriensView){
-        this.context = context;
+    public GroupFriensPresenter(BaseActivity context, IUGroupFriensView groupFriensView){
+        super(context);
         this.groupFriensView = groupFriensView;
-        userInfo = GetDataUtil.getUserInfo(context);
     }
     public void init(){
         RequestParams params = new RequestParams();

@@ -1,6 +1,6 @@
 package com.example.administrator.presenter;
 
-import com.example.administrator.activity.EditProfileActivity;
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.City;
 import com.example.administrator.entity.Province;
 import com.example.administrator.entity.UrlConstants;
@@ -11,7 +11,6 @@ import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -30,21 +29,14 @@ import static com.example.administrator.util.GetDataUtil.getUserInfo;
  * Created by Administrator on 2017/1/25.
  */
 
-public class EditProfilePresenter {
-    private EditProfileActivity context;
+public class EditProfilePresenter extends BasePresenter {
     private IUEditProfileView editProfileView;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    public EditProfilePresenter(EditProfileActivity context,IUEditProfileView editProfileView){
-        this.context = context;
+    public EditProfilePresenter(BaseActivity context, IUEditProfileView editProfileView){
+        super(context);
         this.editProfileView = editProfileView;
     }
     public void init(){
        UserInfo userInfo =  getUserInfo(context);
-        if (userInfo.getGender().equals("1")) {
-            userInfo.setGender("女");
-        }else{
-            userInfo.setGender("男");
-        }
         editProfileView.init(userInfo);
     }
     public void updateUserInfo(UserInfo newUserInfo){
@@ -57,14 +49,9 @@ public class EditProfilePresenter {
                 e.printStackTrace();
             }
         }
-        if (newUserInfo.getGender().equals("女")) {
-            newUserInfo.setGender("1");
-        }else{
-            newUserInfo.setGender("0");
-        }
         params.put("uid", userInfo.getUid());
         params.put("nickname", newUserInfo.getNickname());
-        params.put("gender", newUserInfo.getGender());
+        params.put("gender", newUserInfo.getGender().ordinal());
         params.put("sign", newUserInfo.getSign());
         params.put("province", newUserInfo.getProvince());
         params.put("city", newUserInfo.getCity());

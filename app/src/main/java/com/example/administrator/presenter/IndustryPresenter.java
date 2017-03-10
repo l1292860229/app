@@ -1,18 +1,15 @@
 package com.example.administrator.presenter;
 
-import android.content.Context;
 import android.util.Log;
 
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.Bbs;
 import com.example.administrator.entity.UrlConstants;
-import com.example.administrator.entity.UserInfo;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUIndustryView;
-import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -29,15 +26,11 @@ import static com.example.administrator.enumset.GetDataType.INITDATA;
  * Created by Administrator on 2017/3/2.
  */
 
-public class IndustryPresenter {
-    private Context context;
+public class IndustryPresenter extends BasePresenter {
     private IUIndustryView industryView;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    private UserInfo userInfo;
-    public IndustryPresenter(Context context, IUIndustryView industryView){
-        this.context = context;
+    public IndustryPresenter(BaseActivity context, IUIndustryView industryView){
+        super(context);
         this.industryView = industryView;
-        userInfo = GetDataUtil.getUserInfo(context);
     }
     public void getData(boolean isprivate, int page,final GetDataType dataType){
         RequestParams params = new RequestParams();

@@ -25,6 +25,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/settting_new_item_height"
                     android:background="@drawable/fx_btn_list_item_bg"
+                    android:onClick="@{behavior.openUpdatePassword}"
                     android:clickable="true">
                     <TextView
                         android:layout_width="wrap_content"

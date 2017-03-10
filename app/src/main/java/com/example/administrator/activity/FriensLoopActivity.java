@@ -51,7 +51,7 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
     FriensLoopBinding binding;
     FriendsLoopHeaderBinding friendsLoopHeaderBinding;
     FriensLoopPresenter friensLoopPresenter;
-    Context context;
+    FriensLoopActivity context;
     String type;
     private Button[] mTabs;
     private int page=1;

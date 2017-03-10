@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.example.administrator.R;
 import com.example.administrator.databinding.SettingBinding;
 import com.example.administrator.entity.Constants;
+import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.UserInfo;
 import com.example.administrator.util.GetDataUtil;
 
 /**
@@ -21,10 +23,12 @@ import com.example.administrator.util.GetDataUtil;
 public class SettingActivity extends AppCompatActivity {
     SettingBinding binding;
     Context context;
+    UserInfo userInfo;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = SettingActivity.this;
+        userInfo = GetDataUtil.getUserInfo(context);
         binding =  DataBindingUtil.setContentView(this, R.layout.setting);
         binding.setBehavior(this);
         ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("设置");
@@ -37,7 +41,16 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     * 打开修改密码
+     * @param view
+     */
+    public void openUpdatePassword(View view){
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.URL, UrlConstants.BAIWAN_UPDATEPASSWORD+"?id="+
+                userInfo.getYpid()+"&tid="+userInfo.getKa6id()+"&m=ptbbs&token="+userInfo.getToken());
+        startActivity(intent);
+    }
     /**
      * 打开关于我们的界面
      * @param view

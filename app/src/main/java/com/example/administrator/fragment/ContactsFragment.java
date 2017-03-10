@@ -2,17 +2,21 @@ package com.example.administrator.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.ab.fragment.AbLoadDialogFragment;
 import com.ab.util.AbDialogUtil;
 import com.example.administrator.R;
+import com.example.administrator.activity.UserInfoActivity;
 import com.example.administrator.adapter.ContactsAdapter;
 import com.example.administrator.databinding.GroupItemNotitleBinding;
+import com.example.administrator.entity.Constants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;
@@ -58,7 +62,7 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        presenter.getDate(page,friends,GetDataType.INITDATA);
+        presenter.getDate(page,friends,GetDataType.INITDATA);
     }
 
     @Override
@@ -75,6 +79,15 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
             @Override
             public void onLoadMore() {
                 presenter.getDate(++page,friends,GetDataType.LOADDATA);
+            }
+        });
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, UserInfoActivity.class);
+                intent.putExtra(UserInfoActivity.ID, Constants.ID);
+                intent.putExtra(UserInfoActivity.USERINFO,userInfoArrayList.get(position-1));
+                startActivity(intent);
             }
         });
     }

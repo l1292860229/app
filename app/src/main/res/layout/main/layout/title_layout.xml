@@ -19,7 +19,7 @@
         android:paddingTop="5dip" >
         <ImageView
             android:id="@+id/left_icon"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="5dip"

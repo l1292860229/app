@@ -19,4 +19,6 @@ public class Constants {
     public static final String  SYSTEM_SETTING_NOTICE =SYSTEM_SETTING+"_notice";
     public static final String  NOTICE_SOUND =SYSTEM_SETTING_PRIVACY+"_notice_sound";
     public static final String  NOTICE_SHOCK =SYSTEM_SETTING_PRIVACY+"_notice_shock";
+    //id标识
+    public static final String  ID ="585";
 }

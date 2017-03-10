@@ -130,6 +130,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/fx_btn_list_item_bg"
                 android:clickable="true"
+                android:onClick="@{behavior.openQianBao}"
                 android:layout_marginTop="18dp"
                 android:paddingLeft="12dp">
 
@@ -164,6 +165,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/fx_btn_list_item_bg"
                 android:clickable="true"
+                android:onClick="@{behavior.openTuiGuanEWeiMa}"
                 android:paddingLeft="12dp">
 
                 <ImageView
@@ -197,6 +199,7 @@
                 android:layout_height="48dp"
                 android:background="@drawable/fx_btn_list_item_bg"
                 android:clickable="true"
+                android:onClick="@{behavior.openHuiYuanShenJi}"
                 android:paddingLeft="12dp">
 
                 <ImageView

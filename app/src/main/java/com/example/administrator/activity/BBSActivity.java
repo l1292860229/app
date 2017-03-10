@@ -1,6 +1,5 @@
 package com.example.administrator.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
  */
 
 public class BBSActivity extends BaseActivity implements IUBBSView {
-    private Context context;
+    private BBSActivity context;
     GroupItemBinding binding;
     BBSPresenter bbsPresenter;
     private ArrayList<Bbs> bbsArrayList;

@@ -66,6 +66,11 @@ public class EditProfileActivity extends BaseActivity implements IUEditProfileVi
     public void init(UserInfo userInfo) {
         binding.setUserinfo(userInfo);
         binding.setBehavior(this);
+        if (userInfo.getGender()== UserInfo.SexType.GIRL) {
+            binding.sexContent.setText("女");
+        }else{
+            binding.sexContent.setText("男");
+        }
         province = userInfo.getProvince();
         city = userInfo.getCity();
         ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("编辑资料");
@@ -84,7 +89,12 @@ public class EditProfileActivity extends BaseActivity implements IUEditProfileVi
             public void onClick(View view) {
                 UserInfo userInfo = new UserInfo();
                 userInfo.setNickname(binding.nicknameContent.getText().toString());
-                userInfo.setGender(binding.sexContent.getText().toString());
+                String sex = binding.sexContent.getText().toString();
+                if (sex.equals("女")) {
+                    userInfo.setGender(UserInfo.SexType.GIRL);
+                }else{
+                    userInfo.setGender(UserInfo.SexType.BOY);
+                }
                 userInfo.setSign(binding.signContent.getText().toString());
                 userInfo.setProvince(province);
                 userInfo.setCity(city);

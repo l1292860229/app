@@ -1,6 +1,5 @@
 package com.example.administrator.activity;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
  */
 
 public class GroupFriensActivity extends BaseActivity implements IUGroupFriensView {
-    private Context context;
+    private GroupFriensActivity context;
     GroupItemBinding binding;
     private GroupFriensPresenter groupFriensPresenter;
     private ArrayList<Room> roomList;

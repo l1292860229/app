@@ -3,6 +3,7 @@ package com.example.administrator.presenter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.LoginActivity;
 import com.example.administrator.activity.MainActivity;
 import com.example.administrator.entity.Constants;
@@ -11,7 +12,6 @@ import com.example.administrator.interfaceview.IUloginView;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -23,13 +23,11 @@ import org.json.JSONObject;
  * Created by Administrator on 2017/1/21.
  */
 
-public class LoginPresenter {
+public class LoginPresenter extends BasePresenter {
     private IUloginView loginView;
-    private LoginActivity context;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    public LoginPresenter(LoginActivity context,IUloginView loginView){
+    public LoginPresenter(BaseActivity context, IUloginView loginView){
+        super(context);
         this.loginView = loginView;
-        this.context = context;
     }
     public void init(){
         SharedPreferences mPreferences = context.getSharedPreferences(Constants.REMEMBER_USERNAME_PASSWORD, 0);

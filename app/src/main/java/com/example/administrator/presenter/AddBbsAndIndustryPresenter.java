@@ -1,15 +1,12 @@
 package com.example.administrator.presenter;
 
-import com.example.administrator.activity.AddBbsAndIndustryActivity;
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.Bbs;
 import com.example.administrator.entity.UrlConstants;
-import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUPublicView;
-import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -22,15 +19,11 @@ import java.io.FileNotFoundException;
  * Created by Administrator on 2017/3/9.
  */
 
-public class AddBbsAndIndustryPresenter {
-    private AddBbsAndIndustryActivity context;
+public class AddBbsAndIndustryPresenter extends BasePresenter {
     private IUPublicView iuPublicView;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    private UserInfo userInfo;
-    public AddBbsAndIndustryPresenter(AddBbsAndIndustryActivity context,IUPublicView iuPublicView){
-        this.context = context;
+    public AddBbsAndIndustryPresenter(BaseActivity context, IUPublicView iuPublicView){
+        super(context);
         this.iuPublicView = iuPublicView;
-        userInfo= GetDataUtil.getUserInfo(context);
     }
     public void add(String imagepath,String title,String content,String money,final Bbs.Bbstype type){
         RequestParams params = new RequestParams();

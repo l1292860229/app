@@ -2,16 +2,13 @@ package com.example.administrator.presenter;
 
 import android.content.Intent;
 
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.FriensLoopActivity;
-import com.example.administrator.activity.SendFriensLoopActivity;
 import com.example.administrator.entity.Picture;
 import com.example.administrator.entity.UrlConstants;
-import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUSendFriensLoopView;
-import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -25,15 +22,11 @@ import java.util.List;
  * Created by Administrator on 2017/2/18.
  */
 
-public class SendFriensLoopPresenter {
-    private SendFriensLoopActivity context;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
+public class SendFriensLoopPresenter extends BasePresenter {
     private IUSendFriensLoopView sendFriensLoopView;
-    UserInfo userInfo;
-    public SendFriensLoopPresenter(SendFriensLoopActivity context,IUSendFriensLoopView sendFriensLoopView){
-        this.context = context;
+    public SendFriensLoopPresenter(BaseActivity context, IUSendFriensLoopView sendFriensLoopView){
+        super(context);
         this.sendFriensLoopView = sendFriensLoopView;
-        userInfo = GetDataUtil.getUserInfo(context);
     }
     public void sendFriensLoop(String content,String lng,String lat,String address,
     String type,String bid,String isShow,List<Picture> pictureList){

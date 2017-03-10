@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">app</string>
-    <!--公共的-->
-    <string name="ypid">585</string>
     <!--arfl_head-->
     <string name="p2refresh_refresh_lasttime">最近更新&#160;&#058;&#160;</string>
     <string name="p2refresh_head_load_more">加载更多</string>

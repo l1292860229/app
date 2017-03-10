@@ -6,6 +6,7 @@ import com.example.administrator.entity.Menu;
 import com.example.administrator.entity.UrlConstants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUFoundFragmentView;
+import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.administrator.entity.UrlConstants.BAIWAN_FUJINDEDIAN;
+import static com.example.administrator.entity.UrlConstants.BAIWAN_GAME;
+import static com.example.administrator.entity.UrlConstants.BAIWAN_YIYUANDUOBAO;
 import static com.example.administrator.util.GetDataUtil.getUserInfo;
 
 /**
@@ -31,17 +35,20 @@ public class FoundFragmentPresenter {
     private Context context;
     private IUFoundFragmentView foundFragmentView;
     private AsyncHttpClient client =NetworkUtil.instanceAsyncHttpClient();
+    private UserInfo userInfo;
     public FoundFragmentPresenter(Context context,IUFoundFragmentView foundFragmentView){
         this.context = context;
+        userInfo = GetDataUtil.getUserInfo(context);
         this.foundFragmentView = foundFragmentView;
     }
     public void init(){
         final List<Menu> list = new ArrayList<>();
         list.add(new Menu("商机圈","",""));
         list.add(new Menu("扫一扫","",""));
-        list.add(new Menu("附近的店","",""));
-        list.add(new Menu("购物","",""));
-        list.add(new Menu("游戏","",""));
+        list.add(new Menu("附近的店",BAIWAN_FUJINDEDIAN+"?id="+userInfo.getYpid()+"&token="+userInfo.getToken(),""));
+        list.add(new Menu("一元夺宝",BAIWAN_YIYUANDUOBAO+"?id="+userInfo.getYpid()+"&token="+userInfo.getToken(),""));
+        list.add(new Menu("购物","http://"+userInfo.getUrl()+"&token="+userInfo.getToken(),""));
+        list.add(new Menu("游戏",BAIWAN_GAME+"?id="+userInfo.getYpid()+"&sid=531&token="+userInfo.getToken(),""));
         foundFragmentView.init(list);
         UserInfo userInfo = getUserInfo(context);
         RequestParams params = new RequestParams();

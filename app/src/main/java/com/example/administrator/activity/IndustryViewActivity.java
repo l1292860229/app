@@ -1,6 +1,5 @@
 package com.example.administrator.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  */
 
 public class IndustryViewActivity extends BaseActivity implements IUIndustryView {
-    private Context context;
+    private IndustryViewActivity context;
     GroupItemBinding binding;
     private IndustryPresenter industryPresenter;
     private ArrayList<Bbs> bbsArrayList;

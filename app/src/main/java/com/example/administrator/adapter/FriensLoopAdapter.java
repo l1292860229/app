@@ -3,6 +3,7 @@ package com.example.administrator.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.text.SpannableString;
@@ -22,6 +23,7 @@ import com.ab.fragment.AbAlertDialogFragment;
 import com.ab.util.AbDialogUtil;
 import com.example.administrator.BR;
 import com.example.administrator.R;
+import com.example.administrator.activity.WebViewActivity;
 import com.example.administrator.databinding.FriendsLoopItemBinding;
 import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
@@ -110,19 +112,37 @@ public class FriensLoopAdapter extends BaseAdapter{
                 }
                 @Override
                 public void onClick(View widget) {
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    if(urlStr.contains("http://")) {
+                        intent.putExtra(WebViewActivity.URL,urlStr);
+                    }else{
+                        intent.putExtra(WebViewActivity.URL,"http://"+urlStr);
+                    }
+                    context.startActivity(intent);
                 }
             }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        binding.content.setMovementMethod(LinkMovementMethod.getInstance());
         binding.content.setText(ss);
         //设置链接
         String shareurlStr = friendsLoopItem.getShareurl();
         if(!StringUtil.isNull(shareurlStr) && !shareurlStr.equals("\"\"")){
             binding.url.setVisibility(View.VISIBLE);
-            Shareurl shareurl = GsonUtil.parseJsonWithGson(shareurlStr.replace("\\\"","\""),Shareurl.class);
+            final Shareurl shareurl = GsonUtil.parseJsonWithGson(shareurlStr.replace("\\\"","\""),Shareurl.class);
             if(!StringUtil.isNull(shareurl.getImageurl())){
                 ImageUitl.setImage(binding.imageUrl,shareurl.getImageurl());
             }
             binding.urlText.setText(shareurl.getTitle());
+            binding.url.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra(WebViewActivity.URL,shareurl.getUrl());
+                    context.startActivity(intent);
+                }
+            });
+        }else{
+            binding.url.setVisibility(View.GONE);
         }
         //设置发表时间
         binding.time.setText(DateUtil.calculaterReleasedTime(context,new Date(friendsLoopItem.getCreatetime()*1000),friendsLoopItem.getCreatetime()*1000,0));

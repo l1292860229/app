@@ -1,13 +1,12 @@
 package com.example.administrator.presenter;
 
-import android.content.Context;
 import android.content.Intent;
 
+import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.FriensLoopActivity;
 import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
 import com.example.administrator.entity.UrlConstants;
-import com.example.administrator.entity.UserInfo;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.util.GetDataUtil;
@@ -15,7 +14,6 @@ import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -34,15 +32,11 @@ import static com.example.administrator.enumset.GetDataType.INITDATA;
  * Created by Administrator on 2017/1/27.
  */
 
-public class FriensLoopPresenter {
-    Context context;
+public class FriensLoopPresenter extends BasePresenter {
     IUFriensLoopView friensLoopView;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    UserInfo userInfo;
-    public FriensLoopPresenter(Context context,IUFriensLoopView friensLoopView){
-        this.context = context;
+    public FriensLoopPresenter(BaseActivity context, IUFriensLoopView friensLoopView){
+        super(context);
         this.friensLoopView = friensLoopView;
-        userInfo = GetDataUtil.getUserInfo(context);
     }
     public void getData(String type, final GetDataType getDataType, int page){
         RequestParams params = new RequestParams();

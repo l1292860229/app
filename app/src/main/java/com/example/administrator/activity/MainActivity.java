@@ -102,6 +102,16 @@ public class MainActivity extends AppCompatActivity implements IUMainView {
                     .add(R.id.fragment_container, fragments[0])
                     .show(fragments[0]).commit();
         }
+        mainBinding.btnShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,WebViewActivity.class);
+                //intent.putExtra(WebViewActivity.URL,"http://www.baidu.com");
+                intent.putExtra(WebViewActivity.URL,"http://music.163.com/#/song?id=26270153");
+
+                startActivity(intent);
+            }
+        });
     }
 
     /**
