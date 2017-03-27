@@ -1,7 +1,6 @@
 package com.example.administrator.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +12,7 @@ import android.view.WindowManager;
 import com.example.administrator.R;
 import com.example.administrator.entity.Constants;
 import com.example.administrator.entity.Picture;
+import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.StringUtil;
 
 import static com.example.administrator.entity.Picture.PictureType.MIPMAP_TYPE;
@@ -38,9 +38,9 @@ public class WelcomeActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable(){
             @Override
             public void run() {
-                SharedPreferences mPreferences = WelcomeActivity.this.getSharedPreferences(Constants.USERINFO, 0);
-                String userInfo = mPreferences.getString(Constants.USERINFO,"");
-                String firstopenapp = mPreferences.getString(Constants.FIRSTOPENAPP,"");
+                String db = Constants.USERINFO;
+                String userInfo = (String) GetDataUtil.get(WelcomeActivity.this,db,Constants.USERINFO,"");
+                String firstopenapp = (String) GetDataUtil.get(WelcomeActivity.this,db,Constants.FIRSTOPENAPP,"");
                 Intent intent;
                 //如果没有记住密码就跳到登录页面，否则就进入app
                 if(StringUtil.isNull(firstopenapp)){

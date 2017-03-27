@@ -6,12 +6,9 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.MainBinding;
@@ -23,7 +20,7 @@ import com.example.administrator.interfaceview.IUMainView;
 import com.example.administrator.util.UIUtil;
 import com.tandong.sa.bv.BelowView;
 
-public class MainActivity extends AppCompatActivity implements IUMainView {
+public class MainActivity extends BaseActivity implements IUMainView {
     Context context;
     MainBinding mainBinding;
     Button[] mTabs;
@@ -33,62 +30,22 @@ public class MainActivity extends AppCompatActivity implements IUMainView {
         super.onCreate(savedInstanceState);
         context = MainActivity.this;
         mainBinding = DataBindingUtil.setContentView(this, R.layout.main);
+        mainBinding.setBehavior(this);
+        mainBinding.titleLayout.setBehavior(this);
+        blv = new BelowView(MainActivity.this, R.layout.addxml);
         init();
     }
 
     @Override
     public void init() {
-        ((TextView)mainBinding.titleLayout.findViewById(R.id.titlecontext)).setText(context.getResources().getString(R.string.app_name));
-        ImageView mSearchBtn = (ImageView) mainBinding.titleLayout.findViewById(R.id.right_btn);
-        ImageView mAddBtn = (ImageView) mainBinding.titleLayout.findViewById(R.id.right_btn2);
-        mSearchBtn.setBackground(ContextCompat.getDrawable(context,R.drawable.search_icon_btn));
+        mainBinding.titleLayout.titlecontext.setText(context.getResources().getString(R.string.app_name));
+        mainBinding.titleLayout.leftBtn.setVisibility(View.GONE);
+        ImageView mSearchBtn = mainBinding.titleLayout.rightBtn;
+        ImageView mAddBtn = mainBinding.titleLayout.rightBtn2;
+        mSearchBtn.setImageResource(R.drawable.search_icon_btn);
         mSearchBtn.setVisibility(View.VISIBLE);
-        mAddBtn.setBackground(ContextCompat.getDrawable(context,R.drawable.add_icon_btn));
+        mAddBtn.setImageResource(R.drawable.add_icon_btn);
         mAddBtn.setVisibility(View.VISIBLE);
-        mAddBtn.setOnClickListener(new View.OnClickListener() {
-            BelowView blv = new BelowView(MainActivity.this, R.layout.addxml);
-            @Override
-            public void onClick(View view) {
-                blv.showBelowView(view, true, 30, 0);
-                View v =  blv.getBelowView();
-                //发起群聊
-                v.findViewById(R.id.chat_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        UIUtil.showMessage(context,"发起群聊");
-                        blv.dismissBelowView();
-                    }
-                });
-                //添加朋友
-                v.findViewById(R.id.add_friend).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        UIUtil.showMessage(context,"添加朋友");
-                        blv.dismissBelowView();
-                    }
-                });
-                //扫一扫
-                v.findViewById(R.id.shao_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        intent.setClass(context, ScanActivity.class);
-                        startActivity(intent);
-                        blv.dismissBelowView();
-                    }
-                });
-                //意见返馈
-                v.findViewById(R.id.feedback_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        intent.setClass(context, FeedBackActivity.class);
-                        startActivity(intent);
-                        blv.dismissBelowView();
-                    }
-                });
-            }
-        });
         //初始化底部按钮
         mTabs = new Button[4];
         mTabs[0] = mainBinding.btnConversation;
@@ -110,6 +67,47 @@ public class MainActivity extends AppCompatActivity implements IUMainView {
                 intent.putExtra(WebViewActivity.URL,"http://music.163.com/#/song?id=26270153");
 
                 startActivity(intent);
+            }
+        });
+    }
+    @Override
+    public void right_btn2(View view) {
+        blv.showBelowView(view, true, 30, 0);
+        View v =  blv.getBelowView();
+        //发起群聊
+        v.findViewById(R.id.chat_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UIUtil.showMessage(context,"发起群聊");
+                blv.dismissBelowView();
+            }
+        });
+        //添加朋友
+        v.findViewById(R.id.add_friend).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UIUtil.showMessage(context,"添加朋友");
+                blv.dismissBelowView();
+            }
+        });
+        //扫一扫
+        v.findViewById(R.id.shao_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(context, ScanActivity.class);
+                startActivity(intent);
+                blv.dismissBelowView();
+            }
+        });
+        //意见返馈
+        v.findViewById(R.id.feedback_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(context, FeedBackActivity.class);
+                startActivity(intent);
+                blv.dismissBelowView();
             }
         });
     }

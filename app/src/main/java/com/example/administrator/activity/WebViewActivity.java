@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -17,7 +16,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,13 +23,11 @@ import com.example.administrator.R;
 import com.example.administrator.databinding.WebBinding;
 import com.tandong.sa.bv.BelowView;
 
-import static com.example.administrator.R.id.url;
-
 /**
  * Created by yf on 2016/11/24.
  */
 
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends BaseActivity {
     public final static String URL = "url";
     Context context;
     WebBinding binding;
@@ -45,44 +41,23 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = WebViewActivity.this;
         binding = DataBindingUtil.setContentView(this, R.layout.web);
-        titleTextView = ((TextView)binding.titleLayout.findViewById(R.id.titlecontext));
+        binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
+        titleTextView = binding.titleLayout.titlecontext;
         webView = binding.webView;
         progressBar = binding.progressBar;
         mUrl = getIntent().getStringExtra(URL);
         initWebView();
         webView.loadUrl(mUrl);
+        blv = new BelowView(context, R.layout.web_operating);
     }
     public void initWebView(){
         //设置标题栏
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        ((TextView)binding.titleLayout.findViewById(R.id.left_title)).setText("返回");
-        ((LinearLayout)binding.titleLayout.findViewById(R.id.left_btn)).
-                setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(webView.canGoBack()) {
-                            webView.goBack();
-                        }else{
-                            webView.stopLoading();
-                            webView.removeAllViews();
-                            webView.destroy();
-                            WebViewActivity.this.finish();
-                        }
-                    }
-                });
-        ImageView ivRight = ((ImageView)binding.titleLayout.findViewById(R.id.right_btn));
+        binding.titleLayout.leftTitle.setText("返回");
+        ImageView ivRight = binding.titleLayout.rightBtn;
         ivRight.setVisibility(View.VISIBLE);
-        ivRight.setImageDrawable(getResources().getDrawable(R.drawable.more_btn));
-        ivRight.setOnClickListener(new View.OnClickListener() {
-            BelowView blv = new BelowView(context, R.layout.web_operating);
-            @Override
-            public void onClick(View view) {
-                blv.showBelowView(view, true, 30, 0);
-                View v =  blv.getBelowView();
-            }
-        });
-        TextView clsoe =  ((TextView)binding.titleLayout.findViewById(R.id.left_title2));
+        ivRight.setImageResource(R.drawable.more_btn);
+        TextView clsoe =  binding.titleLayout.leftTitle2;
         clsoe.setText("关闭");
         clsoe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +160,23 @@ public class WebViewActivity extends AppCompatActivity {
         webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setDefaultTextEncodingName("gb2312");
 
+    }
+    @Override
+    public void right_btn(View view) {
+        blv.showBelowView(view, true, 30, 0);
+        View v =  blv.getBelowView();
+    }
+
+    @Override
+    public void close(View view) {
+        if(webView.canGoBack()) {
+            webView.goBack();
+        }else{
+            webView.stopLoading();
+            webView.removeAllViews();
+            webView.destroy();
+            WebViewActivity.this.finish();
+        }
     }
 
     /**

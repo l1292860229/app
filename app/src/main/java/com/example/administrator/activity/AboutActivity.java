@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.AboutBinding;
@@ -22,8 +21,8 @@ public class AboutActivity extends SmartActivity {
         super.onCreate(savedInstanceState);
         AboutBinding binding =  DataBindingUtil.setContentView(this, R.layout.about);
         appInfo = new AppInfo(this);
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("关于我们");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
+        binding.titleLayout.titlecontext.setText("关于我们");
+        ImageView leftbtn = binding.titleLayout.leftIcon;
         leftbtn.setImageResource(R.drawable.back_btn);
         leftbtn.setOnClickListener(new View.OnClickListener() {
             @Override

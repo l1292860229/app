@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.SettingBinding;
@@ -20,7 +17,7 @@ import com.example.administrator.util.GetDataUtil;
  * Created by Administrator on 2017/1/24.
  */
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
     SettingBinding binding;
     Context context;
     UserInfo userInfo;
@@ -31,15 +28,8 @@ public class SettingActivity extends AppCompatActivity {
         userInfo = GetDataUtil.getUserInfo(context);
         binding =  DataBindingUtil.setContentView(this, R.layout.setting);
         binding.setBehavior(this);
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("设置");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SettingActivity.this.finish();
-            }
-        });
+        binding.titleLayout.setBehavior(this);
+        binding.titleLayout.titlecontext.setText("设置");
     }
     /**
      * 打开修改密码

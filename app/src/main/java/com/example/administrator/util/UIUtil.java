@@ -171,4 +171,5 @@ public class UIUtil {
         imageView.setOnLongClickListener(longClickListener);
         imageView.setOnClickListener(clickListener);
     }
+
 }

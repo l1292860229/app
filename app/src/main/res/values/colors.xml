@@ -17,6 +17,7 @@
     <color name="friendloop_botton_select">#ef8318</color>
     <color name="bluebtn">#0096ff</color>
     <color name="red">#ff0000</color>
+    <color name="listview_foucs">#80dedede</color>
     <!--main-->
     <color name="bottom_bar_normal_bg">#fcfcfc</color>
     <color name="common_botton_bar_blue">#46c01b</color>

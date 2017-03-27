@@ -3,10 +3,8 @@ package com.example.administrator.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.BbsAdapter;
@@ -31,28 +29,25 @@ public class BBSActivity extends BaseActivity implements IUBBSView {
         super.onCreate(savedInstanceState);
         context = this;
         binding =  DataBindingUtil.setContentView(this, R.layout.group_item);
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("万人群");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BBSActivity.this.finish();
-            }
-        });
-        ImageView tvright = ((ImageView)binding.titleLayout.findViewById(R.id.right_btn2));
+        binding.titleLayout.titlecontext.setText("万人群");
+        binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
+        ImageView tvright = binding.titleLayout.rightBtn2;
         tvright.setVisibility(View.VISIBLE);
-        tvright.setBackground(ContextCompat.getDrawable(context,R.drawable.add_icon_btn));
-        tvright.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context,AddBbsAndIndustryActivity.class);
-                intent.putExtra(AddBbsAndIndustryActivity.ISSHOWMONEY,false);
-                startActivity(intent);
-            }
-        });
+        tvright.setImageResource(R.drawable.add_icon_btn);
         bbsPresenter = new BBSPresenter(context,this);
         bbsPresenter.init();
+    }
+
+    /**
+     * 点添加按钮
+     * @param view
+     */
+    @Override
+    public void right_btn2(View view) {
+        Intent intent = new Intent(context,AddBbsAndIndustryActivity.class);
+        intent.putExtra(AddBbsAndIndustryActivity.ISSHOWMONEY,false);
+        startActivity(intent);
     }
 
     @Override

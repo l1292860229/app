@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -52,30 +51,17 @@ public class SendFriensLoopActivity extends BaseActivity implements IUSendFriens
         super.onCreate(savedInstanceState);
         context = SendFriensLoopActivity.this;
         binding =  DataBindingUtil.setContentView(this, R.layout.send_friensloop);
+        binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
         init();
         sendFriensLoopPresenter = new SendFriensLoopPresenter(this,this);
     }
 
     @Override
     public void init() {
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("发布");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SendFriensLoopActivity.this.finish();
-            }
-        });
-        TextView tvRight = ((TextView)binding.titleLayout.findViewById(R.id.right_text));
+        binding.titleLayout.titlecontext.setText("发布");
+        TextView tvRight = binding.titleLayout.rightText;
         tvRight.setText("发送");
-        tvRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendFriensLoopPresenter.sendFriensLoop(binding.content.getText().toString()
-                ,null,null,null,type,null,SHOW,pictureList);
-            }
-        });
         //动态设置标签
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         for (String s : biaoqian) {
@@ -99,6 +85,12 @@ public class SendFriensLoopActivity extends BaseActivity implements IUSendFriens
         addAddImage();
         imageAdapter = new ImageAdapter(SendFriensLoopActivity.this,pictureList);
         binding.gridview.setAdapter(imageAdapter);
+    }
+
+    @Override
+    public void right_text(View view) {
+        sendFriensLoopPresenter.sendFriensLoop(binding.content.getText().toString()
+                ,null,null,null,type,null,SHOW,pictureList);
     }
 
     @Override

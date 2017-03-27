@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ab.fragment.AbSampleDialogFragment;
@@ -66,6 +65,7 @@ public class EditProfileActivity extends BaseActivity implements IUEditProfileVi
     public void init(UserInfo userInfo) {
         binding.setUserinfo(userInfo);
         binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
         if (userInfo.getGender()== UserInfo.SexType.GIRL) {
             binding.sexContent.setText("女");
         }else{
@@ -73,43 +73,34 @@ public class EditProfileActivity extends BaseActivity implements IUEditProfileVi
         }
         province = userInfo.getProvince();
         city = userInfo.getCity();
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("编辑资料");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditProfileActivity.this.finish();
-            }
-        });
-        TextView tvRight = ((TextView)binding.titleLayout.findViewById(R.id.right_text));
+        binding.titleLayout.titlecontext.setText("编辑资料");
+        TextView tvRight = binding.titleLayout.rightText;
         tvRight.setText("确定");
-        tvRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserInfo userInfo = new UserInfo();
-                userInfo.setNickname(binding.nicknameContent.getText().toString());
-                String sex = binding.sexContent.getText().toString();
-                if (sex.equals("女")) {
-                    userInfo.setGender(UserInfo.SexType.GIRL);
-                }else{
-                    userInfo.setGender(UserInfo.SexType.BOY);
-                }
-                userInfo.setSign(binding.signContent.getText().toString());
-                userInfo.setProvince(province);
-                userInfo.setCity(city);
-                userInfo.setHeadsmall(imagePath);
-                userInfo.setCompanywebsite(binding.companywebsite.getText().toString());
-                userInfo.setIndustry(binding.industry.getText().toString());
-                userInfo.setCompany(binding.company.getText().toString());
-                userInfo.setCompanyaddress(binding.companyaddress.getText().toString());
-                userInfo.setJob(binding.job.getText().toString());
-                userInfo.setProvide(binding.provide.getText().toString());
-                userInfo.setDemand(binding.demand.getText().toString());
-                userInfo.setTelephone(binding.telephone.getText().toString());
-                editProfilePresenter.updateUserInfo(userInfo);
-            }
-        });
+    }
+
+    @Override
+    public void right_text(View view) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickname(binding.nicknameContent.getText().toString());
+        String sex = binding.sexContent.getText().toString();
+        if (sex.equals("女")) {
+            userInfo.setGender(UserInfo.SexType.GIRL);
+        }else{
+            userInfo.setGender(UserInfo.SexType.BOY);
+        }
+        userInfo.setSign(binding.signContent.getText().toString());
+        userInfo.setProvince(province);
+        userInfo.setCity(city);
+        userInfo.setHeadsmall(imagePath);
+        userInfo.setCompanywebsite(binding.companywebsite.getText().toString());
+        userInfo.setIndustry(binding.industry.getText().toString());
+        userInfo.setCompany(binding.company.getText().toString());
+        userInfo.setCompanyaddress(binding.companyaddress.getText().toString());
+        userInfo.setJob(binding.job.getText().toString());
+        userInfo.setProvide(binding.provide.getText().toString());
+        userInfo.setDemand(binding.demand.getText().toString());
+        userInfo.setTelephone(binding.telephone.getText().toString());
+        editProfilePresenter.updateUserInfo(userInfo);
     }
 
     @Override

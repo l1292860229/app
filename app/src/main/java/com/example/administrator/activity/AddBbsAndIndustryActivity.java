@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.R;
@@ -37,30 +36,22 @@ public class AddBbsAndIndustryActivity extends BaseActivity implements IUPublicV
         context = AddBbsAndIndustryActivity.this;
         addBbsAndIndustryPresenter = new AddBbsAndIndustryPresenter(context,this);
         registerBinding =  DataBindingUtil.setContentView(this, R.layout.add_bbs);
-        registerBinding.setBehavior(AddBbsAndIndustryActivity.this);
+        registerBinding.setBehavior(this);
+        registerBinding.titleLayout.setBehavior(this);
         showmoney = getIntent().getBooleanExtra(ISSHOWMONEY,false);
         if(showmoney){
             registerBinding.bbsmoney.setVisibility(View.VISIBLE);
         }
-        ((TextView)registerBinding.titleLayout.findViewById(R.id.titlecontext)).setText("添加");
-        ImageView leftbtn = ((ImageView)registerBinding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddBbsAndIndustryActivity.this.finish();
-            }
-        });
-        TextView tvRight = ((TextView)registerBinding.titleLayout.findViewById(R.id.right_text));
+        registerBinding.titleLayout.titlecontext.setText("添加");
+        TextView tvRight = registerBinding.titleLayout.rightText;
         tvRight.setText("确定");
-        tvRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                check();
-            }
-        });
     }
-    public void check(){
+    /**
+     * 点确实
+     * @param view
+     */
+    @Override
+    public void right_text(View view){
         String title =  registerBinding.bbstitle.getText().toString();
         String content = registerBinding.bbscontent.getText().toString();
         String money =  registerBinding.bbsmoney.getText().toString();

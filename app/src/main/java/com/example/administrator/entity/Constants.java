@@ -21,4 +21,5 @@ public class Constants {
     public static final String  NOTICE_SHOCK =SYSTEM_SETTING_PRIVACY+"_notice_shock";
     //id标识
     public static final String  ID ="585";
+    public static final String TEMP_DIRECTORY="/IM/";
 }

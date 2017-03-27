@@ -1,7 +1,6 @@
 package com.example.administrator.presenter;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.LoginActivity;
@@ -30,9 +29,9 @@ public class LoginPresenter extends BasePresenter {
         this.loginView = loginView;
     }
     public void init(){
-        SharedPreferences mPreferences = context.getSharedPreferences(Constants.REMEMBER_USERNAME_PASSWORD, 0);
-        String username = mPreferences.getString(Constants.USERNAME,"");
-        String password = mPreferences.getString(Constants.PASSWORD,"");
+        String db = Constants.REMEMBER_USERNAME_PASSWORD;
+        String username = (String) GetDataUtil.get(context,db,Constants.USERNAME,"");
+        String password = (String) GetDataUtil.get(context,db,Constants.PASSWORD,"");
         boolean close =  context.getIntent().getBooleanExtra(LoginActivity.ISCLOSE,false);
         loginView.init(username,password,close);
     }
@@ -66,11 +65,9 @@ public class LoginPresenter extends BasePresenter {
                                 //保存用户信息
                                 GetDataUtil.setUserInfo(context,json.getString("data"));
                                 //保存用户用户名和密码
-                                SharedPreferences userPreferences = context.getSharedPreferences(Constants.REMEMBER_USERNAME_PASSWORD, 0);
-                                SharedPreferences.Editor userEditor = userPreferences.edit();
-                                userEditor.putString(Constants.USERNAME, username);
-                                userEditor.putString(Constants.PASSWORD, password);
-                                userEditor.commit();
+                                String db = Constants.REMEMBER_USERNAME_PASSWORD;
+                                GetDataUtil.put(context,db,Constants.USERNAME,username);
+                                GetDataUtil.put(context,db,Constants.PASSWORD,password);
                                 //跳转到主页面
                                 Intent intent = new Intent();
                                 intent.setClass(context, MainActivity.class);

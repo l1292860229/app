@@ -7,8 +7,6 @@ import android.text.Spannable;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.RegisterBinding;
@@ -27,17 +25,10 @@ public class RegisterActivity extends BaseActivity implements IUPublicView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerBinding =  DataBindingUtil.setContentView(this, R.layout.register);
-        registerBinding.setBehavior(RegisterActivity.this);
+        registerBinding.setBehavior(this);
+        registerBinding.titleLayout.setBehavior(this);
         registerPresenter = new RegisterPresenter(RegisterActivity.this,RegisterActivity.this);
-        ((TextView)registerBinding.titleLayout.findViewById(R.id.titlecontext)).setText("注册");
-        ImageView leftbtn = ((ImageView)registerBinding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RegisterActivity.this.finish();
-            }
-        });
+        registerBinding.titleLayout.titlecontext.setText("注册");
     }
 
     /**

@@ -3,10 +3,7 @@ package com.example.administrator.activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.administrator.R;
@@ -18,7 +15,7 @@ import com.example.administrator.presenter.PrivateSetPresenter;
  * Created by Administrator on 2017/1/24.
  */
 
-public class PrivateSetViewActivity extends AppCompatActivity implements IUPrivateSetView {
+public class PrivateSetViewActivity extends BaseActivity implements IUPrivateSetView {
     PrivateSetBinding binding;
     PrivateSetPresenter privateSetPresenter;
     Context context;
@@ -29,20 +26,13 @@ public class PrivateSetViewActivity extends AppCompatActivity implements IUPriva
         privateSetPresenter = new PrivateSetPresenter(context,getIntent(),PrivateSetViewActivity.this);
         binding =  DataBindingUtil.setContentView(this, R.layout.private_set);
         binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
         privateSetPresenter.init();
     }
 
     @Override
     public void init(String title) {
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText(title);
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PrivateSetViewActivity.this.finish();
-            }
-        });
+        binding.titleLayout.titlecontext.setText(title);
     }
 
     @Override

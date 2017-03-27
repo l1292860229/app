@@ -10,4 +10,5 @@
     <dimen name="text_size_11">11dp</dimen>
     <!--setting-->
     <dimen name="settting_new_item_height">50dp</dimen>
+    <dimen name="chat_box_expra">20dp</dimen>
 </resources>

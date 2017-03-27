@@ -13,7 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ab.fragment.AbAlertDialogFragment;
@@ -66,9 +65,12 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
         friensLoopPresenter = new FriensLoopPresenter(context,this);
         binding =  DataBindingUtil.setContentView(this,R.layout.friens_loop);
         binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
         mListView = binding.mListView;
         initView();
         friensLoopPresenter.getData(null, GetDataType.INITDATA,1);
+        //右上角的弹出框
+        blv = new BelowView(FriensLoopActivity.this, R.layout.send_shanji);
     }
     public void init(ArrayList<FriendsLoopItem> mlist) {
         friensLoopAdapter = new FriensLoopAdapter(context,mlist,FriensLoopActivity.this,friensLoopPresenter);
@@ -235,33 +237,9 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
      * 初始化控件以及参数
      */
     private void initView(){
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("商机圈");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FriensLoopActivity.this.finish();
-            }
-        });
-        TextView tvRight = ((TextView)binding.titleLayout.findViewById(R.id.right_text));
+        binding.titleLayout.titlecontext.setText("商机圈");
+        TextView tvRight = binding.titleLayout.rightText;
         tvRight.setText("商机发布");
-        tvRight.setOnClickListener(new View.OnClickListener() {
-            BelowView blv = new BelowView(FriensLoopActivity.this, R.layout.send_shanji);
-            @Override
-            public void onClick(View view) {
-                blv.showBelowView(view, true, 30, 0);
-                View v =  blv.getBelowView();
-                v.findViewById(R.id.sendfriensloop_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context,SendFriensLoopActivity.class);
-                        startActivity(intent);
-                        blv.dismissBelowView();
-                    }
-                });
-            }
-        });
         mTabs = new Button[5];
         mTabs[0] = binding.live;
         mTabs[1] = binding.qiye;
@@ -271,6 +249,21 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
         mTabs[2].setSelected(true);
         initHeader();
     }
+
+    @Override
+    public void right_text(View view) {
+        blv.showBelowView(view, true, 30, 0);
+        View v =  blv.getBelowView();
+        v.findViewById(R.id.sendfriensloop_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,SendFriensLoopActivity.class);
+                startActivity(intent);
+                blv.dismissBelowView();
+            }
+        });
+    }
+
     private int index,currentTabIndex=2;
     public void onTabClicked(View view) {
         switch (view.getId()) {
@@ -322,4 +315,5 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
             }
         }
     }
+
 }

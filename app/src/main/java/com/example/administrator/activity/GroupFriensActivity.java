@@ -3,8 +3,6 @@ package com.example.administrator.activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.GroupFriensAdapter;
@@ -32,15 +30,9 @@ public class GroupFriensActivity extends BaseActivity implements IUGroupFriensVi
         super.onCreate(savedInstanceState);
         context = this;
         binding =  DataBindingUtil.setContentView(this, R.layout.group_item);
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("群聊");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GroupFriensActivity.this.finish();
-            }
-        });
+        binding.titleLayout.titlecontext.setText("群聊");
+        binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
         groupFriensPresenter = new GroupFriensPresenter(context,this);
         groupFriensPresenter.init();
         mListView = binding.groupList;

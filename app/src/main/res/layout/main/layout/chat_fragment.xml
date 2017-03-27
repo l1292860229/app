@@ -10,6 +10,7 @@
         android:background="@color/backgroud_color"
         android:orientation="vertical" >
         <ListView
+            android:clickable="true"
             android:id="@+id/chats_list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

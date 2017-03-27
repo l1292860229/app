@@ -3,10 +3,10 @@ package com.example.administrator.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.example.administrator.R;
 import com.example.administrator.adapter.IndustryAdapter;
@@ -37,32 +37,39 @@ public class IndustryViewActivity extends BaseActivity implements IUIndustryView
         super.onCreate(savedInstanceState);
         context = this;
         binding =  DataBindingUtil.setContentView(this, R.layout.group_item);
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("行业圈");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IndustryViewActivity.this.finish();
-            }
-        });
-        ImageView tvright2 = ((ImageView)binding.titleLayout.findViewById(R.id.right_btn2));
+        binding.titleLayout.titlecontext.setVisibility(View.GONE);
+        binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
+        ImageView tvright2 = binding.titleLayout.rightBtn2;
         tvright2.setVisibility(View.VISIBLE);
-        tvright2.setBackground(ContextCompat.getDrawable(context,R.drawable.add_icon_btn));
-        tvright2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context,AddBbsAndIndustryActivity.class);
-                intent.putExtra(AddBbsAndIndustryActivity.ISSHOWMONEY,true);
-                startActivity(intent);
-            }
-        });
-        ImageView tvright = ((ImageView)binding.titleLayout.findViewById(R.id.right_btn));
+        tvright2.setImageResource(R.drawable.add_icon_btn);
+        ImageView tvright = binding.titleLayout.rightBtn;
         tvright.setVisibility(View.VISIBLE);
-        tvright.setBackground(ContextCompat.getDrawable(context,R.drawable.search_icon_btn));
+        tvright.setImageResource(R.drawable.search_icon_btn);
         mListView = binding.groupList;
         industryPresenter = new IndustryPresenter(context,this);
         industryPresenter.getData(isprivate,page, GetDataType.INITDATA);
+        ToggleButton tb = binding.titleLayout.tglloop;
+        tb.setVisibility(View.VISIBLE);
+        tb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    isprivate=true;
+                }else{
+                    isprivate=false;
+                }
+                page=1;
+                industryPresenter.getData(isprivate,page, GetDataType.INITDATA);
+            }
+        });
+    }
+
+    @Override
+    public void right_btn2(View view) {
+        Intent intent = new Intent(context,AddBbsAndIndustryActivity.class);
+        intent.putExtra(AddBbsAndIndustryActivity.ISSHOWMONEY,true);
+        startActivity(intent);
     }
 
     @Override

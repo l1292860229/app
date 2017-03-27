@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.LoginBinding;
@@ -25,7 +23,8 @@ public class LoginActivity extends BaseActivity implements IUloginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loginBinding =  DataBindingUtil.setContentView(this, R.layout.login);
-        loginBinding.setBehavior(LoginActivity.this);
+        loginBinding.setBehavior(this);
+        loginBinding.titleLayout.setBehavior(this);
         loginPresenter = new LoginPresenter(LoginActivity.this,LoginActivity.this);
         loginPresenter.init();
     }
@@ -34,18 +33,12 @@ public class LoginActivity extends BaseActivity implements IUloginView {
     public void init(String username,String password,boolean close) {
         User user  = new User(username,password);
         loginBinding.setUser(user);
-        ((TextView)loginBinding.titleLayout.findViewById(R.id.titlecontext)).setText("登录");
+        loginBinding.titleLayout.titlecontext.setText("登录");
         if(close){
-            ImageView leftbtn = ((ImageView)loginBinding.titleLayout.findViewById(R.id.left_icon));
-            leftbtn.setImageResource(R.drawable.back_btn);
-            leftbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    LoginActivity.this.finish();
-                }
-            });
+            loginBinding.titleLayout.leftIcon.setVisibility(View.VISIBLE);
         }
     }
+
     @Override
     public String getUserName() {
         return loginBinding.username.getText().toString();

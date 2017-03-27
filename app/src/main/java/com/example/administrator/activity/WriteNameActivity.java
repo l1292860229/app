@@ -3,10 +3,8 @@ package com.example.administrator.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +19,7 @@ import com.example.administrator.util.UIUtil;
  * Created by Administrator on 2017/1/24.
  */
 
-public class WriteNameActivity extends AppCompatActivity  implements IUWriteNameView {
+public class WriteNameActivity extends BaseActivity  implements IUWriteNameView {
     public static final String SINGLE = "single";
     public static final String MULTI = "multi";
     private String type;
@@ -32,6 +30,7 @@ public class WriteNameActivity extends AppCompatActivity  implements IUWriteName
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding =  DataBindingUtil.setContentView(this, R.layout.write_name);
+        binding.setBehavior(this);
         writeNamePresenter = new WriteNamePresenter(this,this);
         writeNamePresenter.init();
     }
@@ -58,32 +57,24 @@ public class WriteNameActivity extends AppCompatActivity  implements IUWriteName
     public void init(String name,final String title,final boolean verify) {
         binding.setUsername(name);
         binding.markname.setHint(title);
-        binding.setBehavior(WriteNameActivity.this);
+        binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
         //设置标题
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText(title);
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WriteNameActivity.this.finish();
-            }
-        });
-        TextView tvright = ((TextView)binding.titleLayout.findViewById(R.id.right_text));
+        binding.titleLayout.titlecontext.setText(title);
+        TextView tvright = binding.titleLayout.rightText;
         tvright.setText("确定");
-        tvright.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = binding.markname.getText().toString();
-                if(verify&&StringUtil.isNull(name)){
-                    UIUtil.showMessage(WriteNameActivity.this,title+"不能为空");
-                    return;
-                }
-                Intent intent = new Intent();
-                intent.putExtra("name",name);
-                setResult(RESULT_OK,intent);
-                WriteNameActivity.this.finish();
-            }
-        });
+    }
+    @Override
+    public void right_text(View view) {
+        String title = binding.titleLayout.titlecontext.getText().toString();
+        String name = binding.markname.getText().toString();
+        if(verify&&StringUtil.isNull(name)){
+            UIUtil.showMessage(WriteNameActivity.this,title+"不能为空");
+            return;
+        }
+        Intent intent = new Intent();
+        intent.putExtra("name",name);
+        setResult(RESULT_OK,intent);
+        WriteNameActivity.this.finish();
     }
 }

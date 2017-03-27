@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="behavior" type="com.example.administrator.activity.ChatMainActivity"/>
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical">
+        <include
+            android:id="@+id/title_layout"
+            layout="@layout/title_layout" />
+        <ListView
+            android:id="@+id/chat_main_list_msg"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/background"
+            android:cacheColorHint="@null"
+            android:divider="@null"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="true"
+            android:focusable="true"
+            android:listSelector="@drawable/transparent_selector"
+            android:scrollbars="none" />
+        <include
+            android:id="@+id/chat_box"
+            layout="@layout/chat_box" />
+        <include
+            android:id="@+id/chat_box_expra"
+            layout="@layout/chat_box_expra" />
+        <FrameLayout
+            android:id="@+id/emojicons"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:visibility="gone"/>
+    </LinearLayout>
+</layout>

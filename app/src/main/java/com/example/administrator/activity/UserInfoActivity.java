@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.UserInfoBinding;
@@ -45,12 +44,14 @@ public class UserInfoActivity extends BaseActivity implements IUUserInfoView {
         ImageUitl.init(context);
         binding =  DataBindingUtil.setContentView(this, R.layout.user_info);
         userInfoPresenter.init();
+        blv = new BelowView(context, R.layout.user_operating);
     }
     @Override
     public void init(UserInfo userInfo) {
         mUserinfo  = userInfo;
         binding.setUserinfo(userInfo);
         binding.setBehavior(this);
+        binding.titleLayout.setBehavior(this);
         //初始化值
         //设置名字
         if(!StringUtil.isNull(userInfo.getRemark())){
@@ -89,46 +90,36 @@ public class UserInfoActivity extends BaseActivity implements IUUserInfoView {
             }
         }
         //这个是设置标题
-        ((TextView)binding.titleLayout.findViewById(R.id.titlecontext)).setText("详细资料");
-        ImageView leftbtn = ((ImageView)binding.titleLayout.findViewById(R.id.left_icon));
-        leftbtn.setImageResource(R.drawable.back_btn);
-        leftbtn.setOnClickListener(new View.OnClickListener() {
+        binding.titleLayout.titlecontext.setText("详细资料");
+        ImageView ivRight = binding.titleLayout.rightBtn;
+        ivRight.setVisibility(View.VISIBLE);
+        ivRight.setImageResource(R.drawable.more_btn);
+    }
+
+    @Override
+    public void right_btn(View view) {
+        blv.showBelowView(view, true, 30, 0);
+        View v =  blv.getBelowView();
+        //设置备注
+        v.findViewById(R.id.beizhu_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserInfoActivity.this.finish();
+                Intent intent = new Intent();
+                intent.putExtra("name",mUserinfo.getRemark());
+                intent.putExtra("title",mUserinfo.getRemark());
+                intent.putExtra("type",WriteNameActivity.SINGLE);
+                intent.putExtra("verify",false);
+                intent.setClass(context, WriteNameActivity.class);
+                startActivityForResult(intent,WRITE_BAIZHU.ordinal());
+                blv.dismissBelowView();
             }
         });
-        ImageView ivRight = ((ImageView)binding.titleLayout.findViewById(R.id.right_btn));
-        ivRight.setVisibility(View.VISIBLE);
-        ivRight.setImageDrawable(getResources().getDrawable(R.drawable.more_btn));
-        ivRight.setOnClickListener(new View.OnClickListener() {
-            BelowView blv = new BelowView(context, R.layout.user_operating);
+        //发送该名片
+        v.findViewById(R.id.send_card_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                blv.showBelowView(view, true, 30, 0);
-                View v =  blv.getBelowView();
-                //设置备注
-                v.findViewById(R.id.beizhu_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        intent.putExtra("name",mUserinfo.getRemark());
-                        intent.putExtra("title",mUserinfo.getRemark());
-                        intent.putExtra("type",WriteNameActivity.SINGLE);
-                        intent.putExtra("verify",false);
-                        intent.setClass(context, WriteNameActivity.class);
-                        startActivityForResult(intent,WRITE_BAIZHU.ordinal());
-                        blv.dismissBelowView();
-                    }
-                });
-                //发送该名片
-                v.findViewById(R.id.send_card_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        UIUtil.showMessage(context,"发送该名片");
-                        blv.dismissBelowView();
-                    }
-                });
+                UIUtil.showMessage(context,"发送该名片");
+                blv.dismissBelowView();
             }
         });
     }
