@@ -17,6 +17,7 @@ import com.example.administrator.databinding.ChatMainBinding;
 import com.example.administrator.entity.Constants;
 import com.example.administrator.interfaceview.IUChatMainView;
 import com.example.administrator.util.FileUtil;
+import com.example.administrator.util.KeyBoardUtils;
 import com.example.administrator.util.UIUtil;
 
 import java.io.File;
@@ -78,6 +79,7 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
                     //要隐藏表情框
                     binding.emojicons.setVisibility(View.GONE);
                     chatbox.chatBoxBtnEmoji.setChecked(false);
+                    KeyBoardUtils.closeKeybord(chatbox.chatBoxEditKeyword,context);
                 }else{
                     chatBoxExpraBinding.chatBoxLayoutExpra.setVisibility(View.GONE);
                 }
@@ -92,9 +94,27 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
                     //要隐藏下拉框,同时显示输入框
                     chatbox.chatBoxBtnAdd.setChecked(false);
                     chatbox.chatBoxBtnInfo.setChecked(false);
+                    KeyBoardUtils.closeKeybord(chatbox.chatBoxEditKeyword,context);
                 }else{
                     binding.emojicons.setVisibility(View.GONE);
                 }
+            }
+        });
+        //弹出输入法时隐藏表情框还有选项框
+        chatbox.chatBoxEditKeyword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    chatbox.chatBoxBtnAdd.setChecked(false);
+                    chatbox.chatBoxBtnEmoji.setChecked(false);
+                }
+            }
+        });
+        chatbox.chatBoxEditKeyword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatbox.chatBoxBtnAdd.setChecked(false);
+                chatbox.chatBoxBtnEmoji.setChecked(false);
             }
         });
     }

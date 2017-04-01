@@ -126,7 +126,7 @@
                 <io.github.rockerhieu.emojicon.EmojiconEditText
                     android:id="@+id/chat_box_edit_keyword"
                     android:layout_width="fill_parent"
-                    android:layout_height="38dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp"

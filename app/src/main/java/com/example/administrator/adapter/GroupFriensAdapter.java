@@ -8,15 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.example.administrator.R;
+import com.example.administrator.UIView.LQRNineGridImageViewAdapter;
 import com.example.administrator.databinding.ContactItemBinding;
-import com.example.administrator.entity.Picture;
 import com.example.administrator.entity.Room;
 import com.example.administrator.entity.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.administrator.entity.Picture.PictureType.URL_NOTCLICK_TYPE;
 
 /**
  * Created by Administrator on 2017/1/22.
@@ -58,14 +56,16 @@ public class GroupFriensAdapter extends BaseAdapter {
         Room room = list.get(position);
         binding.headerimage.setVisibility(View.GONE);
         binding.groupHeader.setVisibility(View.VISIBLE);
-        List<Picture> pictureList = new ArrayList<>();
+        //填充要显示的群聊头像
+        List<String> strList = new ArrayList<>();
         for (UserInfo userInfo : room.getList()) {
-            pictureList.add(new Picture(userInfo.getHeadsmall(),userInfo.getHeadsmall(),URL_NOTCLICK_TYPE));
-            if(pictureList.size()>=9){
+            strList.add(userInfo.getHeadsmall());
+            if(strList.size()>=9){
                 break;
             }
         }
-        binding.groupHeader.setAdapter(new ImageAdapter(context,pictureList));
+        binding.groupHeader.setAdapter(new LQRNineGridImageViewAdapter());
+        binding.groupHeader.setImagesData(strList);
         binding.setNickname(room.getName());
         return binding.getRoot();
     }

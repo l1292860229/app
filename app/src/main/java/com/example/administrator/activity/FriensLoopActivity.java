@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,6 +27,7 @@ import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.presenter.FriensLoopPresenter;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.ImageUitl;
+import com.example.administrator.util.KeyBoardUtils;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
 import com.jaiky.imagespickers.ImageSelector;
@@ -217,8 +217,7 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
             binding.edit.setFocusable(true);
             binding.edit.setFocusableInTouchMode(true);
             binding.edit.requestFocus();
-            InputMethodManager  inputManager =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.showSoftInput(binding.edit, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            KeyBoardUtils.openKeybord(binding.edit,context);
         }
     };
 
@@ -229,8 +228,7 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
     public void hidePinLun() {
         binding.bottomMenu.setVisibility(View.GONE);
         binding.typeBottomMenu.setVisibility(View.VISIBLE);
-        InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        KeyBoardUtils.closeKeybord(binding.edit,context);
     }
 
     /**

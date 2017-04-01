@@ -28,17 +28,14 @@
                     android:layout_height="45dp"
                     android:scaleType="fitXY"
                     app:image="@{headsmall}"
-                    android:src="@mipmap/contact_default_header" />
-                <com.example.administrator.UIView.ImageGridView
-                    android:id="@+id/group_header"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:gravity="center"
-                    android:numColumns="3"
-                    android:stretchMode="columnWidth"
-                    android:horizontalSpacing="1dip"
-                    android:verticalSpacing="1dip"
-                    android:padding="1dip"
+                    android:src="@mipmap/contact_default_header"/>
+                <com.lqr.ninegridimageview.LQRNineGridImageView
+                    android:id="@+id/groupHeader"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_margin="2dp"
+                    android:background="@color/holo_gray_light"
+                    app:imgGap="1dp"
                     android:visibility="gone"/>
             </RelativeLayout>
             <LinearLayout

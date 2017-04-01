@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:fadingEdge="none"
         android:orientation="vertical"
+        android:background="@drawable/item_selector"
         android:scrollbars="none" >
         <RelativeLayout
             android:id="@+id/ll_content"
@@ -33,16 +34,14 @@
                         android:scaleType="fitXY"
                         app:image="@{session.heading}"
                         android:src="@mipmap/contact_default_header"/>
-                    <LinearLayout
-                        android:id="@+id/group_header"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="@drawable/room_header_bg"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="2dp"
-                        android:visibility="gone">
-                    </LinearLayout>
+                    <com.lqr.ninegridimageview.LQRNineGridImageView
+                        android:id="@+id/groupHeader"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:layout_margin="2dp"
+                        android:background="@color/holo_gray_light"
+                        app:imgGap="1dp"
+                        android:visibility="gone"/>
                 </RelativeLayout>
                 <TextView
                     android:id="@+id/message_count"

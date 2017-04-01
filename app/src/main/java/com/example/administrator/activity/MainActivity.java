@@ -18,6 +18,9 @@ import com.example.administrator.fragment.FoundFragment;
 import com.example.administrator.fragment.ProfileFragment;
 import com.example.administrator.interfaceview.IUMainView;
 import com.example.administrator.util.UIUtil;
+import com.jpeng.jptabbar.anno.NorIcons;
+import com.jpeng.jptabbar.anno.SeleIcons;
+import com.jpeng.jptabbar.anno.Titles;
 import com.tandong.sa.bv.BelowView;
 
 public class MainActivity extends BaseActivity implements IUMainView {
@@ -25,6 +28,14 @@ public class MainActivity extends BaseActivity implements IUMainView {
     MainBinding mainBinding;
     Button[] mTabs;
     Fragment[] fragments;
+    @Titles
+    private static final String[] mTitles = {"消息","通讯录","发现","我"};
+
+    @SeleIcons
+    private static final int[] mSeleIcons = {R.mipmap.fx_conversation_selected,R.mipmap.fx_contact_list_selected,R.mipmap.fx_find_pressed,R.mipmap.fx_profile_pressed};
+
+    @NorIcons
+    private static final int[] mNormalIcons = {R.mipmap.fx_conversation_normal, R.mipmap.fx_contact_list_normal, R.mipmap.fx_find_normal, R.mipmap.fx_profile_normal};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
