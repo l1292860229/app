@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.Bbs;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUIndustryView;
 import com.example.administrator.util.GsonUtil;

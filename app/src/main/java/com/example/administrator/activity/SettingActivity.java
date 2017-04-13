@@ -8,8 +8,8 @@ import android.view.View;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.SettingBinding;
-import com.example.administrator.entity.Constants;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.Constants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.util.GetDataUtil;
 

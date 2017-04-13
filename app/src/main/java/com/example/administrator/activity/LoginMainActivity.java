@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.administrator.R;
-import com.example.administrator.entity.Constants;
+import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.util.GetDataUtil;
 
 /**

@@ -227,7 +227,7 @@ public class EditProfileActivity extends BaseActivity implements IUEditProfileVi
      * @param view
      */
     public void openImagePicker(View view){
-        UIUtil.openImagePicker(EditProfileActivity.this);
+        UIUtil.openImagePicker(EditProfileActivity.this,true);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

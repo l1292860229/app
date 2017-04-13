@@ -3,7 +3,7 @@ package com.example.administrator.presenter;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.administrator.entity.Constants;
+import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.interfaceview.IUPrivateSetView;
 import com.example.administrator.util.GetDataUtil;
 

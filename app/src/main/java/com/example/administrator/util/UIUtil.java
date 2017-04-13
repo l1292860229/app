@@ -77,22 +77,24 @@ public class UIUtil {
      * 单张相片选择器
      * @param context
      */
-    public static void openImagePicker(Activity context){
-        ImageConfig imageConfig
-                = new ImageConfig.Builder(new GlideLoader())
+    public static void openImagePicker(Activity context,boolean isshowCamera){
+
+        ImageConfig.Builder ib= new ImageConfig.Builder(new GlideLoader())
                 .steepToolBarColor(context.getResources().getColor(R.color.black))
                 .titleBgColor(context.getResources().getColor(R.color.black))
                 .titleSubmitTextColor(context.getResources().getColor(R.color.white))
                 .titleTextColor(context.getResources().getColor(R.color.white))
                 // 开启单选   （默认为多选）
                 .singleSelect()
-                // 开启拍照功能 （默认关闭）
-                .showCamera()
                 // 拍照后存放的图片路径（默认 /temp/picture） （会自动创建）
                 .filePath("/temp/picture")
                 //单选自定义裁剪
-                .crop()
-                .build();
+                .crop();
+        if(isshowCamera){
+            // 开启拍照功能 （默认关闭）
+            ib.showCamera();
+        }
+        ImageConfig imageConfig= ib.build();
         ImageSelector.open(context, imageConfig);   // 开启图片选择器
     }
 
@@ -100,9 +102,8 @@ public class UIUtil {
      * 多张相片选择器
      * @param context
      */
-    public static void openImagePickers(Activity context,int max){
-        ImageConfig imageConfig
-                = new ImageConfig.Builder(new GlideLoader())
+    public static void openImagePickers(Activity context,int max,boolean isshowCamera){
+        ImageConfig.Builder ib= new ImageConfig.Builder(new GlideLoader())
                 .steepToolBarColor(context.getResources().getColor(R.color.black))
                 .titleBgColor(context.getResources().getColor(R.color.black))
                 .titleSubmitTextColor(context.getResources().getColor(R.color.white))
@@ -110,13 +111,15 @@ public class UIUtil {
                 // 开启单选   （默认为多选）
                 .mutiSelect()
                 .mutiSelectMaxSize(max)
-                // 开启拍照功能 （默认关闭）
-                .showCamera()
                 // 拍照后存放的图片路径（默认 /temp/picture） （会自动创建）
                 .filePath("/temp/picture")
                 //单选自定义裁剪
-                .crop()
-                .build();
+                .crop();
+        if(isshowCamera){
+            // 开启拍照功能 （默认关闭）
+            ib.showCamera();
+        }
+        ImageConfig imageConfig= ib.build();
         ImageSelector.open(context, imageConfig);   // 开启图片选择器
     }
     /**

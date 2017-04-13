@@ -19,9 +19,9 @@ import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.ImageUitl;
 
 import static android.app.Activity.RESULT_OK;
-import static com.example.administrator.entity.UrlConstants.BAIWAN_EWEIMA;
-import static com.example.administrator.entity.UrlConstants.BAIWAN_HUIYUANSHENJI;
-import static com.example.administrator.entity.UrlConstants.BAIWAN_QIANBAO;
+import static com.example.administrator.entity.constant.UrlConstants.BAIWAN_EWEIMA;
+import static com.example.administrator.entity.constant.UrlConstants.BAIWAN_HUIYUANSHENJI;
+import static com.example.administrator.entity.constant.UrlConstants.BAIWAN_QIANBAO;
 
 /**
  * Created by Administrator on 2017/1/22.

@@ -14,7 +14,7 @@ import com.example.administrator.R;
 import com.example.administrator.databinding.ChatBoxBinding;
 import com.example.administrator.databinding.ChatBoxExpraBinding;
 import com.example.administrator.databinding.ChatMainBinding;
-import com.example.administrator.entity.Constants;
+import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.interfaceview.IUChatMainView;
 import com.example.administrator.util.FileUtil;
 import com.example.administrator.util.KeyBoardUtils;
@@ -141,14 +141,15 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
      * @param view
      */
     public void openAlbum(View view){
-        UIUtil.openImagePickers(ChatMainActivity.this,9);
+        UIUtil.openImagePickers(ChatMainActivity.this,9,false);
     }
     /**
      * 打开地图
      * @param view
      */
     public void openMap(View view){
-
+        Intent intent = new Intent(this,BaiduMapActivity.class);
+        startActivity(intent);
     }
     /**
      * 打开名片

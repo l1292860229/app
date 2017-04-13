@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.administrator.R;
+import com.example.administrator.adapter.FragmentManagerAdapter;
 import com.example.administrator.databinding.MainBinding;
 import com.example.administrator.fragment.ChatFragment;
 import com.example.administrator.fragment.FatherContactsFragment;
@@ -23,17 +22,16 @@ import com.jpeng.jptabbar.anno.SeleIcons;
 import com.jpeng.jptabbar.anno.Titles;
 import com.tandong.sa.bv.BelowView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends BaseActivity implements IUMainView {
     Context context;
     MainBinding mainBinding;
-    Button[] mTabs;
-    Fragment[] fragments;
     @Titles
-    private static final String[] mTitles = {"消息","通讯录","发现","我"};
-
+    private static final String[] mTitles = {"通讯录","通讯录","通讯录","通讯录"};
     @SeleIcons
     private static final int[] mSeleIcons = {R.mipmap.fx_conversation_selected,R.mipmap.fx_contact_list_selected,R.mipmap.fx_find_pressed,R.mipmap.fx_profile_pressed};
-
     @NorIcons
     private static final int[] mNormalIcons = {R.mipmap.fx_conversation_normal, R.mipmap.fx_contact_list_normal, R.mipmap.fx_find_normal, R.mipmap.fx_profile_normal};
     @Override
@@ -57,29 +55,22 @@ public class MainActivity extends BaseActivity implements IUMainView {
         mSearchBtn.setVisibility(View.VISIBLE);
         mAddBtn.setImageResource(R.drawable.add_icon_btn);
         mAddBtn.setVisibility(View.VISIBLE);
-        //初始化底部按钮
-        mTabs = new Button[4];
-        mTabs[0] = mainBinding.btnConversation;
-        mTabs[1] = mainBinding.btnAddressList;
-        mTabs[2] = mainBinding.btnFind;
-        mTabs[3] = mainBinding.btnProfile;
-        mTabs[0].setSelected(true);
-        fragments = new Fragment[]{new ChatFragment(), new FatherContactsFragment(), new FoundFragment(), new ProfileFragment()};
-        if (!fragments[0].isAdded()) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragments[0])
-                    .show(fragments[0]).commit();
-        }
-        mainBinding.btnShop.setOnClickListener(new View.OnClickListener() {
+        mainBinding.tabbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context,WebViewActivity.class);
                 //intent.putExtra(WebViewActivity.URL,"http://www.baidu.com");
                 intent.putExtra(WebViewActivity.URL,"http://music.163.com/#/song?id=26270153");
-
                 startActivity(intent);
             }
         });
+        List<Fragment> list = new ArrayList<>();
+        list.add(new ChatFragment());
+        list.add(new FatherContactsFragment());
+        list.add(new FoundFragment());
+        list.add(new ProfileFragment());
+        mainBinding.fragmentContainer.setAdapter(new FragmentManagerAdapter(getSupportFragmentManager(),list));
+        mainBinding.tabbar.setContainer(mainBinding.fragmentContainer);
     }
     @Override
     public void right_btn2(View view) {
@@ -121,37 +112,5 @@ public class MainActivity extends BaseActivity implements IUMainView {
                 blv.dismissBelowView();
             }
         });
-    }
-
-    /**
-     * 底部tab选择项
-     */
-    private int index,currentTabIndex;
-    public void onTabClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_conversation:
-                index = 0;
-                break;
-            case R.id.btn_address_list:
-                index = 1;
-                break;
-            case R.id.btn_find:
-                index = 2;
-                break;
-            case R.id.btn_profile:
-                index = 3;
-                break;
-        }
-        if (currentTabIndex != index) {
-            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
-            trx.hide(fragments[currentTabIndex]);
-            if (!fragments[index].isAdded()) {
-                trx.add(R.id.fragment_container, fragments[index]);
-            }
-            trx.show(fragments[index]).commit();
-        }
-        mTabs[currentTabIndex].setSelected(false);
-        mTabs[index].setSelected(true);
-        currentTabIndex = index;
     }
 }

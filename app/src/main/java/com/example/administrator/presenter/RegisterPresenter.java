@@ -1,8 +1,8 @@
 package com.example.administrator.presenter;
 
 import com.example.administrator.activity.RegisterActivity;
-import com.example.administrator.entity.Constants;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.Constants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.interfaceview.IUPublicView;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;

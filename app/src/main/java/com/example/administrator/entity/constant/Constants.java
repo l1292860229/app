@@ -1,4 +1,4 @@
-package com.example.administrator.entity;
+package com.example.administrator.entity.constant;
 
 /**
  * Created by Administrator on 2017/1/21.
@@ -22,4 +22,6 @@ public class Constants {
     //id标识
     public static final String  ID ="585";
     public static final String TEMP_DIRECTORY="/IM/";
+    //百度地图api
+    public static final String BAIDUMAPAPI="/IM/";
 }

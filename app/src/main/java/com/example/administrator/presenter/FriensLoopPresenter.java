@@ -6,7 +6,7 @@ import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.FriensLoopActivity;
 import com.example.administrator.entity.CommentUser;
 import com.example.administrator.entity.FriendsLoopItem;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.util.GetDataUtil;

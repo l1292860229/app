@@ -2,7 +2,7 @@ package com.example.administrator.presenter;
 
 import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.Bbs;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.interfaceview.IUBBSView;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;

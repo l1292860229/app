@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.UserInfoActivity;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUUserInfoView;
 import com.example.administrator.util.GsonUtil;

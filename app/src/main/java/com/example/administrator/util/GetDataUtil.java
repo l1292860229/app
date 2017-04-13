@@ -5,7 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.administrator.entity.Constants;
+import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.entity.Province;
 import com.example.administrator.entity.UserInfo;
 

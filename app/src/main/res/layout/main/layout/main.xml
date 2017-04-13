@@ -11,142 +11,27 @@
         <include
             android:id="@+id/title_layout"
             layout="@layout/title_layout" />
-        <RelativeLayout
+        <android.support.v4.view.ViewPager
             android:layout_below="@+id/title_layout"
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="104dp"
+            android:layout_marginBottom="56dp"
             android:background="#e9e9e9" >
-        </RelativeLayout>
+        </android.support.v4.view.ViewPager>
         <com.jpeng.jptabbar.JPTabBar
             android:id="@+id/tabbar"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_marginBottom="52dp"
             android:background="#fff"
             jp:TabTextSize="16dp"
-            jp:TabIconSize="25dp"
-            jp:TabMargin="0dp"
+            jp:TabIconSize="28dp"
+            jp:TabMargin="3dp"
             jp:TabSelectColor="@color/common_botton_bar_blue"
+            jp:TabMiddleView="@layout/main_mitem"
+            jp:TabMiddleBottomDis="0dp"
+            jp:TabMiddleHMargin="50dp"
             />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/bottom_bar_normal_bg"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="visible">
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-                <Button
-                    android:id="@+id/btn_conversation"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/bottom_bar_normal_bg"
-                    android:drawableTop="@drawable/fx_tab_chat_bg"
-                    android:onClick="onTabClicked"
-                    android:scaleType="fitXY"
-                    android:text="消息"
-                    android:textColor="@color/em_main_botton_text_color"
-                    android:textSize="@dimen/text_size" />
-                <TextView
-                    android:id="@+id/unread_msg_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="1dp"
-                    android:background="@drawable/em_unread_count_bg"
-                    android:gravity="center"
-                    android:text="7"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-                <Button
-                    android:id="@+id/btn_address_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/bottom_bar_normal_bg"
-                    android:drawableTop="@drawable/fx_tab_contact_list_bg"
-                    android:onClick="onTabClicked"
-                    android:paddingBottom="3dip"
-                    android:scaleType="matrix"
-                    android:text="通讯录"
-                    android:textColor="@color/em_main_botton_text_color"
-                    android:textSize="@dimen/text_size" />
-                <TextView
-                    android:id="@+id/unread_address_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/em_unread_count_bg"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="90dp"
-                android:layout_marginTop="-10dp"
-                android:layout_weight="1" >
-                <Button
-                    android:id="@+id/btn_shop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableTop="@mipmap/gouwu"
-                    android:background="@null"
-                    android:text="商城"
-                    android:textSize="@dimen/text_size"
-                    android:textColor="@color/em_main_botton_text_color" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-                <Button
-                    android:id="@+id/btn_find"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/bottom_bar_normal_bg"
-                    android:drawableTop="@drawable/fx_tab_find_bg"
-                    android:onClick="onTabClicked"
-                    android:scaleType="fitXY"
-                    android:text="发现"
-                    android:textColor="@color/em_main_botton_text_color"
-                    android:textSize="@dimen/text_size" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/em_unread_count_bg"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
-                <Button
-                    android:id="@+id/btn_profile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/bottom_bar_normal_bg"
-                    android:drawableTop="@drawable/fx_tab_profile_bg"
-                    android:onClick="onTabClicked"
-                    android:scaleType="fitXY"
-                    android:text="我"
-                    android:textColor="@color/em_main_botton_text_color"
-                    android:textSize="@dimen/text_size" />
-            </RelativeLayout>
-        </LinearLayout>
     </RelativeLayout>
 </layout>

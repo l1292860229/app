@@ -145,7 +145,7 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
         AbDialogUtil.showAlertDialog(context, "更换背景", "是否更换背景？", new AbAlertDialogFragment.AbDialogOnClickListener() {
             @Override
             public void onPositiveClick() {
-                UIUtil.openImagePicker(FriensLoopActivity.this);
+                UIUtil.openImagePicker(FriensLoopActivity.this,true);
             }
             @Override
             public void onNegativeClick() {}

@@ -139,7 +139,7 @@ public class SendFriensLoopActivity extends BaseActivity implements IUSendFriens
             pictureList.add(0,new Picture("smiley_add_btn", "smiley_add_btn", DRAWABLE_TYPE, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    UIUtil.openImagePickers(SendFriensLoopActivity.this,Max);
+                    UIUtil.openImagePickers(SendFriensLoopActivity.this,Max,true);
                 }
             }));
         }

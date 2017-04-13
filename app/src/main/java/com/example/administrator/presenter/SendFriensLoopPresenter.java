@@ -5,7 +5,7 @@ import android.content.Intent;
 import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.FriensLoopActivity;
 import com.example.administrator.entity.Picture;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.interfaceview.IUSendFriensLoopView;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;

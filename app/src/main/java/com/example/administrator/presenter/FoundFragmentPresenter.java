@@ -3,7 +3,7 @@ package com.example.administrator.presenter;
 import android.content.Context;
 
 import com.example.administrator.entity.Menu;
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUFoundFragmentView;
 import com.example.administrator.util.GetDataUtil;
@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.administrator.entity.UrlConstants.BAIWAN_FUJINDEDIAN;
-import static com.example.administrator.entity.UrlConstants.BAIWAN_GAME;
-import static com.example.administrator.entity.UrlConstants.BAIWAN_YIYUANDUOBAO;
+import static com.example.administrator.entity.constant.UrlConstants.BAIWAN_FUJINDEDIAN;
+import static com.example.administrator.entity.constant.UrlConstants.BAIWAN_GAME;
+import static com.example.administrator.entity.constant.UrlConstants.BAIWAN_YIYUANDUOBAO;
 import static com.example.administrator.util.GetDataUtil.getUserInfo;
 
 /**

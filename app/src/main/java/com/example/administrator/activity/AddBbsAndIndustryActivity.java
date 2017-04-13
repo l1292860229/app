@@ -25,7 +25,7 @@ import java.util.List;
 
 public class AddBbsAndIndustryActivity extends BaseActivity implements IUPublicView {
     public final static String ISSHOWMONEY = "showmoney";
-    AddBbsBinding registerBinding;
+    AddBbsBinding addBbsBinding;
     AddBbsAndIndustryPresenter addBbsAndIndustryPresenter;
     private String imagePath;
     private boolean showmoney=false;
@@ -35,15 +35,15 @@ public class AddBbsAndIndustryActivity extends BaseActivity implements IUPublicV
         super.onCreate(savedInstanceState);
         context = AddBbsAndIndustryActivity.this;
         addBbsAndIndustryPresenter = new AddBbsAndIndustryPresenter(context,this);
-        registerBinding =  DataBindingUtil.setContentView(this, R.layout.add_bbs);
-        registerBinding.setBehavior(this);
-        registerBinding.titleLayout.setBehavior(this);
+        addBbsBinding =  DataBindingUtil.setContentView(this, R.layout.add_bbs);
+        addBbsBinding.setBehavior(this);
+        addBbsBinding.titleLayout.setBehavior(this);
         showmoney = getIntent().getBooleanExtra(ISSHOWMONEY,false);
         if(showmoney){
-            registerBinding.bbsmoney.setVisibility(View.VISIBLE);
+            addBbsBinding.bbsmoney.setVisibility(View.VISIBLE);
         }
-        registerBinding.titleLayout.titlecontext.setText("添加");
-        TextView tvRight = registerBinding.titleLayout.rightText;
+        addBbsBinding.titleLayout.titlecontext.setText("添加");
+        TextView tvRight = addBbsBinding.titleLayout.rightText;
         tvRight.setText("确定");
     }
     /**
@@ -52,9 +52,9 @@ public class AddBbsAndIndustryActivity extends BaseActivity implements IUPublicV
      */
     @Override
     public void right_text(View view){
-        String title =  registerBinding.bbstitle.getText().toString();
-        String content = registerBinding.bbscontent.getText().toString();
-        String money =  registerBinding.bbsmoney.getText().toString();
+        String title =  addBbsBinding.bbstitle.getText().toString();
+        String content = addBbsBinding.bbscontent.getText().toString();
+        String money =  addBbsBinding.bbsmoney.getText().toString();
         if(StringUtil.isNull(title)){
             UIUtil.showMessage(context,"标题不能为空");
             return;
@@ -70,7 +70,7 @@ public class AddBbsAndIndustryActivity extends BaseActivity implements IUPublicV
         super.showLoading("正在提交数据..");
     }
     public void openImagePicker(View view){
-        UIUtil.openImagePicker(AddBbsAndIndustryActivity.this);
+        UIUtil.openImagePicker(AddBbsAndIndustryActivity.this,true);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AddBbsAndIndustryActivity extends BaseActivity implements IUPublicV
                     List<String> pathList = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT);
                     for (String path : pathList) {
                         imagePath = path;
-                        registerBinding.headsmall.setImageBitmap(BitmapFactory.decodeFile(path));
+                        addBbsBinding.headsmall.setImageBitmap(BitmapFactory.decodeFile(path));
                     }
                 }
 

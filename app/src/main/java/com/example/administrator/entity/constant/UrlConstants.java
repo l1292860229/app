@@ -1,4 +1,4 @@
-package com.example.administrator.entity;
+package com.example.administrator.entity.constant;
 
 /**
  * Created by Administrator on 2017/1/21.

@@ -2,7 +2,7 @@ package com.example.administrator.presenter;
 
 import android.content.Context;
 
-import com.example.administrator.entity.UrlConstants;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;

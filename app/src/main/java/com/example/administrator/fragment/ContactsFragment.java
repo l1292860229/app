@@ -16,7 +16,7 @@ import com.example.administrator.R;
 import com.example.administrator.activity.UserInfoActivity;
 import com.example.administrator.adapter.ContactsAdapter;
 import com.example.administrator.databinding.GroupItemNotitleBinding;
-import com.example.administrator.entity.Constants;
+import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;
