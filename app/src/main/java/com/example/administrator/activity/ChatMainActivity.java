@@ -11,16 +11,20 @@ import android.view.View;
 import android.widget.CompoundButton;
 
 import com.example.administrator.R;
+import com.example.administrator.adapter.ChatMainAdapter;
 import com.example.administrator.databinding.ChatBoxBinding;
 import com.example.administrator.databinding.ChatBoxExpraBinding;
 import com.example.administrator.databinding.ChatMainBinding;
 import com.example.administrator.entity.constant.Constants;
+import com.example.administrator.entity.db.MessageTable;
 import com.example.administrator.interfaceview.IUChatMainView;
+import com.example.administrator.presenter.ChatMainPresenter;
 import com.example.administrator.util.FileUtil;
 import com.example.administrator.util.KeyBoardUtils;
 import com.example.administrator.util.UIUtil;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/14.
@@ -29,17 +33,26 @@ import java.io.File;
 public class ChatMainActivity extends BaseActivity implements IUChatMainView{
     Context context;
     ChatMainBinding binding;
+    ChatMainAdapter chatMainAdapter;
+    ChatMainPresenter chatMainPresenter;
+    List<MessageTable> mMessageTables;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         binding =  DataBindingUtil.setContentView(this, R.layout.chat_main);
         binding.setBehavior(this);
-        init();
+        binding.titleLayout.setBehavior(this);
+        chatMainPresenter = new ChatMainPresenter(this,this);
+        chatMainPresenter.init();
     }
 
     @Override
-    public void init() {
+    public void init(List<MessageTable> messageTables) {
+        mMessageTables = messageTables;
+        chatMainAdapter = new ChatMainAdapter(context,mMessageTables);
+        binding.chatMainListMsg.setCanLoadMore(false);
+        binding.chatMainListMsg.setAdapter(chatMainAdapter);
         initializeView();
     }
 
@@ -47,7 +60,6 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
      * 初始化控件
      */
     public void initializeView(){
-        binding.titleLayout.setBehavior(this);
         final ChatBoxBinding chatbox =  binding.chatBox;
         final ChatBoxExpraBinding chatBoxExpraBinding =  binding.chatBoxExpra;
         //设置表情框支持
@@ -164,6 +176,7 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
      * @param view
      */
     public void openCollection(View view){
-
+        Intent intent = new Intent(context, MyFavoriteActivity.class);
+        startActivity(intent);
     }
 }

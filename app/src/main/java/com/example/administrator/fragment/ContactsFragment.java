@@ -16,12 +16,11 @@ import com.example.administrator.R;
 import com.example.administrator.activity.UserInfoActivity;
 import com.example.administrator.adapter.ContactsAdapter;
 import com.example.administrator.databinding.GroupItemNotitleBinding;
-import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;
 import com.example.administrator.presenter.ContactsFragmentPresenter;
-import com.example.administrator.util.ImageUitl;
 import com.tandong.sa.view.AutoReFreshListView;
 
 import java.util.ArrayList;
@@ -50,9 +49,8 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = this.getActivity();
-        ImageUitl.init(context);
         binding =  DataBindingUtil.inflate(inflater, R.layout.group_item_notitle,container,false);
-        presenter = new ContactsFragmentPresenter(context,this);
+        presenter = new ContactsFragmentPresenter(this.getActivity(),this);
         Bundle bundle = getArguments();
         friends = bundle.getInt("friends");
         mListView = binding.groupList;
@@ -62,11 +60,12 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        presenter.getDate(page,friends,GetDataType.INITDATA);
+        //presenter.getDate(page,friends,GetDataType.INITDATA);
     }
 
     @Override
     public void init(ArrayList<UserInfo> userInfos) {
+        page = userInfos.size()/20;
         userInfoArrayList = userInfos;
         userInfoListAdapter = new ContactsAdapter(context,userInfoArrayList);
         mListView.setAdapter(userInfoListAdapter);
@@ -95,7 +94,7 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
     @Override
     public void loadsuccess(ArrayList<UserInfo> userInfos) {
         mListView.onLoadMoreComplete();
-        userInfoArrayList.addAll(userInfos);
+        userInfoArrayList = userInfos;
         userInfoListAdapter.setData(userInfoArrayList);
         userInfoListAdapter.notifyDataSetChanged();
     }

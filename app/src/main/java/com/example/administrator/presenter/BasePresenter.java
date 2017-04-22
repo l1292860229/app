@@ -12,10 +12,13 @@ import com.tandong.sa.loopj.AsyncHttpClient;
 
 public class BasePresenter {
     BaseActivity context;
-    AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    UserInfo userInfo;
+    AsyncHttpClient client;
+    static UserInfo userInfo;
     public BasePresenter(BaseActivity context){
         this.context = context;
-        userInfo = GetDataUtil.getUserInfo(context);
+        this.client = NetworkUtil.instanceAsyncHttpClient();
+        if(userInfo==null){
+            userInfo = GetDataUtil.getUserInfo(context);
+        }
     }
 }

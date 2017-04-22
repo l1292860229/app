@@ -19,7 +19,7 @@ import io.github.rockerhieu.emojicon.emoji.Emojicon;
 
 public class BaseActivity extends AppCompatActivity implements EmojiconsFragment.OnEmojiconBackspaceClickedListener,EmojiconGridFragment.OnEmojiconClickedListener {
     AbLoadDialogFragment loadingfragment;
-    BelowView blv;
+    protected  BelowView blv;
     EmojiconEditText emojiconEditText;//支持表情的输入框
     public void showLoading(String msg) {
         loadingfragment =  AbDialogUtil.showLoadDialog(BaseActivity.this, R.mipmap.ic_load, msg);

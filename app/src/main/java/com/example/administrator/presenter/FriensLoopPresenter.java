@@ -14,6 +14,7 @@ import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
+import com.google.gson.reflect.TypeToken;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -24,7 +25,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.example.administrator.enumset.GetDataType.INITDATA;
 
@@ -58,17 +58,17 @@ public class FriensLoopPresenter extends BasePresenter {
                         JSONObject json = null;
                         try {
                             json = new JSONObject(data);
-                            FriendsLoopItem[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),FriendsLoopItem[].class);
+                            ArrayList<FriendsLoopItem> mlist = GsonUtil.parseJsonWithGsonObject(json.getString("data"),new TypeToken<ArrayList<FriendsLoopItem>>() {}.getType());
                            switch (getDataType){
                                case INITDATA:
                                    friensLoopView.hideLoading();
-                                   friensLoopView.init(new ArrayList<>(Arrays.asList(mlist)));
+                                   friensLoopView.init(mlist);
                                    break;
                                case LOADDATA:
-                                   friensLoopView.loadsuccess(new ArrayList<>(Arrays.asList(mlist)));
+                                   friensLoopView.loadsuccess(mlist);
                                    break;
                                case REFRESHDATA:
-                                   friensLoopView.refreshsuccess(new ArrayList<>(Arrays.asList(mlist)));
+                                   friensLoopView.refreshsuccess(mlist);
                                    break;
                            }
                         } catch (JSONException e) {
@@ -134,12 +134,9 @@ public class FriensLoopPresenter extends BasePresenter {
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-                        ArrayList<CommentUser> commentUsers = new ArrayList<CommentUser>(Arrays.asList(dataList.get(position).getReplylist()));
+                        ArrayList<CommentUser> commentUsers = dataList.get(position).getReplylist();
                         commentUsers.add(new CommentUser(userInfo.getUid(),userInfo.getNickname(),
                                 toUid,toName,content));
-                        CommentUser[] tempCommentUser = new CommentUser[commentUsers.size()];
-                        commentUsers.toArray(tempCommentUser);
-                        dataList.get(position).setReplylist(tempCommentUser);
                         friensLoopView.refreshsuccess(dataList);
                     }
                     @Override
@@ -160,7 +157,7 @@ public class FriensLoopPresenter extends BasePresenter {
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
-                        ArrayList<CommentUser> commentUsers = new ArrayList<CommentUser>(Arrays.asList(dataList.get(position).getPraiselist()));
+                        ArrayList<CommentUser> commentUsers = dataList.get(position).getPraiselist();
                         //如果赞过就取消赞，否则就添加赞
                         if(isZan){
                             commentUsers.add(new CommentUser(userInfo.getUid(),userInfo.getNickname(),
@@ -175,9 +172,6 @@ public class FriensLoopPresenter extends BasePresenter {
                             }
                             dataList.get(position).setIspraise(0);
                         }
-                        CommentUser[] tempCommentUser = new CommentUser[commentUsers.size()];
-                        commentUsers.toArray(tempCommentUser);
-                        dataList.get(position).setPraiselist(tempCommentUser);
                         friensLoopView.refreshsuccess(dataList);
                     }
                     @Override

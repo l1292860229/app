@@ -10,13 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.R;
+import com.example.administrator.activity.ChatMainActivity;
 import com.example.administrator.activity.EditProfileActivity;
-import com.example.administrator.activity.SettingActivity;
+import com.example.administrator.activity.MyFavoriteActivity;
+import com.example.administrator.activity.UserMenuActivity;
 import com.example.administrator.activity.WebViewActivity;
 import com.example.administrator.databinding.FragmentProfileBinding;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.util.GetDataUtil;
-import com.example.administrator.util.ImageUitl;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.administrator.entity.constant.UrlConstants.BAIWAN_EWEIMA;
@@ -36,8 +37,6 @@ public class ProfileFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         context = ProfileFragment.this.getActivity();
         userInfo = GetDataUtil.getUserInfo(context);
-        //图片工具的初始化
-        ImageUitl.init(context);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile,container,false);
         init();
         return binding.getRoot();
@@ -48,7 +47,14 @@ public class ProfileFragment extends Fragment  {
         binding.setUserinfo(GetDataUtil.getUserInfo(context));
         binding.setBehavior(this);
     }
-
+    /**
+     * 打开收藏
+     * @param view
+     */
+    public void openShouCang(View view){
+        Intent intent = new Intent(context, MyFavoriteActivity.class);
+        startActivity(intent);
+    }
     /**
      * 打开钱包
      * @param view
@@ -84,14 +90,24 @@ public class ProfileFragment extends Fragment  {
         intent.setClass(context, EditProfileActivity.class);
         startActivityForResult(intent,UPDATEUSERINFO);
     }
-
+    /**
+     * 打开自定义菜单
+     * @param view
+     */
+    public void openUserMenu(View view){
+        Intent intent = new Intent();
+        intent.setClass(context, UserMenuActivity.class);
+        startActivity(intent);
+    }
     /**
      * 打开设置页面
      * @param view
      */
     public void openSetting(View view){
-        Intent intent = new Intent();
-        intent.setClass(context, SettingActivity.class);
+//        Intent intent = new Intent();
+//        intent.setClass(context, SettingActivity.class);
+//        startActivity(intent);
+        Intent intent = new Intent(context, ChatMainActivity.class);
         startActivity(intent);
     }
 

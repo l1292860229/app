@@ -90,9 +90,6 @@ public class MenuAdapter extends BaseAdapter {
             });
         }else if(list.get(position).getTitle().equals("附近的店")){
             binding.imageUrl.setBackground(ContextCompat.getDrawable(context,R.mipmap.fujindedian));
-        }else if(list.get(position).getTitle().equals("一元夺宝")){
-            binding.imageUrl.setBackground(ContextCompat.getDrawable(context,R.mipmap.yiyuan));
-            binding.bottomLayout.setVisibility(View.VISIBLE);
         }else if(list.get(position).getTitle().equals("购物")){
             binding.imageUrl.setBackground(ContextCompat.getDrawable(context,R.mipmap.gouwuche));
         }else if(list.get(position).getTitle().equals("游戏")){

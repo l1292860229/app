@@ -7,6 +7,7 @@ import com.example.administrator.interfaceview.IUBBSView;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
+import com.google.gson.reflect.TypeToken;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -15,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Administrator on 2017/3/2.
@@ -43,7 +43,7 @@ public class BBSPresenter extends BasePresenter {
                         bbsView.hideLoading();
                         try {
                             JSONObject json = new JSONObject(data);
-                            bbsView.init(new ArrayList<>(Arrays.asList( GsonUtil.parseJsonWithGson(json.getString("data"),Bbs[].class))));
+                            bbsView.init(GsonUtil.<ArrayList<Bbs>>parseJsonWithGsonObject(json.getString("data") ,new TypeToken<ArrayList<Bbs>>(){}.getType()));
                         } catch (JSONException e) {
                             UIUtil.showMessage(context,"数据异常");
                             e.printStackTrace();

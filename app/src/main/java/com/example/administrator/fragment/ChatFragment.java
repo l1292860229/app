@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,11 +12,14 @@ import android.view.ViewGroup;
 
 import com.example.administrator.R;
 import com.example.administrator.activity.ChatMainActivity;
-import com.example.administrator.adapter.ChatAdapter;
+import com.example.administrator.activity.MainActivity;
+import com.example.administrator.adapter.ChatFragmentAdapter;
 import com.example.administrator.databinding.ChatFragmentBinding;
 import com.example.administrator.entity.Session;
 import com.example.administrator.interfaceview.IUChatFragmentView;
-import com.example.administrator.util.ImageUitl;
+import com.example.administrator.presenter.ChatFragmentPresenter;
+import com.example.administrator.util.UIUtil;
+import com.jpeng.jptabbar.JPTabBar;
 import com.yydcdut.sdlv.Menu;
 import com.yydcdut.sdlv.MenuItem;
 import com.yydcdut.sdlv.SlideAndDragListView;
@@ -33,33 +35,26 @@ public class ChatFragment extends Fragment implements IUChatFragmentView {
     ChatFragmentBinding binding;
     private SlideAndDragListView chatListView;
     private Context context;
+    private ChatFragmentPresenter chatFragmentPresenter;
+    private ChatFragmentAdapter mChatFragmentAdapter;
+    private JPTabBar jpTabBar;
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         context = ChatFragment.this.getActivity();
-        ImageUitl.init(context);
         binding = DataBindingUtil.inflate(inflater, R.layout.chat_fragment,container,false);
         chatListView = binding.chatsList;
-        init();
+        chatFragmentPresenter = new ChatFragmentPresenter(this.getActivity(),this);
+        jpTabBar = ((MainActivity)this.getActivity()).getTabbar();
+        chatFragmentPresenter.init();
         return binding.getRoot();
     }
 
     @Override
-    public void init() {
-        List<Session> mlist = new ArrayList<>();
-        Session session  = new  Session();
-        session.setFromId("2");
-        session.setType(0);
-        session.setName("小刚");
-        session.setHeading("http://139.224.57.105/im2/Uploads/Picture/avatar/18/s_6f0542e07dad7f7a0a655f799b94bc43.jpg");
-        session.setUnreadcount(3);
-        mlist.add(session);
+    public void init(List<Session> mlist) {
+        mChatFragmentAdapter = new ChatFragmentAdapter(ChatFragment.this.getActivity(),mlist);
         //设置左滑菜单
-        Menu mMenu = new Menu(true, true);
-        mMenu.addItem(getMenu("删除",Color.RED));
-        mMenu.addItem(getMenu("标为未读",Color.GREEN));
-        mMenu.addItem(getMenu("置顶",Color.GRAY));
-        chatListView.setMenu(mMenu);
-        chatListView.setAdapter(new ChatAdapter(ChatFragment.this.getActivity(),mlist));
+        chatListView.setMenu(getMenuList());
+        chatListView.setAdapter(mChatFragmentAdapter);
         chatListView.setOnListItemClickListener(new SlideAndDragListView.OnListItemClickListener() {
             @Override
             public void onListItemClick(View view, int position) {
@@ -67,6 +62,77 @@ public class ChatFragment extends Fragment implements IUChatFragmentView {
                 startActivity(intent);
             }
         });
+        chatListView.setOnMenuItemClickListener(new SlideAndDragListView.OnMenuItemClickListener() {
+            @Override
+            public int onMenuItemClick(View v, int itemPosition, int buttonPosition, int direction) {
+                Session session = mChatFragmentAdapter.getData().get(itemPosition);
+                switch (direction) {
+                    case MenuItem.DIRECTION_LEFT:
+                        switch (buttonPosition) {
+                           case 0:
+                               chatFragmentPresenter.delSession(session.getId());
+                                return Menu.ITEM_SCROLL_BACK;
+                            case 1:
+                                if (session.itemViewType()== Session.READ_TOP
+                                        ||session.itemViewType()== Session.READ_UNTOP) {
+                                    chatFragmentPresenter.updateSessionUnReadCount(session,1);
+                                }else{
+                                    chatFragmentPresenter.updateSessionUnReadCount(session,0);
+                                }
+                                return Menu.ITEM_SCROLL_BACK;
+                            case 2:
+                                if (session.itemViewType()== Session.READ_TOP
+                                        ||session.itemViewType()== Session.UNREAD_TOP) {
+                                    chatFragmentPresenter.setSessionTop(session,0);
+                                }else{
+                                    chatFragmentPresenter.setSessionTop(session,1);
+                                }
+                                return Menu.ITEM_SCROLL_BACK;
+                        }
+                        break;
+                }
+                return Menu.ITEM_NOTHING;
+            }
+        });
+    }
+
+    @Override
+    public void load(List<Session> mlist) {
+        mChatFragmentAdapter.setData(mlist);
+        mChatFragmentAdapter.notifyDataSetChanged();
+    }
+    //设置未读消息个数
+    @Override
+    public void setUnReadCount(int count) {
+        jpTabBar.showBadge(0,count,true);
+    }
+    /**
+     * 获取四种不同的状态菜单栏信息
+     * @return
+     */
+    public List<Menu> getMenuList(){
+        ArrayList<Menu> menus = new ArrayList<>();
+        Menu mMenu = new Menu(true, false,Session.READ_UNTOP);
+        mMenu.addItem(getMenuItem("删除",Color.RED));
+        mMenu.addItem(getMenuItem("标为未读",Color.GREEN));
+        mMenu.addItem(getMenuItem("置顶",Color.GRAY));
+        menus.add(mMenu);
+        mMenu = new Menu(true, false,Session.UNREAD_UNTOP);
+        mMenu.addItem(getMenuItem("删除",Color.RED));
+        mMenu.addItem(getMenuItem("标为已读",Color.GREEN));
+        mMenu.addItem(getMenuItem("置顶",Color.GRAY));
+        menus.add(mMenu);
+        mMenu = new Menu(true, false,Session.UNREAD_TOP);
+        mMenu.addItem(getMenuItem("删除",Color.RED));
+        mMenu.addItem(getMenuItem("标为已读",Color.GREEN));
+        mMenu.addItem(getMenuItem("取消置顶",Color.GRAY));
+        menus.add(mMenu);
+        mMenu = new Menu(true, false,Session.READ_TOP);
+        mMenu.addItem(getMenuItem("删除",Color.RED));
+        mMenu.addItem(getMenuItem("标为未读",Color.GREEN));
+        mMenu.addItem(getMenuItem("取消置顶",Color.GRAY));
+        menus.add(mMenu);
+        return menus;
     }
 
     /**
@@ -75,13 +141,7 @@ public class ChatFragment extends Fragment implements IUChatFragmentView {
      * @param color
      * @return
      */
-    public MenuItem getMenu(String title,int color){
-        return new MenuItem.Builder().setWidth(150)
-                .setText(title)
-                .setBackground(new ColorDrawable(color))
-                .setTextColor(Color.WHITE)
-                .setTextSize(14)
-                .setDirection(MenuItem.DIRECTION_RIGHT)
-                .build();
+    public MenuItem getMenuItem(String title,int color){
+        return UIUtil.getMenu(title,color,150,Color.WHITE,14,MenuItem.DIRECTION_LEFT);
     }
 }

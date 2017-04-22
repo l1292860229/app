@@ -10,6 +10,7 @@ import com.example.administrator.interfaceview.IUIndustryView;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
+import com.google.gson.reflect.TypeToken;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -18,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.example.administrator.enumset.GetDataType.INITDATA;
 
@@ -53,16 +53,20 @@ public class IndustryPresenter extends BasePresenter {
                         Log.e("init","data="+data);
                         try {
                             JSONObject json = new JSONObject(data);
+                            ArrayList<Bbs> mlist = GsonUtil.parseJsonWithGsonObject(json.getString("data") ,new TypeToken<ArrayList<Bbs>>(){}.getType());
+                            if(mlist==null){
+                                mlist = new ArrayList<>();
+                            }
                             switch (dataType){
                                 case INITDATA:
                                     industryView.hideLoading();
-                                    industryView.init(new ArrayList<>(Arrays.asList( GsonUtil.parseJsonWithGson(json.getString("data"),Bbs[].class))));
+                                    industryView.init(mlist);
                                     break;
                                 case REFRESHDATA:
-                                    industryView.refreshsuccess(new ArrayList<>(Arrays.asList( GsonUtil.parseJsonWithGson(json.getString("data"),Bbs[].class))));
+                                    industryView.refreshsuccess(mlist);
                                     break;
                                 case LOADDATA:
-                                    industryView.loadsuccess(new ArrayList<>(Arrays.asList( GsonUtil.parseJsonWithGson(json.getString("data"),Bbs[].class))));
+                                    industryView.loadsuccess(mlist);
                                     break;
                             }
                         } catch (JSONException e) {

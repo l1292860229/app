@@ -1,16 +1,16 @@
 package com.example.administrator.presenter;
 
-import android.content.Context;
+import android.app.Activity;
 
-import com.example.administrator.entity.constant.UrlConstants;
+import com.example.administrator.dbDao.UserInfoTableDao;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;
-import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
+import com.google.gson.reflect.TypeToken;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -19,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.example.administrator.enumset.GetDataType.INITDATA;
 
@@ -27,17 +26,23 @@ import static com.example.administrator.enumset.GetDataType.INITDATA;
  * Created by Administrator on 2017/2/28.
  */
 
-public class ContactsFragmentPresenter {
-    private Context context;
+public class ContactsFragmentPresenter extends BaseFragmentPresenter {
     private IUContactsFragmentView contactsFragmentView;
-    private AsyncHttpClient client = NetworkUtil.instanceAsyncHttpClient();
-    private UserInfo userInfo;
-    public ContactsFragmentPresenter(Context context,IUContactsFragmentView contactsFragmentView){
+    private UserInfoTableDao userInfoTableDao;
+    public ContactsFragmentPresenter(Activity context, IUContactsFragmentView contactsFragmentView){
+        super(context);
         this.contactsFragmentView = contactsFragmentView;
-        this.context = context;
-        userInfo = GetDataUtil.getUserInfo(context);
+        userInfoTableDao = new UserInfoTableDao();
     }
-    public void getDate(int page,int o,final GetDataType getDataType){
+    public void getDate(final int page, final int o, final GetDataType getDataType){
+        //先查询本地数据库是否缓存
+        if(getDataType==INITDATA){
+           ArrayList<UserInfo> userInfos =  userInfoTableDao.select(userInfo.getUid(),o);
+            if(userInfos!=null&& userInfos.size()>0){
+                contactsFragmentView.init(userInfos);
+                return;
+            }
+        }
         RequestParams params = new RequestParams();
         params.put("id",userInfo.getYpid());
         params.put("uid",userInfo.getUid());
@@ -56,17 +61,19 @@ public class ContactsFragmentPresenter {
                         String data = new String(arg2).replace("(","").replace(")","");
                         try {
                             JSONObject json = new JSONObject(data);
-                            UserInfo[] mlist = GsonUtil.parseJsonWithGson(json.getString("data"),UserInfo[].class);
+                            ArrayList<UserInfo> mlist = GsonUtil.parseJsonWithGsonObject(json.getString("data"),new TypeToken<ArrayList<UserInfo>>() {}.getType());
+                            userInfoTableDao.insert(userInfo.getUid(),o,mlist);
+                            mlist = userInfoTableDao.select(userInfo.getUid(),o);
                             switch (getDataType){
                                 case INITDATA:
                                     contactsFragmentView.hideLoading();
-                                    contactsFragmentView.init(new ArrayList<>(Arrays.asList(mlist)));
+                                    contactsFragmentView.init(mlist);
                                     break;
                                 case LOADDATA:
-                                    contactsFragmentView.loadsuccess(new ArrayList<>(Arrays.asList(mlist)));
+                                    contactsFragmentView.loadsuccess(mlist);
                                     break;
                                 case REFRESHDATA:
-                                    contactsFragmentView.refreshsuccess(new ArrayList<>(Arrays.asList(mlist)));
+                                    contactsFragmentView.refreshsuccess(mlist);
                                     break;
                             }
                         } catch (JSONException e) {
@@ -82,4 +89,5 @@ public class ContactsFragmentPresenter {
                     }
                 });
     }
+
 }

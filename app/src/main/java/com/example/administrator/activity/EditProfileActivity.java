@@ -21,7 +21,6 @@ import com.example.administrator.databinding.EditProfileBinding;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.interfaceview.IUEditProfileView;
 import com.example.administrator.presenter.EditProfilePresenter;
-import com.example.administrator.util.ImageUitl;
 import com.example.administrator.util.UIUtil;
 import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
@@ -56,7 +55,6 @@ public class EditProfileActivity extends BaseActivity implements IUEditProfileVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = EditProfileActivity.this;
-        ImageUitl.init(context);
         editProfilePresenter = new EditProfilePresenter(this,this);
         binding =  DataBindingUtil.setContentView(this, R.layout.edit_profile);
         editProfilePresenter.init();

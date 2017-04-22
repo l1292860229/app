@@ -33,7 +33,6 @@ import com.example.administrator.interfaceview.IUFriensLoopView;
 import com.example.administrator.presenter.FriensLoopPresenter;
 import com.example.administrator.util.DateUtil;
 import com.example.administrator.util.GetDataUtil;
-import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.ImageUitl;
 import com.example.administrator.util.StringUtil;
 
@@ -125,10 +124,9 @@ public class FriensLoopAdapter extends BaseAdapter{
         binding.content.setMovementMethod(LinkMovementMethod.getInstance());
         binding.content.setText(ss);
         //设置链接
-        String shareurlStr = friendsLoopItem.getShareurl();
-        if(!StringUtil.isNull(shareurlStr) && !shareurlStr.equals("\"\"")){
+        final Shareurl shareurl = friendsLoopItem.getShareurl();
+        if(shareurl!=null){
             binding.url.setVisibility(View.VISIBLE);
-            final Shareurl shareurl = GsonUtil.parseJsonWithGson(shareurlStr.replace("\\\"","\""),Shareurl.class);
             if(!StringUtil.isNull(shareurl.getImageurl())){
                 ImageUitl.setImage(binding.imageUrl,shareurl.getImageurl());
             }
@@ -267,36 +265,36 @@ public class FriensLoopAdapter extends BaseAdapter{
             }
         });
         //点赞处理
-        CommentUser[] zanList = friendsLoopItem.getPraiselist();
+        ArrayList<CommentUser> zanList = friendsLoopItem.getPraiselist();
         binding.zanLayout.removeAllViews();
-        if (zanList!=null && zanList.length>0) {
+     if (zanList!=null && zanList.size()>0) {
             binding.otherLayout.setVisibility(View.VISIBLE);
             binding.zanIcon.setVisibility(View.VISIBLE);
             TextView tv = new TextView(context);
             LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             tv.setLayoutParams(param);
             String userName=" ";
-            boolean isHide=zanList.length>5;
+            boolean isHide=zanList.size()>5;
             int nameCount;
             String nameStr = "";
             if(isHide){
                 nameCount=5;
-                nameStr="等"+zanList.length+"个人";
+                nameStr="等"+zanList.size()+"个人";
             }else{
-                nameCount=zanList.length;
+                nameCount=zanList.size();
             }
             for (int i = 0; i < nameCount; i++) {
-                userName+=zanList[i].getNickname()+",";
+                userName+=zanList.get(i).getNickname()+",";
             }
             SpannableString spannableString = new SpannableString(userName.substring(0,userName.length()-1)+nameStr);
             for (int i = 0; i < nameCount; i++) {
                 final int pos = i;
-                int start=i-1<0?0:userName.indexOf(",",userName.indexOf(zanList[i-1].getNickname()));
+                int start=i-1<0?0:userName.indexOf(",",userName.indexOf(zanList.get(i-1).getNickname()));
                 int end;
-                if (zanList[i].getNickname()==null) {
+                if (zanList.get(i).getNickname()==null) {
                     end  = start+1;
                 }else{
-                    end  = start+zanList[i].getNickname().length()+1;
+                    end  = start+zanList.get(i).getNickname().length()+1;
                 }
                 end= end<start?start:end;
                 spannableString.setSpan(new ClickableSpan() {
@@ -319,17 +317,17 @@ public class FriensLoopAdapter extends BaseAdapter{
             binding.zanIcon.setVisibility(View.GONE);
         }
         //评论处理
-        final CommentUser[] replylist = list.get(position).getReplylist();
+        final ArrayList<CommentUser> replylist = list.get(position).getReplylist();
         binding.commentLayout.removeAllViews();
-        if (replylist!=null && replylist.length>0) {
+        if (replylist!=null && replylist.size()>0) {
             binding.otherLayout.setVisibility(View.VISIBLE);
             binding.commentLayout.removeAllViews();
-            boolean isHide=replylist.length>20;
+            boolean isHide=replylist.size()>20;
             int nameCount;
             if(isHide){
                 nameCount=20;
             }else{
-                nameCount=replylist.length;
+                nameCount=replylist.size();
             }
             for (int i = 0; i <nameCount; i++) {
                 final int pos = i;
@@ -343,10 +341,10 @@ public class FriensLoopAdapter extends BaseAdapter{
                 tv.setBackground(context.getResources().getDrawable(R.drawable.friends_long_click_bg_color));
                 String replyStr;
                 //如果fid不为0表示回复别人
-                if(replylist[i].getFid()==null||replylist[i].getFid().equals("0")){
-                    replyStr = replylist[i].getNickname()+":"+replylist[i].getContent();
+                if(replylist.get(i).getFid()==null||replylist.get(i).getFid().equals("0")){
+                    replyStr = replylist.get(i).getNickname()+":"+replylist.get(i).getContent();
                 }else{
-                    replyStr = replylist[i].getNickname()+"回复"+replylist[i].getFnickname()+":"+replylist[i].getContent();
+                    replyStr = replylist.get(i).getNickname()+"回复"+replylist.get(i).getFnickname()+":"+replylist.get(i).getContent();
                 }
 //                SpannableString spannableString = EmojiUtil.getExpressionString(context,replyStr, "emoji_[\\d]{0,3}");
                 SpannableString spannableString =  new SpannableString(replyStr);
@@ -360,10 +358,10 @@ public class FriensLoopAdapter extends BaseAdapter{
                     @Override
                     public void onClick(View widget) {
                     }
-                },0,replylist[i].getNickname().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                if(replylist[i].getFid()!=null&&!replylist[i].getFid().equals("0")){
-                    int start = (replylist[i].getNickname()+"回复").length();
-                    int end  = start+replylist[i].getFnickname().length();
+                },0,replylist.get(i).getNickname().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                if(replylist.get(i).getFid()!=null&&!replylist.get(i).getFid().equals("0")){
+                    int start = (replylist.get(i).getNickname()+"回复").length();
+                    int end  = start+replylist.get(i).getFnickname().length();
                     spannableString.setSpan(new ClickableSpan() {
                         @Override
                         public void updateDrawState(TextPaint ds) {
@@ -382,7 +380,7 @@ public class FriensLoopAdapter extends BaseAdapter{
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        friensLoopView.showPinLun(position,replylist[pos].getUid(),replylist[pos].getNickname(),"回复"+replylist[pos].getNickname());
+                        friensLoopView.showPinLun(position,replylist.get(pos).getUid(),replylist.get(pos).getNickname(),"回复"+replylist.get(pos).getNickname());
                     }
                 });
                 layout.addView(tv);

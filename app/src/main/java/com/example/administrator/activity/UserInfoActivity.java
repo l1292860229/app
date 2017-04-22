@@ -41,7 +41,6 @@ public class UserInfoActivity extends BaseActivity implements IUUserInfoView {
         super.onCreate(savedInstanceState);
         context = UserInfoActivity.this;
         userInfoPresenter = new UserInfoPresenter(context,this);
-        ImageUitl.init(context);
         binding =  DataBindingUtil.setContentView(this, R.layout.user_info);
         userInfoPresenter.init();
         blv = new BelowView(context, R.layout.user_operating);
@@ -74,7 +73,7 @@ public class UserInfoActivity extends BaseActivity implements IUUserInfoView {
         //设置地区
         binding.addrContent.setText(userInfo.getProvince()+" "+userInfo.getCity());
         //设置商机圈
-        if(userInfo.getPicturelist()!=null && userInfo.getPicturelist().length!=0){
+        if(userInfo.getPicturelist()!=null && userInfo.getPicturelist().size()!=0){
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     StringUtil.dip2px(context, 60), StringUtil.dip2px(context, 60));
             params.gravity = Gravity.CENTER_VERTICAL;

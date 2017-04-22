@@ -3,6 +3,8 @@ package com.example.administrator.activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.baidu.location.BDLocation;
@@ -12,6 +14,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
@@ -117,7 +120,6 @@ public class BaiduMapActivity extends BaseActivity {
             mCurrentLantitude = location.getLatitude();
             mCurrentLongitude= location.getLongitude();
             mCurrentAddress = location.getAddrStr();
-            binding.loctionAddress.setText(location.getAddrStr());
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     // 此处设置开发者获取到的方向信息，顺时针0-360
@@ -125,13 +127,14 @@ public class BaiduMapActivity extends BaseActivity {
                     .longitude(location.getLongitude()).build();
             mBaiduMap.setMyLocationData(locData);
             if (isFirstLoc) {
+                binding.loctionAddress.setText(location.getAddrStr());
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(),
                         location.getLongitude());
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
-                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
                 mBaiduMap.setOnMapStatusChangeListener(new MyOnMapStatusChangeListener(ll));
+                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
         }
     }
@@ -150,7 +153,7 @@ public class BaiduMapActivity extends BaseActivity {
             OverlayOptions option = new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory
                     .fromResource(R.mipmap.locationbg)).zIndex(9)  //设置marker所在层级
                     .draggable(true);  //设置手势拖拽
-            final Marker marker = (Marker)(mBaiduMap.addOverlay(option));
+            Marker marker = (Marker)(mBaiduMap.addOverlay(option));
             marker.setPosition(mapStatus.target);
             GeoCoder geoCoder = GeoCoder.newInstance();
             // 设置反地理经纬度坐标,请求位置时,需要一个经纬度
@@ -160,22 +163,36 @@ public class BaiduMapActivity extends BaseActivity {
         }
     }
     private  class MyOnGetGeoCoderResultListener implements OnGetGeoCoderResultListener {
+        //double格式化,保留6位小数
+        java.text.DecimalFormat   df   =new   java.text.DecimalFormat("#.000000");
         //经纬度转换成地址
         @Override
         public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
             if (result == null ||  result.error != SearchResult.ERRORNO.NO_ERROR) {
                 return;
             }
-            binding.loctionAddress.setText(result.getAddress());
-            mCurrentLantitude = result.getLocation().latitude;
-            mCurrentLongitude= result.getLocation().longitude;
+            if (!df.format(result.getLocation().latitude).equals(df.format(mCurrentLantitude))
+                    || !df.format(result.getLocation().longitude).equals(df.format(mCurrentLongitude))) {
+                binding.loctionAddress.setText(result.getAddress());
+            }
             mCurrentAddress = result.getAddress();
             //这里附近的地址
             nearList.clear();
             for (PoiInfo poiInfo : result.getPoiList()) {
                 nearList.add(poiInfo.name);
             }
+            final ReverseGeoCodeResult reverseGeoCodeResult=result;
             binding.addressList.setAdapter(new ArrayAdapter<>(context,android.R.layout.simple_list_item_1,nearList));
+            binding.addressList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(reverseGeoCodeResult.getPoiList().get(position).location);
+                    mBaiduMap.animateMapStatus(u);
+                    binding.loctionAddress.setText(reverseGeoCodeResult.getPoiList().get(position).name);
+                    mCurrentLantitude = reverseGeoCodeResult.getPoiList().get(position).location.latitude;
+                    mCurrentLongitude = reverseGeoCodeResult.getPoiList().get(position).location.longitude;
+                }
+            });
         }
         //把地址转换成经纬度
         @Override

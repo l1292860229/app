@@ -5,9 +5,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.entity.Province;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.entity.constant.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;

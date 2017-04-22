@@ -1,25 +1,58 @@
 package com.example.administrator.entity;
 
 
+import com.example.administrator.enumset.MessageType;
+
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Administrator on 2017/1/23.
  */
 
-public class Session{
-    private static final long serialVersionUID = 5389219102904727377L;
+public class Session extends RealmObject{
+    @Ignore
+    public final static int READ_UNTOP=0;
+    @Ignore
+    public final static int UNREAD_UNTOP=1;
+    @Ignore
+    public final static int UNREAD_TOP=2;
+    @Ignore
+    public final static int READ_TOP=3;
+    @PrimaryKey
+    private String id;
+    private String uid;
     private String fromId;		// 会话来源用户ID
-    private int type = 0;
+    private int type = 1;
     private int isTop;//session 置顶 序号
-    private MessageInfo mMessageInfo;
     private String name = "";
     private String heading = "";
     private int unreadcount = 0;
+    private long createtime;
+    private String content;
+    @Ignore
+    private MessageType messageType= MessageType.TEXT;
     public Session(){
         super();
     }
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+
+    public String getUid() {
+        return uid;
     }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getFromId() {
         return fromId;
     }
@@ -38,12 +71,6 @@ public class Session{
     public void setIsTop(int isTop) {
         this.isTop = isTop;
     }
-    public MessageInfo getmMessageInfo() {
-        return mMessageInfo;
-    }
-    public void setmMessageInfo(MessageInfo mMessageInfo) {
-        this.mMessageInfo = mMessageInfo;
-    }
     public String getName() {
         return name;
     }
@@ -61,5 +88,59 @@ public class Session{
     }
     public void setUnreadcount(int unreadcount) {
         this.unreadcount = unreadcount;
+    }
+    public MessageType getMessageType() {
+        return MessageType.valueOf(type);
+    }
+    public void setMessageType(MessageType messageType) {
+        this.type = messageType.getValue();
+    }
+
+    public long getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(long createtime) {
+        this.createtime = createtime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int itemViewType(){
+        if (unreadcount==0) {
+            if(isTop==0){
+                return  READ_UNTOP;
+            }else{
+                return  READ_TOP;
+            }
+        }else {
+            if (isTop == 0) {
+                return  UNREAD_UNTOP;
+            } else {
+                return  UNREAD_TOP;
+            }
+        }
+    }
+    @Override
+    public String toString() {
+        return "Session{" +
+                "id='" + id + '\'' +
+                ", uid='" + uid + '\'' +
+                ", fromId='" + fromId + '\'' +
+                ", type=" + type +
+                ", isTop=" + isTop +
+                ", name='" + name + '\'' +
+                ", heading='" + heading + '\'' +
+                ", unreadcount=" + unreadcount +
+                ", createtime=" + createtime +
+                ", content='" + content + '\'' +
+                ", messageType=" + messageType +
+                '}';
     }
 }

@@ -16,7 +16,10 @@ import com.example.administrator.fragment.FatherContactsFragment;
 import com.example.administrator.fragment.FoundFragment;
 import com.example.administrator.fragment.ProfileFragment;
 import com.example.administrator.interfaceview.IUMainView;
+import com.example.administrator.presenter.ChatFragmentPresenter;
 import com.example.administrator.util.UIUtil;
+import com.jpeng.jptabbar.BadgeDismissListener;
+import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.anno.NorIcons;
 import com.jpeng.jptabbar.anno.SeleIcons;
 import com.jpeng.jptabbar.anno.Titles;
@@ -28,8 +31,9 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements IUMainView {
     Context context;
     MainBinding mainBinding;
+    ChatFragmentPresenter chatFragmentPresenter;
     @Titles
-    private static final String[] mTitles = {"通讯录","通讯录","通讯录","通讯录"};
+    private static final String[] mTitles = {"消息","通讯录","发现","我"};
     @SeleIcons
     private static final int[] mSeleIcons = {R.mipmap.fx_conversation_selected,R.mipmap.fx_contact_list_selected,R.mipmap.fx_find_pressed,R.mipmap.fx_profile_pressed};
     @NorIcons
@@ -65,12 +69,24 @@ public class MainActivity extends BaseActivity implements IUMainView {
             }
         });
         List<Fragment> list = new ArrayList<>();
-        list.add(new ChatFragment());
+        ChatFragment chatFragment = new ChatFragment();
+        list.add(chatFragment);
         list.add(new FatherContactsFragment());
         list.add(new FoundFragment());
         list.add(new ProfileFragment());
+        chatFragmentPresenter = new ChatFragmentPresenter(this,chatFragment);
         mainBinding.fragmentContainer.setAdapter(new FragmentManagerAdapter(getSupportFragmentManager(),list));
         mainBinding.tabbar.setContainer(mainBinding.fragmentContainer);
+        mainBinding.tabbar.setCountLimit(99);
+        mainBinding.tabbar.setDismissListener(new BadgeDismissListener() {
+            @Override
+            public void onDismiss(int position) {
+                chatFragmentPresenter.clearSessionUnReadCount();
+            }
+        });
+    }
+    public JPTabBar getTabbar() {
+        return mainBinding.tabbar;
     }
     @Override
     public void right_btn2(View view) {

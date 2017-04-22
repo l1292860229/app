@@ -2,7 +2,7 @@ package com.example.administrator.entity;
 
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class FriendsLoopItem implements Serializable {
 
@@ -15,20 +15,20 @@ public class FriendsLoopItem implements Serializable {
 	private String nickname;
 	private String headsmall;
 	private String content;
-	private Picture[] picture;
-	private String shareurl;
+	private ArrayList<Picture> picture;
+	private Shareurl shareurl;
 	private String lng;
 	private String lat;
 	private String address;
 	private long createtime;
 	private int ispraise;
 	//点赞列表
-	private CommentUser[] replylist;
+	private ArrayList<CommentUser> replylist;
 	//评论列表
-	private CommentUser[] praiselist;
+	private ArrayList<CommentUser> praiselist;
 	private int showView;
 	private String type;
-
+//
 	public int getId() {
 		return id;
 	}
@@ -67,13 +67,6 @@ public class FriendsLoopItem implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public Picture[] getPicture() {
-		return picture;
-	}
-
-	public void setPicture(Picture[] picture) {
-		this.picture = picture;
 	}
 
 	public String getLng() {
@@ -137,29 +130,38 @@ public class FriendsLoopItem implements Serializable {
 		return serialVersionUID;
 	}
 
-	public CommentUser[] getReplylist() {
-		return replylist;
-	}
-
-	public void setReplylist(CommentUser[] replylist) {
-		this.replylist = replylist;
-	}
-
-	public CommentUser[] getPraiselist() {
-		return praiselist;
-	}
-
-	public void setPraiselist(CommentUser[] praiselist) {
-		this.praiselist = praiselist;
-	}
-
-	public String getShareurl() {
+	public Shareurl getShareurl() {
 		return shareurl;
 	}
 
-	public void setShareurl(String shareurl) {
+	public void setShareurl(Shareurl shareurl) {
 		this.shareurl = shareurl;
 	}
+
+	public ArrayList<Picture> getPicture() {
+		return picture;
+	}
+
+	public void setPicture(ArrayList<Picture> picture) {
+		this.picture = picture;
+	}
+
+	public ArrayList<CommentUser> getReplylist() {
+		return replylist;
+	}
+
+	public void setReplylist(ArrayList<CommentUser> replylist) {
+		this.replylist = replylist;
+	}
+
+	public ArrayList<CommentUser> getPraiselist() {
+		return praiselist;
+	}
+
+	public void setPraiselist(ArrayList<CommentUser> praiselist) {
+		this.praiselist = praiselist;
+	}
+
 	@Override
 	public String toString() {
 		return "FriendsLoopItem{" +
@@ -168,14 +170,11 @@ public class FriendsLoopItem implements Serializable {
 				", nickname='" + nickname + '\'' +
 				", headsmall='" + headsmall + '\'' +
 				", content='" + content + '\'' +
-				", listpic=" + Arrays.toString(picture) +
 				", lng='" + lng + '\'' +
 				", lat='" + lat + '\'' +
 				", address='" + address + '\'' +
 				", createtime=" + createtime +
 				", ispraise=" + ispraise +
-				", replylist=" + Arrays.toString(replylist) +
-				", praiselist=" + Arrays.toString(praiselist) +
 				", showView=" + showView +
 				", type='" + type + '\'' +
 				'}';

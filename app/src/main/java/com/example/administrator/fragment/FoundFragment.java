@@ -15,7 +15,6 @@ import com.example.administrator.databinding.FragmentFoundBinding;
 import com.example.administrator.entity.Menu;
 import com.example.administrator.interfaceview.IUFoundFragmentView;
 import com.example.administrator.presenter.FoundFragmentPresenter;
-import com.example.administrator.util.ImageUitl;
 
 import java.util.List;
 
@@ -32,9 +31,7 @@ public class FoundFragment extends Fragment implements IUFoundFragmentView {
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
         context = FoundFragment.this.getActivity();
-        //图片工具的初始化
-        ImageUitl.init(context);
-        foundFragmentPresenter = new FoundFragmentPresenter(context,this);
+        foundFragmentPresenter = new FoundFragmentPresenter(this.getActivity(),this);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_found,container,false);
         listView = binding.menu;
         foundFragmentPresenter.init();

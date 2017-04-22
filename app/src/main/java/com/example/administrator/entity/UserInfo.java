@@ -7,11 +7,12 @@ package com.example.administrator.entity;
 import com.google.gson.IEnum;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 用户信息
  */
-public class UserInfo implements Serializable {
+public class UserInfo  implements Serializable  {
     public  enum SexType implements IEnum {
         BOY(0),
         GIRL(1);
@@ -44,7 +45,7 @@ public class UserInfo implements Serializable {
     //关系链
     private String linkname;
     //最的朋友圈三张图片集合
-    private String[] picturelist;
+    private ArrayList<String> picturelist;
     //性别
     private SexType gender;
     //个性签名
@@ -87,7 +88,8 @@ public class UserInfo implements Serializable {
     private String demand;
     //电话号码
     private String telephone;
-
+    //用户的自定义菜单
+    public ArrayList<UserMenu> usermenulist;
 
     public String getUid() {
         return uid;
@@ -321,12 +323,20 @@ public class UserInfo implements Serializable {
         this.linkname = linkname;
     }
 
-    public String[] getPicturelist() {
+    public ArrayList<String> getPicturelist() {
         return picturelist;
     }
 
-    public void setPicturelist(String[] picturelist) {
+    public void setPicturelist(ArrayList<String> picturelist) {
         this.picturelist = picturelist;
+    }
+
+    public ArrayList<UserMenu> getUsermenulist() {
+        return usermenulist;
+    }
+
+    public void setUsermenulist(ArrayList<UserMenu> usermenulist) {
+        this.usermenulist = usermenulist;
     }
 
     @Override

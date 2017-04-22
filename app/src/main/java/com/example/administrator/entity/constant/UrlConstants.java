@@ -18,6 +18,14 @@ public class UrlConstants {
     public static final String FRIEND_FRIENDSLIST = SERVER_PREFIX + "/user/api/friendList";
     //好友详细信息地址
     public static final String BBS_DETAILFOROTHER = SERVER_PREFIX + "/user/api/detailforother";
+    //显示收藏地址
+    public static final String USER_FAVORITELIST = SERVER_PREFIX + "/user/api/favoriteList";
+    //添加自定义菜单
+    public static final String USER_ADDUSERMENU = SERVER_PREFIX + "/user/api/addusermenu";
+    //修改自定义菜单
+    public static final String USER_UPDATEUSERMENU = SERVER_PREFIX + "/user/api/updateusermenu";
+    //删除自定义菜单
+    public static final String USER_DELUSERMENU = SERVER_PREFIX + "/user/api/delusermenu";
     //获取商机圈地址
     public static final String FRIEND_SHARELIST = SERVER_PREFIX + "/friend/api/shareList";
     //改变背景图片的地址
@@ -50,8 +58,6 @@ public class UrlConstants {
     public static final String BAIWAN_UPDATEPASSWORD = "http://"+BAIWANYUMIN+"/gouwu/wish3d/userpass.shtml";
     //附近的店
     public static final String BAIWAN_FUJINDEDIAN = "http://"+BAIWANYUMIN+"/gouwu/o2o/home.shtml";
-    //一元夺宝
-    public static final String BAIWAN_YIYUANDUOBAO = "http://"+BAIWANYUMIN+"/yiyuan/index.shtml";
     //游戏
     public static final String BAIWAN_GAME = "http://"+BAIWANYUMIN+"/hd/zhuangpang.shtml";
 }

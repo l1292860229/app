@@ -7,6 +7,7 @@ import com.example.administrator.interfaceview.IUGroupFriensView;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
+import com.google.gson.reflect.TypeToken;
 import com.tandong.sa.loopj.AsyncHttpResponseHandler;
 import com.tandong.sa.loopj.RequestParams;
 
@@ -15,7 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Administrator on 2017/3/2.
@@ -42,7 +42,7 @@ public class GroupFriensPresenter extends BasePresenter {
                         groupFriensView.hideLoading();
                         try {
                             JSONObject json = new JSONObject(data);
-                            groupFriensView.init(new ArrayList<>(Arrays.asList( GsonUtil.parseJsonWithGson(json.getString("data"),Room[].class))));
+                            groupFriensView.init(GsonUtil.<ArrayList<Room>>parseJsonWithGsonObject(json.getString("data"),new TypeToken<ArrayList<Room>>() {}.getType()));
                         } catch (JSONException e) {
                             UIUtil.showMessage(context,"获取失败");
                             e.printStackTrace();
