@@ -4,15 +4,15 @@ import android.util.Log;
 
 import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.activity.UserInfoActivity;
-import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.interfaceview.IUUserInfoView;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpResponseHandler;
-import com.tandong.sa.loopj.RequestParams;
+import com.smartandroid.sa.loopj.AsyncHttpResponseHandler;
+import com.smartandroid.sa.loopj.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -36,6 +36,7 @@ public class UserInfoPresenter extends BasePresenter {
         if(oldUserInfo!=null){
             uid = oldUserInfo.getUid();
             kai6id = oldUserInfo.getKa6id();
+            userInfoView.init(oldUserInfo);
         }
         RequestParams params = new RequestParams();
         if(!StringUtil.isNull(id)){

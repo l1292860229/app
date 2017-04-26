@@ -6,7 +6,7 @@ import android.view.View;
 import com.ab.fragment.AbLoadDialogFragment;
 import com.ab.util.AbDialogUtil;
 import com.example.administrator.R;
-import com.tandong.sa.bv.BelowView;
+import com.smartandroid.sa.bv.BelowView;
 
 import io.github.rockerhieu.emojicon.EmojiconEditText;
 import io.github.rockerhieu.emojicon.EmojiconGridFragment;
@@ -19,7 +19,7 @@ import io.github.rockerhieu.emojicon.emoji.Emojicon;
 
 public class BaseActivity extends AppCompatActivity implements EmojiconsFragment.OnEmojiconBackspaceClickedListener,EmojiconGridFragment.OnEmojiconClickedListener {
     AbLoadDialogFragment loadingfragment;
-    protected  BelowView blv;
+    protected BelowView blv;
     EmojiconEditText emojiconEditText;//支持表情的输入框
     public void showLoading(String msg) {
         loadingfragment =  AbDialogUtil.showLoadDialog(BaseActivity.this, R.mipmap.ic_load, msg);

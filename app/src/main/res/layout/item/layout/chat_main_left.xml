@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="immessage" type="com.example.administrator.entity.IMMessage"/>
     </data>
@@ -58,7 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/message_nickname"
                 android:layout_toRightOf="@+id/img_head"
-                android:background="@drawable/chatfrom_bg">
+                android:background="@drawable/chatfrom_bg"
+                android:layout_marginTop="10dp"
+                android:minHeight="10dp">
                 <RelativeLayout
                     android:id="@+id/msg_voice_layout"
                     android:layout_width="wrap_content"
@@ -137,11 +140,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:visibility="gone">
-                    <TextView
+                    <io.github.rockerhieu.emojicon.EmojiconTextView
                         android:id="@+id/msg_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxWidth="235dp"
+                        emojicon:emojiconSize="20sp"
                         android:textColor="@color/font_color"
                         android:textSize="@dimen/text_size"
                         android:gravity="center_vertical|left"

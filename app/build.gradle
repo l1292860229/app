@@ -61,7 +61,7 @@ dependencies {
     //底部导航栏 https://github.com/peng8350/JPTabBar
     compile 'com.jpeng:JPTabBar:1.2.3'
     //自己添加的包
-    compile files('libs/SmartAndroid2.0.jar')
+    compile files('libs/SmartAndroid2.7.jar')
     compile files('libs/httpclient-4.2.5.jar')
     compile files('libs/httpcore-4.2.4.jar')
     compile files('libs/andbase.jar')

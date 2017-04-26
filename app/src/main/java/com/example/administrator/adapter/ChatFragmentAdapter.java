@@ -10,11 +10,16 @@ import android.widget.BaseAdapter;
 
 import com.example.administrator.BR;
 import com.example.administrator.R;
+import com.example.administrator.UIView.LQRNineGridImageViewAdapter;
 import com.example.administrator.databinding.ChatsItemBinding;
 import com.example.administrator.entity.Session;
 import com.example.administrator.enumset.MessageType;
+import com.example.administrator.enumset.TypeChat;
 import com.example.administrator.util.DateUtil;
+import com.example.administrator.util.ImageUitl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +91,21 @@ public class ChatFragmentAdapter extends BaseAdapter {
         if (session.getIsTop()!=0) {
             binding.llContent.setBackgroundColor(Color.rgb(254,249,233));
         }
-        binding.content.setText(getContent(session.getMessageType(),session.getContent()));
+        if(session.getTypechat()== TypeChat.GROUP.getValue()){
+            binding.groupHeader.setVisibility(View.VISIBLE);
+            binding.header.setVisibility(View.GONE);
+            binding.groupHeader.setAdapter(new LQRNineGridImageViewAdapter());
+            binding.groupHeader.setImagesData(new ArrayList(Arrays.asList(session.getHeading().split(","))));
+        }else if(session.getTypechat()== TypeChat.SINGLE.getValue()
+                ||session.getTypechat()== TypeChat.BBS.getValue()){
+            binding.groupHeader.setVisibility(View.GONE);
+            binding.header.setVisibility(View.VISIBLE);
+            ImageUitl.imageLoader(binding.header,session.getHeading());
+        }else{
+            binding.groupHeader.setVisibility(View.GONE);
+            binding.header.setVisibility(View.VISIBLE);
+        }
+        binding.content.setText(getContent(session.getMessageTypeFile(),session.getContent()));
         binding.releasetime.setText(DateUtil.calculaterReleasedTime(context,new Date(session.getCreatetime()),session.getCreatetime(),0));
         return convertView;
     }

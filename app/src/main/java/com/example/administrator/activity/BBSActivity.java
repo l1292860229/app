@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.example.administrator.R;
@@ -23,7 +24,7 @@ public class BBSActivity extends BaseActivity implements IUBBSView {
     private BBSActivity context;
     GroupItemBinding binding;
     BBSPresenter bbsPresenter;
-    private ArrayList<Bbs> bbsArrayList;
+    private ArrayList<Bbs> mBbsArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +53,19 @@ public class BBSActivity extends BaseActivity implements IUBBSView {
 
     @Override
     public void init(ArrayList<Bbs> bbsArrayList) {
-        this.bbsArrayList = bbsArrayList;
+        this.mBbsArrayList = bbsArrayList;
         binding.groupList.setAdapter(new BbsAdapter(context,bbsArrayList));
+        binding.groupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(context, BBSChatMainActivity.class);
+                intent.putExtra(ChatMainActivity.NAME,mBbsArrayList.get(position-1).getTitle());
+                intent.putExtra(ChatMainActivity.TOID,mBbsArrayList.get(position-1).getId());
+                intent.putExtra(ChatMainActivity.TOHEAD,mBbsArrayList.get(position-1).getHeadsmall());
+                intent.putExtra(BBSChatMainActivity.BBSTYPE, mBbsArrayList.get(position-1).getType());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

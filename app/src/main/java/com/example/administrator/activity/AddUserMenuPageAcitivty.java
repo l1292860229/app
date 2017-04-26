@@ -12,6 +12,7 @@ import com.example.administrator.interfaceview.IUAddUserMenuPageView;
 import com.example.administrator.presenter.AddUserMenuPagePresenter;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
+import com.smartandroid.sa.verifi.UrlVerifior;
 
 /**
  * Created by dell on 2017/4/19.
@@ -58,7 +59,8 @@ public class AddUserMenuPageAcitivty extends BaseActivity implements IUAddUserMe
             UIUtil.showMessage(context,"菜单链接不能为空");
             return;
         }
-        if(!(menuurl.startsWith("http://")|| menuurl.startsWith("https://"))){
+        UrlVerifior urlVerifior = new UrlVerifior(context);
+        if(urlVerifior.isValid(menuurl)){
             UIUtil.showMessage(context,"请输入正确网址,http或https开头");
             return;
         }

@@ -1,8 +1,9 @@
 package com.example.administrator.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Room implements Serializable{
+public class Group implements Serializable{
 	private static final long serialVersionUID = 156464416456564L;
 	private String id; //群id
 	private String name;//群昵称
@@ -14,7 +15,7 @@ public class Room implements Serializable{
 	private int role;
 	private int getmsg = 1;
 	private long createtime;
-	private UserInfo[] list;
+	private ArrayList<UserInfo> list;
 
 	public String getId() {
 		return id;
@@ -96,17 +97,17 @@ public class Room implements Serializable{
 		this.createtime = createtime;
 	}
 
-	public UserInfo[] getList() {
+	public ArrayList<UserInfo> getList() {
 		return list;
 	}
 
-	public void setList(UserInfo[] list) {
+	public void setList(ArrayList<UserInfo> list) {
 		this.list = list;
 	}
 
 	@Override
 	public String toString() {
-		return "Room{" +
+		return "Group{" +
 				"id='" + id + '\'' +
 				", name='" + name + '\'' +
 				", count=" + count +

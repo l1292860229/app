@@ -12,7 +12,7 @@
         <include
             android:id="@+id/title_layout"
             layout="@layout/title_layout" />
-        <com.tandong.sa.view.AutoReFreshListView
+        <com.smartandroid.sa.view.AutoReFreshListView
             android:id="@+id/mListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -15,7 +15,7 @@ import com.example.administrator.entity.Bbs;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUIndustryView;
 import com.example.administrator.presenter.IndustryPresenter;
-import com.tandong.sa.view.AutoReFreshListView;
+import com.smartandroid.sa.view.AutoReFreshListView;
 
 import java.util.ArrayList;
 

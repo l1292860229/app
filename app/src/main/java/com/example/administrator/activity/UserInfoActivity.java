@@ -11,12 +11,13 @@ import android.widget.LinearLayout;
 import com.example.administrator.R;
 import com.example.administrator.databinding.UserInfoBinding;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.enumset.TypeChat;
 import com.example.administrator.interfaceview.IUUserInfoView;
 import com.example.administrator.presenter.UserInfoPresenter;
 import com.example.administrator.util.ImageUitl;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.bv.BelowView;
+import com.smartandroid.sa.bv.BelowView;
 
 import static com.example.administrator.activity.UserInfoActivity.Write.WRITE_BAIZHU;
 
@@ -94,7 +95,6 @@ public class UserInfoActivity extends BaseActivity implements IUUserInfoView {
         ivRight.setVisibility(View.VISIBLE);
         ivRight.setImageResource(R.drawable.more_btn);
     }
-
     @Override
     public void right_btn(View view) {
         blv.showBelowView(view, true, 30, 0);
@@ -123,6 +123,22 @@ public class UserInfoActivity extends BaseActivity implements IUUserInfoView {
         });
     }
 
+    /**
+     * 发送消息
+     * @param view
+     */
+    public void sendMessage(View view){
+        Intent intent = new Intent(context, IMChatMainActivity.class);
+        if(!StringUtil.isNull(mUserinfo.getRemark())){
+            intent.putExtra(ChatMainActivity.NAME,mUserinfo.getRemark());
+        }else{
+            intent.putExtra(ChatMainActivity.NAME,mUserinfo.getNickname());
+        }
+        intent.putExtra(ChatMainActivity.TOID,mUserinfo.getPhone().toLowerCase());
+        intent.putExtra(ChatMainActivity.TOHEAD,mUserinfo.getHeadsmall());
+        intent.putExtra(IMChatMainActivity.TYPECHAT, TypeChat.SINGLE);
+        startActivity(intent);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

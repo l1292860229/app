@@ -1,6 +1,7 @@
 package com.example.administrator.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +41,9 @@ import java.util.List;
  * 此demo用来展示如何结合定位SDK实现定位，并使用MyLocationOverlay绘制定位位置 同时展示如何使用自定义图标绘制并点击时弹出泡泡
  */
 public class BaiduMapActivity extends BaseActivity {
+    public static final String ADDRESS ="address";
+    public static final String LAT ="lat";
+    public static final String LON ="lon";
     // 定位相关
     LocationClient mLocClient;
     MapView mMapView;
@@ -105,6 +109,17 @@ public class BaiduMapActivity extends BaseActivity {
         mMapView = null;
         super.onDestroy();
     }
+
+    @Override
+    public void right_text(View view) {
+        Intent intent =new Intent();
+        intent.putExtra(ADDRESS,mCurrentAddress);
+        intent.putExtra(LAT,mCurrentLantitude);
+        intent.putExtra(LON,mCurrentLongitude);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
     /**
      * 定位SDK监听函数
      */

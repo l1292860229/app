@@ -8,7 +8,8 @@ import com.google.gson.IEnum;
 
 public enum TypeChat implements IEnum {
     SINGLE(100),
-    GROUP(300);
+    GROUP(300),
+    BBS(400);
     TypeChat(int value){
         this.value = value;
     }

@@ -4,7 +4,7 @@ import com.example.administrator.activity.BaseActivity;
 import com.example.administrator.entity.UserInfo;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.NetworkUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
+import com.smartandroid.sa.loopj.AsyncHttpClient;
 
 /**
  * Created by Administrator on 2017/3/10.

@@ -7,8 +7,8 @@ import android.widget.ImageView;
 
 import com.example.administrator.R;
 import com.example.administrator.databinding.AboutBinding;
-import com.tandong.sa.activity.SmartActivity;
-import com.tandong.sa.appInfo.AppInfo;
+import com.smartandroid.sa.activity.SmartActivity;
+import com.smartandroid.sa.appInfo.AppInfo;
 
 /**
  * Created by Administrator on 2017/1/24.

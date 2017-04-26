@@ -23,7 +23,7 @@ import com.jpeng.jptabbar.JPTabBar;
 import com.jpeng.jptabbar.anno.NorIcons;
 import com.jpeng.jptabbar.anno.SeleIcons;
 import com.jpeng.jptabbar.anno.Titles;
-import com.tandong.sa.bv.BelowView;
+import com.smartandroid.sa.bv.BelowView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +96,9 @@ public class MainActivity extends BaseActivity implements IUMainView {
         v.findViewById(R.id.chat_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIUtil.showMessage(context,"发起群聊");
+                Intent intent = new Intent(context,ChooseUserActivity.class);
+                intent.putExtra(ChooseUserActivity.MULTIPLE,true);
+                startActivity(intent);
                 blv.dismissBelowView();
             }
         });

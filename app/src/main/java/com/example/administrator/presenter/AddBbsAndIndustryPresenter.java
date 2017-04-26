@@ -7,8 +7,8 @@ import com.example.administrator.interfaceview.IUPublicView;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpResponseHandler;
-import com.tandong.sa.loopj.RequestParams;
+import com.smartandroid.sa.loopj.AsyncHttpResponseHandler;
+import com.smartandroid.sa.loopj.RequestParams;
 
 import org.apache.http.Header;
 

@@ -32,7 +32,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:scaleType="fitXY"
-                        app:image="@{session.heading}"
                         android:src="@mipmap/contact_default_header"/>
                     <com.lqr.ninegridimageview.LQRNineGridImageView
                         android:id="@+id/groupHeader"
@@ -88,7 +87,7 @@
                         android:textColor="@color/order_item_hint_color"
                         android:textSize="@dimen/text_size_12" />
                 </RelativeLayout>
-                <TextView
+                <io.github.rockerhieu.emojicon.EmojiconTextView
                     android:id="@+id/content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

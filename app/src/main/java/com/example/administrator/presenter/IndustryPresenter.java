@@ -11,8 +11,8 @@ import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
 import com.google.gson.reflect.TypeToken;
-import com.tandong.sa.loopj.AsyncHttpResponseHandler;
-import com.tandong.sa.loopj.RequestParams;
+import com.smartandroid.sa.loopj.AsyncHttpResponseHandler;
+import com.smartandroid.sa.loopj.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -50,7 +50,6 @@ public class IndustryPresenter extends BasePresenter {
                     @Override
                     public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
                         String data = new String(arg2).replace("(","").replace(")","");
-                        Log.e("init","data="+data);
                         try {
                             JSONObject json = new JSONObject(data);
                             ArrayList<Bbs> mlist = GsonUtil.parseJsonWithGsonObject(json.getString("data") ,new TypeToken<ArrayList<Bbs>>(){}.getType());

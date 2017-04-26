@@ -7,54 +7,56 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 
 import com.example.administrator.R;
-import com.example.administrator.adapter.ChatMainAdapter;
 import com.example.administrator.databinding.ChatBoxBinding;
 import com.example.administrator.databinding.ChatBoxExpraBinding;
 import com.example.administrator.databinding.ChatMainBinding;
+import com.example.administrator.entity.UserInfo;
 import com.example.administrator.entity.constant.Constants;
-import com.example.administrator.entity.db.MessageTable;
-import com.example.administrator.interfaceview.IUChatMainView;
-import com.example.administrator.presenter.ChatMainPresenter;
 import com.example.administrator.util.FileUtil;
+import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.KeyBoardUtils;
+import com.example.administrator.util.MediaManager;
+import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/3/14.
  */
 
-public class ChatMainActivity extends BaseActivity implements IUChatMainView{
+public class ChatMainActivity extends BaseActivity {
+    //intent key值
+    public final static String NAME="name";
+    public final static String TOID="toid";
+    public final static String TOHEAD="tohead";
+    //onActivityResult
+    public final static int GET_IMAGE_BY_CAMERA=1;
+    public final static int GET_MAP=2;
+    public final static int GET_MYFAVORITE=3;
+    public final static int GET_USERINFO=4;
     Context context;
     ChatMainBinding binding;
-    ChatMainAdapter chatMainAdapter;
-    ChatMainPresenter chatMainPresenter;
-    List<MessageTable> mMessageTables;
+    protected UserInfo userInfo;
+    protected String CameraImagePath;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        userInfo = GetDataUtil.getUserInfo(context);
         binding =  DataBindingUtil.setContentView(this, R.layout.chat_main);
         binding.setBehavior(this);
         binding.titleLayout.setBehavior(this);
-        chatMainPresenter = new ChatMainPresenter(this,this);
-        chatMainPresenter.init();
-    }
-
-    @Override
-    public void init(List<MessageTable> messageTables) {
-        mMessageTables = messageTables;
-        chatMainAdapter = new ChatMainAdapter(context,mMessageTables);
         binding.chatMainListMsg.setCanLoadMore(false);
-        binding.chatMainListMsg.setAdapter(chatMainAdapter);
         initializeView();
     }
+
 
     /**
      * 初始化控件
@@ -76,6 +78,7 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
                     //要同时隐藏表情框和下拉框
                     chatbox.chatBoxBtnAdd.setChecked(false);
                     chatbox.chatBoxBtnEmoji.setChecked(false);
+                    KeyBoardUtils.closeKeybord(chatbox.chatBoxEditKeyword,context);
                 }else{
                     chatbox.chatBoxEditKeyword.setVisibility(View.VISIBLE);
                     chatbox.chatBoxBtnVoice.setVisibility(View.GONE);
@@ -129,8 +132,30 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
                 chatbox.chatBoxBtnEmoji.setChecked(false);
             }
         });
+        chatbox.chatBoxEditKeyword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text  = chatbox.chatBoxEditKeyword.getText().toString();
+                if(StringUtil.isNull(text)){
+                    chatbox.chatBoxBtnAdd.setVisibility(View.VISIBLE);
+                    chatbox.chatBoxBtnSend.setVisibility(View.GONE);
+                }else{
+                    chatbox.chatBoxBtnAdd.setVisibility(View.GONE);
+                    chatbox.chatBoxBtnSend.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
-
+    /**
+     * 发送文字消息
+     * @param view
+     */
+    public void sentTextMessage(View view){
+    }
     /**
      * 打开相机
      * @param view
@@ -142,12 +167,12 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
             File out = new File(Environment.getExternalStorageDirectory() + Constants.TEMP_DIRECTORY,
                     tmpUrl);
             Uri uri = Uri.fromFile(out);
+            CameraImagePath = out.getPath();
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            startActivity(intent);
-            //startActivityForResult(intent, REQUEST_GET_IMAGE_BY_CAMERA);
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+            startActivityForResult(intent, GET_IMAGE_BY_CAMERA);
         }
     }
-
     /**
      * 打开相册
      * @param view
@@ -161,14 +186,15 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
      */
     public void openMap(View view){
         Intent intent = new Intent(this,BaiduMapActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,GET_MAP);
     }
     /**
      * 打开名片
      * @param view
      */
     public void openBusinessCard(View view){
-
+        Intent intent = new Intent(this,ChooseUserActivity.class);
+        startActivityForResult(intent,GET_USERINFO);
     }
 
     /**
@@ -177,6 +203,23 @@ public class ChatMainActivity extends BaseActivity implements IUChatMainView{
      */
     public void openCollection(View view){
         Intent intent = new Intent(context, MyFavoriteActivity.class);
-        startActivity(intent);
+        intent.putExtra(MyFavoriteActivity.CANCLICK,true);
+        startActivityForResult(intent,GET_MYFAVORITE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        MediaManager.stop();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            //返回时,会变成true
+            binding.chatMainListMsg.setCanLoadMore(false);
+            binding.chatBox.chatBoxBtnAdd.setChecked(false);
+        }
     }
 }

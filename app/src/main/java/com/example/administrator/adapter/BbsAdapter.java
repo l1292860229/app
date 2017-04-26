@@ -46,7 +46,7 @@ public class BbsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
         BbsItemBinding binding;
         if (convertView == null) {
             binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.bbs_item, parent, false);

@@ -4,14 +4,14 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
-import com.tandong.sa.zUImageLoader.cache.disc.naming.Md5FileNameGenerator;
-import com.tandong.sa.zUImageLoader.cache.memory.impl.UsingFreqLimitedMemoryCache;
-import com.tandong.sa.zUImageLoader.core.DisplayImageOptions;
-import com.tandong.sa.zUImageLoader.core.ImageLoader;
-import com.tandong.sa.zUImageLoader.core.ImageLoaderConfiguration;
-import com.tandong.sa.zUImageLoader.core.assist.QueueProcessingType;
-import com.tandong.sa.zUImageLoader.core.display.RoundedBitmapDisplayer;
-import com.tandong.sa.zUImageLoader.core.download.BaseImageDownloader;
+import com.smartandroid.sa.zUImageLoader.cache.disc.naming.Md5FileNameGenerator;
+import com.smartandroid.sa.zUImageLoader.cache.memory.impl.UsingFreqLimitedMemoryCache;
+import com.smartandroid.sa.zUImageLoader.core.DisplayImageOptions;
+import com.smartandroid.sa.zUImageLoader.core.ImageLoader;
+import com.smartandroid.sa.zUImageLoader.core.ImageLoaderConfiguration;
+import com.smartandroid.sa.zUImageLoader.core.assist.QueueProcessingType;
+import com.smartandroid.sa.zUImageLoader.core.display.RoundedBitmapDisplayer;
+import com.smartandroid.sa.zUImageLoader.core.download.BaseImageDownloader;
 
 /**
  * Created by Administrator on 2017/1/22.

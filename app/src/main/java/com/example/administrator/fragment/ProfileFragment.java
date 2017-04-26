@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.administrator.R;
-import com.example.administrator.activity.ChatMainActivity;
 import com.example.administrator.activity.EditProfileActivity;
 import com.example.administrator.activity.MyFavoriteActivity;
+import com.example.administrator.activity.SettingActivity;
 import com.example.administrator.activity.UserMenuActivity;
 import com.example.administrator.activity.WebViewActivity;
 import com.example.administrator.databinding.FragmentProfileBinding;
@@ -104,10 +104,8 @@ public class ProfileFragment extends Fragment  {
      * @param view
      */
     public void openSetting(View view){
-//        Intent intent = new Intent();
-//        intent.setClass(context, SettingActivity.class);
-//        startActivity(intent);
-        Intent intent = new Intent(context, ChatMainActivity.class);
+        Intent intent = new Intent();
+        intent.setClass(context, SettingActivity.class);
         startActivity(intent);
     }
 

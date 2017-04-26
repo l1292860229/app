@@ -48,7 +48,6 @@ public class SessionDao {
         sessionRealmResults = sessionRealmResults.sort("isTop", Sort.DESCENDING,"createtime",Sort.DESCENDING);
         return  realm.copyFromRealm(sessionRealmResults);
     }
-
     @Override
     protected Object clone() throws CloneNotSupportedException {
         if(!realm.isClosed()){

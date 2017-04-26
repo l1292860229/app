@@ -2,10 +2,13 @@ package com.example.administrator.entity;
 
 
 import com.example.administrator.enumset.MessageType;
+import com.example.administrator.enumset.TypeChat;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
+
+import static android.R.attr.type;
 
 /**
  * Created by Administrator on 2017/1/23.
@@ -23,8 +26,9 @@ public class Session extends RealmObject{
     @PrimaryKey
     private String id;
     private String uid;
-    private String fromId;		// 会话来源用户ID
-    private int type = 1;
+    private String toid;		// 会话来源用户ID
+    private int typechat =100;//100-单聊 200-群聊 300-临时会话 默认为100
+    private int typefile;//1-文字 2-图片 3-声音 4-位置
     private int isTop;//session 置顶 序号
     private String name = "";
     private String heading = "";
@@ -32,7 +36,9 @@ public class Session extends RealmObject{
     private long createtime;
     private String content;
     @Ignore
-    private MessageType messageType= MessageType.TEXT;
+    private MessageType messageTypeFile= MessageType.TEXT;
+    @Ignore
+    private TypeChat messageTypeChat= TypeChat.SINGLE;
     public Session(){
         super();
     }
@@ -53,18 +59,14 @@ public class Session extends RealmObject{
         this.id = id;
     }
 
-    public String getFromId() {
-        return fromId;
+    public String getToid() {
+        return toid;
     }
-    public void setFromId(String fromId) {
-        this.fromId = fromId;
+
+    public void setToid(String toid) {
+        this.toid = toid;
     }
-    public int getType() {
-        return type;
-    }
-    public void setType(int type) {
-        this.type = type;
-    }
+
     public int getIsTop() {
         return isTop;
     }
@@ -89,12 +91,6 @@ public class Session extends RealmObject{
     public void setUnreadcount(int unreadcount) {
         this.unreadcount = unreadcount;
     }
-    public MessageType getMessageType() {
-        return MessageType.valueOf(type);
-    }
-    public void setMessageType(MessageType messageType) {
-        this.type = messageType.getValue();
-    }
 
     public long getCreatetime() {
         return createtime;
@@ -110,6 +106,30 @@ public class Session extends RealmObject{
 
     public void setContent(String content) {
         this.content = content;
+    }
+    public int getTypechat() {
+        return typechat;
+    }
+    public void setTypechat(int typechat) {
+        this.typechat = typechat;
+    }
+    public int getTypefile() {
+        return typefile;
+    }
+    public void setTypefile(int typefile) {
+        this.typefile = typefile;
+    }
+    public MessageType getMessageTypeFile() {
+        return MessageType.valueOf(typefile);
+    }
+    public void setMessageTypeFile(MessageType messageTypeFile) {
+        this.typefile = messageTypeFile.getValue();
+    }
+    public TypeChat getMessageTypeChat() {
+        return TypeChat.valueOf(typechat);
+    }
+    public void setMessageTypeChat(TypeChat messageTypeChat) {
+        this.typechat = messageTypeChat.getValue();
     }
 
     public int itemViewType(){
@@ -132,7 +152,7 @@ public class Session extends RealmObject{
         return "Session{" +
                 "id='" + id + '\'' +
                 ", uid='" + uid + '\'' +
-                ", fromId='" + fromId + '\'' +
+                ", toid='" + toid + '\'' +
                 ", type=" + type +
                 ", isTop=" + isTop +
                 ", name='" + name + '\'' +
@@ -140,7 +160,6 @@ public class Session extends RealmObject{
                 ", unreadcount=" + unreadcount +
                 ", createtime=" + createtime +
                 ", content='" + content + '\'' +
-                ", messageType=" + messageType +
                 '}';
     }
 }

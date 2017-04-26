@@ -21,7 +21,7 @@ import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUContactsFragmentView;
 import com.example.administrator.presenter.ContactsFragmentPresenter;
-import com.tandong.sa.view.AutoReFreshListView;
+import com.smartandroid.sa.view.AutoReFreshListView;
 
 import java.util.ArrayList;
 
@@ -60,7 +60,7 @@ public class ContactsFragment extends Fragment implements IUContactsFragmentView
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //presenter.getDate(page,friends,GetDataType.INITDATA);
+        presenter.getDate(page,friends,GetDataType.INITDATA);
     }
 
     @Override

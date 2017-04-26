@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+            android:screenOrientation="nosensor">
         </activity>
         <activity android:name=".activity.LoginActivity">
         </activity>
@@ -69,8 +70,14 @@
         </activity>
         <activity android:name=".activity.AddUserMenuPageAcitivty">
         </activity>
+        <activity android:name=".activity.ChooseUserActivity">
+        </activity>
         <activity
-            android:name=".activity.ChatMainActivity"
+            android:name=".activity.IMChatMainActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+        </activity>
+        <activity
+            android:name=".activity.BBSChatMainActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
         <!--这个百度地图的service一定要放到application里面-->
@@ -105,4 +112,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--开启录音权限-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 </manifest>

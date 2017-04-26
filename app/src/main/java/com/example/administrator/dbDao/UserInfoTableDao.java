@@ -67,7 +67,15 @@ public class UserInfoTableDao {
         }
         return userInfos;
     }
-
+    public ArrayList<UserInfo> select(String uid){
+        RealmResults<UserInfoTable> userInfoTable = realm.where(UserInfoTable.class)
+                .equalTo("uid",uid).findAll();
+        ArrayList<UserInfo> userInfos = new ArrayList<>();
+        for (UserInfoTable table : userInfoTable) {
+            userInfos.add(table.getUserInfo());
+        }
+        return userInfos;
+    }
     @Override
     protected Object clone() throws CloneNotSupportedException {
         if(!realm.isClosed()){

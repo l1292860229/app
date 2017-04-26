@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="stu" type="String" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical" >
+        <include
+            android:id="@+id/titlelayout"
+            layout="@layout/title_layout" />
+        <ListView
+            android:id="@+id/contact_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/backgroud_color"
+            android:layout_below="@+id/titlelayout"
+            android:cacheColorHint="@null"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="true"
+            android:focusable="true"
+            android:scrollbars="none" />
+        <com.example.administrator.UIView.SideBar
+            android:id="@+id/sidrbar"
+            android:layout_width="25.0dip"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/titlelayout"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right|center" />
+        <TextView
+            android:id="@+id/dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="#ff0000"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="45sp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+</layout>

@@ -13,7 +13,7 @@ public class MessageTable extends RealmObject {
 	@PrimaryKey
 	private String id; 			//消息ID
 	private String uid;
-	private String fromid;
+	private String toid;
 	private String tag = "";				//消息标识符
 	private String bid;
 	private String content; //消息的文字内容
@@ -118,11 +118,11 @@ public class MessageTable extends RealmObject {
 	public void setReadState(int readState) {
 		this.readState = readState;
 	}
-	public String getFromid() {
-		return fromid;
+	public String getToid() {
+		return toid;
 	}
-	public void setFromid(String fromid) {
-		this.fromid = fromid;
+	public void setToid(String toid) {
+		this.toid = toid;
 	}
 	public String getUid() {
 		return uid;
@@ -134,17 +134,16 @@ public class MessageTable extends RealmObject {
 		IMMessage imMessage = new IMMessage();
 		imMessage.setId(id);
 		imMessage.setTag(tag);
-		imMessage.setBid(bid);
 		imMessage.setContent(content);
 		imMessage.setTypechat(TypeChat.valueOf(typechat));
 		imMessage.setTypefile(MessageType.valueOf(typefile));
 		imMessage.setTime(time);
 		imMessage.setFrom(GsonUtil.parseJsonWithGson(from,IMMessage.UserInfo.class));
-		imMessage.setTo(GsonUtil.parseJsonWithGson(from,IMMessage.UserInfo.class));
-		imMessage.setImage(GsonUtil.parseJsonWithGson(from,IMMessage.Image.class));
-		imMessage.setVoice(GsonUtil.parseJsonWithGson(from,IMMessage.Voice.class));
-		imMessage.setLocation(GsonUtil.parseJsonWithGson(from,IMMessage.Location.class));
-		imMessage.setRedpacket(GsonUtil.parseJsonWithGson(from,IMMessage.Redpacket.class));
+		imMessage.setTo(GsonUtil.parseJsonWithGson(to,IMMessage.UserInfo.class));
+		imMessage.setImage(GsonUtil.parseJsonWithGson(image,IMMessage.Image.class));
+		imMessage.setVoice(GsonUtil.parseJsonWithGson(voice,IMMessage.Voice.class));
+		imMessage.setLocation(GsonUtil.parseJsonWithGson(location,IMMessage.Location.class));
+		imMessage.setRedpacket(GsonUtil.parseJsonWithGson(redpacket,IMMessage.Redpacket.class));
 		return imMessage;
 	}
 
@@ -153,7 +152,7 @@ public class MessageTable extends RealmObject {
 		return "MessageTable{" +
 				"id='" + id + '\'' +
 				", uid='" + uid + '\'' +
-				", fromid='" + fromid + '\'' +
+				", toid='" + toid + '\'' +
 				", tag='" + tag + '\'' +
 				", bid='" + bid + '\'' +
 				", content='" + content + '\'' +

@@ -1,21 +1,24 @@
 package com.example.administrator.presenter;
 
 import com.example.administrator.activity.BaseActivity;
-import com.example.administrator.entity.Room;
+import com.example.administrator.entity.Group;
 import com.example.administrator.entity.constant.UrlConstants;
+import com.example.administrator.enumset.GetDataType;
 import com.example.administrator.interfaceview.IUGroupFriensView;
 import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
 import com.google.gson.reflect.TypeToken;
-import com.tandong.sa.loopj.AsyncHttpResponseHandler;
-import com.tandong.sa.loopj.RequestParams;
+import com.smartandroid.sa.loopj.AsyncHttpResponseHandler;
+import com.smartandroid.sa.loopj.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.example.administrator.enumset.GetDataType.INITDATA;
 
 /**
  * Created by Administrator on 2017/3/2.
@@ -27,13 +30,15 @@ public class GroupFriensPresenter extends BasePresenter {
         super(context);
         this.groupFriensView = groupFriensView;
     }
-    public void init(){
+    public void getData(final GetDataType getDataType){
         RequestParams params = new RequestParams();
         params.put("uid",userInfo.getUid());
         params.put("openid",userInfo.getPhone());
         //安全较验
         NetworkUtil.safeDate(params);
-        groupFriensView.showLoading();
+        if(getDataType==INITDATA){
+            groupFriensView.showLoading();
+        }
         client.post(UrlConstants.SESSION_SESSIONLIST, params,
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -42,7 +47,19 @@ public class GroupFriensPresenter extends BasePresenter {
                         groupFriensView.hideLoading();
                         try {
                             JSONObject json = new JSONObject(data);
-                            groupFriensView.init(GsonUtil.<ArrayList<Room>>parseJsonWithGsonObject(json.getString("data"),new TypeToken<ArrayList<Room>>() {}.getType()));
+                            ArrayList<Group> mlist = GsonUtil.<ArrayList<Group>>parseJsonWithGsonObject(json.getString("data"),new TypeToken<ArrayList<Group>>() {}.getType());
+                            switch (getDataType){
+                                case INITDATA:
+                                    groupFriensView.hideLoading();
+                                    groupFriensView.init(mlist);
+                                    break;
+                                case LOADDATA:
+                                    //groupFriensView.loadsuccess(mlist);
+                                    break;
+                                case REFRESHDATA:
+                                    groupFriensView.refreshsuccess(mlist);
+                                    break;
+                            }
                         } catch (JSONException e) {
                             UIUtil.showMessage(context,"获取失败");
                             e.printStackTrace();

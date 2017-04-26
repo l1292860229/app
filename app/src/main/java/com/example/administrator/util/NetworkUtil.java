@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.tandong.sa.loopj.AsyncHttpClient;
-import com.tandong.sa.loopj.RequestParams;
+import com.smartandroid.sa.loopj.AsyncHttpClient;
+import com.smartandroid.sa.loopj.RequestParams;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

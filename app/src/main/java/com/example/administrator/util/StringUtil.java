@@ -2,8 +2,8 @@ package com.example.administrator.util;
 
 import android.content.Context;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.smartandroid.sa.verifi.PhoneVerifior;
+import com.smartandroid.sa.verifi.VerifiorException;
 
 /**
  * Created by Administrator on 2017/1/21.
@@ -22,14 +22,14 @@ public class StringUtil {
      * @param mobiles
      * @return
      */
-    public static boolean isMobileNum(String mobiles){
-        Pattern pattern = Pattern.compile("^(1(3|5|8|7)[0-9]{9})$");
-        Matcher m = pattern.matcher(mobiles);
-        // Log.e("手机格式验证",""+ m.matches());
-        if(m.matches() && mobiles.length()==11){
-            return true;
+    public static boolean isMobileNum(Context c, String mobiles){
+        PhoneVerifior phoneVerifior  = new PhoneVerifior(c);
+        try {
+            return phoneVerifior.isValid(mobiles);
+        } catch (VerifiorException e) {
+            e.printStackTrace();
+            return false;
         }
-        return false;
     }
     public static int dip2px(Context context, int dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;

@@ -10,8 +10,8 @@ import com.example.administrator.util.GsonUtil;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.UIUtil;
 import com.google.gson.reflect.TypeToken;
-import com.tandong.sa.loopj.AsyncHttpResponseHandler;
-import com.tandong.sa.loopj.RequestParams;
+import com.smartandroid.sa.loopj.AsyncHttpResponseHandler;
+import com.smartandroid.sa.loopj.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONException;

@@ -32,8 +32,8 @@ import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
 import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
-import com.tandong.sa.bv.BelowView;
-import com.tandong.sa.view.AutoReFreshListView;
+import com.smartandroid.sa.bv.BelowView;
+import com.smartandroid.sa.view.AutoReFreshListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +149,7 @@ public class FriensLoopActivity extends BaseActivity implements IUFriensLoopView
             }
             @Override
             public void onNegativeClick() {}
+
         });
     }
 

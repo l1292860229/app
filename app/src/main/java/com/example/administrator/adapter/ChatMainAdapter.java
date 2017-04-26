@@ -1,20 +1,21 @@
 package com.example.administrator.adapter;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.view.LayoutInflater;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.example.administrator.BR;
-import com.example.administrator.R;
 import com.example.administrator.databinding.ChatMainLeftBinding;
 import com.example.administrator.databinding.ChatMainRightBinding;
-import com.example.administrator.entity.IMMessage;
+import com.example.administrator.entity.BaseMessage;
 import com.example.administrator.entity.UserInfo;
-import com.example.administrator.entity.db.MessageTable;
 import com.example.administrator.util.DateUtil;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.ImageUitl;
@@ -28,16 +29,13 @@ import java.util.List;
  */
 
 public class ChatMainAdapter extends BaseAdapter {
-    private Context context;
-    private List<MessageTable> list;
-    private UserInfo userInfo;
-    public ChatMainAdapter(Context context, List<MessageTable> list) {
+    protected Context context;
+    protected List list;
+    protected UserInfo userInfo;
+    public ChatMainAdapter(Context context, List list) {
         this.context = context;
         this.list = list;
         userInfo = GetDataUtil.getUserInfo(context);
-    }
-    public void setData( List<MessageTable> list){
-        this.list = list;
     }
     @Override
     public int getCount() {
@@ -56,256 +54,195 @@ public class ChatMainAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewDataBinding binding = null;
-        IMMessage imMessage = list.get(position).getIMMessage();
-        if (convertView == null) {
-            if (imMessage.getFrom().getId().equals(userInfo.getPhone())) {
-                binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.chat_main_right, parent, false);
-            }else{
-                binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.chat_main_left, parent, false);
+        return convertView;
+    }
+    public class ViewHolder{
+        private TextView txtTime,msgText,msgVoiceTime,msgMap,cardName,xitongtextview;
+        private ImageView imgHead,msgPhoto,voiceRead,mapIcon,cardHeader;
+        private RelativeLayout msgVoiceLayout,msgPhotoLayout,msgVideoLayout,msgTextLayout,
+                msgMapLayout,msgUrlLayout,msgInviteLayout,msgRedpacketLayout,
+                xitong,msg;
+        private LinearLayout cardLayout;
+        private ProgressBar chatTalkMsgProgressBar;
+        public ViewHolder(ViewDataBinding binding){
+            if (binding instanceof ChatMainLeftBinding) {
+                ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
+                initLeft(chatMainLeftBinding);
+            }else if(binding instanceof ChatMainRightBinding){
+                ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
+                initRigjt(chatMainRightBinding);
             }
-        } else {
-            binding = DataBindingUtil.getBinding(convertView);
         }
-        hideAllLayout(binding,imMessage);
-        switch (imMessage.getTypefile()) {
-            case TEXT:
-                setAllTextLayout(binding,imMessage);
-                break;
-            case PICTURE:
-                setALLPictureLayout(binding,imMessage);
-                break;
-            case VOICE:
-                setAllVoiceLayout(binding,imMessage,list.get(position));
-                break;
-            case MAP:
-                setAllMapLayout(binding,imMessage);
-                break;
-            case REDPACKET:
-                setAllRedpacketLayout(binding,imMessage);
-                break;
-            case SHAREURL:
-                setAllShareurlLayout(binding,imMessage);
-                break;
-            case CARD:
-                setAllCardLayout(binding,imMessage);
-                break;
-            case INVITE:
-                setInviteLayout(binding,imMessage);
-                break;
-            case VIDEO:
-                setAllVideoLayout(binding,imMessage);
-                break;
-            default:
-                break;
+        public void initLeft(ChatMainLeftBinding chatMainLeftBinding){
+            txtTime =                chatMainLeftBinding.txtTime;
+            msgText =                chatMainLeftBinding.msgText;
+            msgVoiceTime =           chatMainLeftBinding.msgVoiceTime;
+            msgMap =                 chatMainLeftBinding.msgMap;
+            cardName =               chatMainLeftBinding.cardName;
+            imgHead =                chatMainLeftBinding.imgHead;
+            msgPhoto =               chatMainLeftBinding.msgPhoto;
+            voiceRead =              chatMainLeftBinding.voiceRead;
+            mapIcon =                chatMainLeftBinding.mapIcon;
+            cardHeader =             chatMainLeftBinding.cardHeader;
+            msgVoiceLayout =         chatMainLeftBinding.msgVoiceLayout;
+            msgPhotoLayout =         chatMainLeftBinding.msgPhotoLayout;
+            msgVideoLayout =         chatMainLeftBinding.msgVideoLayout;
+            msgTextLayout =          chatMainLeftBinding.msgTextLayout;
+            msgMapLayout =           chatMainLeftBinding.msgMapLayout;
+            msgUrlLayout =           chatMainLeftBinding.msgUrlLayout;
+            msgInviteLayout=         chatMainLeftBinding.msgInviteLayout;
+            msgRedpacketLayout =     chatMainLeftBinding.msgRedpacketLayout;
+            cardLayout =             chatMainLeftBinding.cardLayout;
+            chatTalkMsgProgressBar = chatMainLeftBinding.chatTalkMsgProgressBar;
+            xitong =                 chatMainLeftBinding.xitong;
+            xitongtextview =         chatMainLeftBinding.xitongtextview;
+            msg =                    chatMainLeftBinding.msg;
         }
-        binding.setVariable(BR.userinfo,imMessage);
-        return binding.getRoot();
-    }
-    public void hideAllLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            chatMainLeftBinding.txtTime.setText(DateUtil.calculaterReleasedTime(context,new Date(imMessage.getTime()),imMessage.getTime(),0));
-            ImageUitl.setImage(chatMainLeftBinding.imgHead,imMessage.getFrom().getUrl());
-            leftHideAllLayout(chatMainLeftBinding);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            chatMainRightBinding.txtTime.setText(DateUtil.calculaterReleasedTime(context,new Date(imMessage.getTime()),imMessage.getTime(),0));
-            ImageUitl.setImage(chatMainRightBinding.imgHead,imMessage.getFrom().getUrl());
-            rightHideAllLayout(chatMainRightBinding);
+        public void initRigjt(ChatMainRightBinding chatMainRightBinding){
+            txtTime =                chatMainRightBinding.txtTime;
+            msgText =                chatMainRightBinding.msgText;
+            msgVoiceTime =           chatMainRightBinding.msgVoiceTime;
+            msgMap =                 chatMainRightBinding.msgMap;
+            cardName =               chatMainRightBinding.cardName;
+            imgHead =                chatMainRightBinding.imgHead;
+            msgPhoto =               chatMainRightBinding.msgPhoto;
+            mapIcon =                chatMainRightBinding.mapIcon;
+            cardHeader =             chatMainRightBinding.cardHeader;
+            msgVoiceLayout =         chatMainRightBinding.msgVoiceLayout;
+            msgPhotoLayout =         chatMainRightBinding.msgPhotoLayout;
+            msgVideoLayout =         chatMainRightBinding.msgVideoLayout;
+            msgTextLayout =          chatMainRightBinding.msgTextLayout;
+            msgMapLayout =           chatMainRightBinding.msgMapLayout;
+            msgUrlLayout =           chatMainRightBinding.msgUrlLayout;
+            msgInviteLayout=         chatMainRightBinding.msgInviteLayout;
+            msgRedpacketLayout =     chatMainRightBinding.msgRedpacketLayout;
+            cardLayout =             chatMainRightBinding.cardLayout;
+            chatTalkMsgProgressBar = chatMainRightBinding.chatTalkMsgProgressBar;
+            xitong =                 chatMainRightBinding.xitong;
+            xitongtextview =         chatMainRightBinding.xitongtextview;
+            msg =                    chatMainRightBinding.msg;
         }
-    }
-    public void setAllTextLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftTextLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightTextLayout(chatMainRightBinding,imMessage);
+        public void hideAllLayout(){
+            msgVoiceLayout.setVisibility(View.GONE);
+            msgPhotoLayout.setVisibility(View.GONE);
+            msgVideoLayout.setVisibility(View.GONE);
+            msgTextLayout.setVisibility(View.GONE);
+            msgMapLayout.setVisibility(View.GONE);
+            msgUrlLayout.setVisibility(View.GONE);
+            msgInviteLayout.setVisibility(View.GONE);
+            msgRedpacketLayout.setVisibility(View.GONE);
+            cardLayout.setVisibility(View.GONE);
+            chatTalkMsgProgressBar.setVisibility(View.GONE);
+            xitong.setVisibility(View.GONE);
         }
-    }
-    public void setALLPictureLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftPictureLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightPictureLayout(chatMainRightBinding,imMessage);
+        public void setTextLayout(BaseMessage imMessage){
+            msgTextLayout.setVisibility(View.VISIBLE);
+            msgText.setText(imMessage.getContent());
         }
-    }
-    public void setAllVoiceLayout(ViewDataBinding binding,IMMessage imMessage,MessageTable messageTable){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftVoiceLayout(chatMainLeftBinding,imMessage,messageTable);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightVoiceLayout(chatMainRightBinding,imMessage);
+        public void setPictureLayout(BaseMessage imMessage){
+            msgPhotoLayout.setVisibility(View.VISIBLE);
+            if(imMessage.getImage().getUrlsmall().contains("http")){
+                msgPhoto.setLayoutParams(new RelativeLayout.LayoutParams(imMessage.getImage().getWidth(),imMessage.getImage().getHeight()));
+                ImageUitl.setImage(msgPhoto,imMessage.getImage().getUrlsmall());
+            }else{
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(imMessage.getImage().getUrlsmall(),options);
+                options.inSampleSize = calculateInSampleSize(options);
+                // 使用获取到的inSampleSize值再次解析图片
+                options.inJustDecodeBounds = false;
+                msgPhoto.setImageBitmap(BitmapFactory.decodeFile(imMessage.getImage().getUrlsmall(),options));
+            }
         }
-    }
-    public void setAllMapLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftMapLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightMapLayout(chatMainRightBinding,imMessage);
+        public void setVoiceLayout(BaseMessage imMessage){
+            msgVoiceLayout.setVisibility(View.VISIBLE);
+            msgVoiceTime.setText(imMessage.getVoice().getTime()+"\"");
         }
-    }
-    public void setAllRedpacketLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftRedpacketLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightRedpacketLayout(chatMainRightBinding,imMessage);
+        public void setMapLayout(BaseMessage imMessage){
+            msgMapLayout.setVisibility(View.VISIBLE);
+            msgMap.setText(imMessage.getLocation().getAddress());
+            ImageUitl.setImage(mapIcon, UIUtil.getMapUrl(imMessage.getLocation().getLng(),imMessage.getLocation().getLat()));
         }
-    }
-    public void setAllShareurlLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftShareurlLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightShareurlLayout(chatMainRightBinding,imMessage);
+        public void setRedpacketLayout(BaseMessage imMessage){
+            msgRedpacketLayout.setVisibility(View.VISIBLE);
         }
-    }
-    public void setAllCardLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftCardLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightCardLayout(chatMainRightBinding,imMessage);
+        public void setShareurlLayout(BaseMessage imMessage){
+            msgUrlLayout.setVisibility(View.VISIBLE);
         }
-    }
-    public void setInviteLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftInviteLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightInviteLayout(chatMainRightBinding,imMessage);
+        public void setCardLayout(BaseMessage imMessage){
+            cardLayout.setVisibility(View.VISIBLE);
+            BaseMessage.Card card = imMessage.getCard();
+            ImageUitl.setImage(cardHeader,card.getHeadsmall());
+            cardName.setText(card.getNickname());
         }
-    }
-    public void setAllVideoLayout(ViewDataBinding binding,IMMessage imMessage){
-        if (binding instanceof ChatMainLeftBinding) {
-            ChatMainLeftBinding chatMainLeftBinding = (ChatMainLeftBinding)binding;
-            setLeftVideoLayout(chatMainLeftBinding,imMessage);
-        }else if(binding instanceof ChatMainRightBinding){
-            ChatMainRightBinding chatMainRightBinding = (ChatMainRightBinding)binding;
-            setRightVideoLayout(chatMainRightBinding,imMessage);
+        public void setInviteLayout(BaseMessage imMessage){
+            msgInviteLayout.setVisibility(View.VISIBLE);
         }
-    }
-
-
-
-    //=====================================下面是左边===========================================//
-    public void leftHideAllLayout(ChatMainLeftBinding chatMainLeftBinding){
-        chatMainLeftBinding.msgVoiceLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.msgPhotoLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.msgVideoLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.msgTextLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.msgMapLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.msgUrlLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.msgInviteLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.msgRedpacketLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.cardLayout.setVisibility(View.GONE);
-        chatMainLeftBinding.chatTalkMsgProgressBar.setVisibility(View.GONE);
-        chatMainLeftBinding.xitong.setVisibility(View.GONE);
-    }
-    public void setLeftTextLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.msgTextLayout.setVisibility(View.VISIBLE);
-        chatMainLeftBinding.msgText.setText(imMessage.getContent());
-    }
-    public void setLeftPictureLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.msgPhotoLayout.setVisibility(View.VISIBLE);
-        ImageUitl.setImage(chatMainLeftBinding.msgPhoto,imMessage.getImage().getUrlsmall());
-    }
-    public void setLeftVoiceLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage,MessageTable messageTable){
-        chatMainLeftBinding.msgVoiceLayout.setVisibility(View.VISIBLE);
-        chatMainLeftBinding.msgVoiceTime.setText(imMessage.getVoice().getTime()+"\"");
-        if (messageTable.getReadState()==1) {
-            chatMainLeftBinding.voiceRead.setVisibility(View.GONE);
-        }else{
-            chatMainLeftBinding.voiceRead.setVisibility(View.VISIBLE);
+        public void setVideoLayout(BaseMessage imMessage){
+            msgVideoLayout.setVisibility(View.VISIBLE);
+        }
+        public void setheadAndTimeView(String head,long time){
+            txtTime.setText(DateUtil.calculaterReleasedTime(context,new Date(time),time,0));
+            ImageUitl.setImage(imgHead,head);
+        }
+        public void setXitongView(String message){
+            xitong.setVisibility(View.VISIBLE);
+            msg.setVisibility(View.GONE);
+            xitongtextview.setText(message);
+        }
+        public void setView(BaseMessage baseMessage){
+            hideAllLayout();
+            switch (baseMessage.getTypefile()) {
+                case TEXT:
+                    setTextLayout(baseMessage);
+                    break;
+                case PICTURE:
+                    setPictureLayout(baseMessage);
+                    break;
+                case VOICE:
+                    setVoiceLayout(baseMessage);
+                    break;
+                case MAP:
+                    setMapLayout(baseMessage);
+                    break;
+                case REDPACKET:
+                    setRedpacketLayout(baseMessage);
+                    break;
+                case SHAREURL:
+                    setShareurlLayout(baseMessage);
+                    break;
+                case CARD:
+                    setCardLayout(baseMessage);
+                    break;
+                case INVITE:
+                    setInviteLayout(baseMessage);
+                    break;
+                case VIDEO:
+                    setVideoLayout(baseMessage);
+                    break;
+                default:
+                    break;
+            }
         }
     }
-    public void setLeftMapLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.msgMapLayout.setVisibility(View.VISIBLE);
-        chatMainLeftBinding.msgMap.setText(imMessage.getLocation().getAddress());
-        ImageUitl.setImage(chatMainLeftBinding.mapIcon, UIUtil.getMapUrl(imMessage.getLocation().getLng(),imMessage.getLocation().getLat()));
-    }
-    public void setLeftRedpacketLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.msgRedpacketLayout.setVisibility(View.VISIBLE);
-    }
-    public void setLeftShareurlLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.msgUrlLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.get);
-    }
-    public void setLeftCardLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.cardLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.get);
-    }
-    public void setLeftInviteLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.msgInviteLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.get);
-    }
-    public void setLeftVideoLayout(ChatMainLeftBinding chatMainLeftBinding,IMMessage imMessage){
-        chatMainLeftBinding.msgVideoLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.getV);
-    }
-
-
-
-
-    //=====================================下面是右边===========================================//
-    public void rightHideAllLayout(ChatMainRightBinding chatMainRightBinding){
-        chatMainRightBinding.msgVoiceLayout.setVisibility(View.GONE);
-        chatMainRightBinding.msgPhotoLayout.setVisibility(View.GONE);
-        chatMainRightBinding.msgVideoLayout.setVisibility(View.GONE);
-        chatMainRightBinding.msgTextLayout.setVisibility(View.GONE);
-        chatMainRightBinding.msgMapLayout.setVisibility(View.GONE);
-        chatMainRightBinding.msgUrlLayout.setVisibility(View.GONE);
-        chatMainRightBinding.msgInviteLayout.setVisibility(View.GONE);
-        chatMainRightBinding.msgRedpacketLayout.setVisibility(View.GONE);
-        chatMainRightBinding.cardLayout.setVisibility(View.GONE);
-        chatMainRightBinding.chatTalkMsgProgressBar.setVisibility(View.GONE);
-        chatMainRightBinding.xitong.setVisibility(View.GONE);
-    }
-    public void setRightTextLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgTextLayout.setVisibility(View.VISIBLE);
-        chatMainRightBinding.msgText.setText(imMessage.getContent());
-    }
-    public void setRightPictureLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgPhotoLayout.setVisibility(View.VISIBLE);
-        ImageUitl.setImage(chatMainRightBinding.msgPhoto,imMessage.getImage().getUrlsmall());
-    }
-    public void setRightVoiceLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgVoiceLayout.setVisibility(View.VISIBLE);
-        chatMainRightBinding.msgVoiceTime.setText(imMessage.getVoice().getTime()+"\"");
-    }
-    public void setRightMapLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgMapLayout.setVisibility(View.VISIBLE);
-        chatMainRightBinding.msgMap.setText(imMessage.getLocation().getAddress());
-        ImageUitl.setImage(chatMainRightBinding.mapIcon, UIUtil.getMapUrl(imMessage.getLocation().getLng(),imMessage.getLocation().getLat()));
-    }
-    public void setRightRedpacketLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgRedpacketLayout.setVisibility(View.VISIBLE);
-    }
-    public void setRightShareurlLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgUrlLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.get);
-    }
-    public void setRightCardLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.cardLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.get);
-    }
-    public void setRightInviteLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgInviteLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.get);
-    }
-    public void setRightVideoLayout(ChatMainRightBinding chatMainRightBinding,IMMessage imMessage){
-        chatMainRightBinding.msgVideoLayout.setVisibility(View.VISIBLE);
-        //ImageUitl.setImage(chatMainLeftBinding.imageUrl,imMessage.getV);
+    /**
+     * 压缩图片
+     * @param options
+     * @return
+     */
+    public static int calculateInSampleSize(BitmapFactory.Options options) {
+        // 源图片的高度和宽度
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > 120 || width > 120) {
+            // 计算出实际宽高和目标宽高的比率
+            final int heightRatio = Math.round((float) height / (float) 120);
+            final int widthRatio = Math.round((float) width / (float) 120);
+            // 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
+            // 一定都会大于等于目标的宽和高。
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        return inSampleSize;
     }
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="immessage" type="com.example.administrator.entity.IMMessage"/>
     </data>
@@ -60,11 +61,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/message_nickname"
             android:layout_toLeftOf="@+id/img_head"
+            android:gravity="right"
+            android:layout_marginTop="10dp"
             android:background="@drawable/chatto_bg">
             <RelativeLayout
                 android:id="@+id/msg_voice_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
                 android:visibility="gone">
                 <ImageView
                     android:id="@+id/msg_voice"
@@ -73,7 +77,6 @@
                     android:maxHeight="60dp"
                     android:minWidth="50dp"
                     android:maxWidth="180dp"
-                    android:layout_alignParentRight="true"
                     android:scaleType="fitEnd"
                     android:src="@mipmap/lvoice3" />
                 <TextView
@@ -81,7 +84,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size"
-                    android:layout_toLeftOf="@+id/msg_voice"
                     android:text="&quot;1"/>
             </RelativeLayout>
             <RelativeLayout
@@ -132,11 +134,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone">
-                <TextView
+                <io.github.rockerhieu.emojicon.EmojiconTextView
                     android:id="@+id/msg_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxWidth="235dp"
+                    emojicon:emojiconSize="20sp"
                     android:textColor="@color/font_color"
                     android:textSize="@dimen/text_size"
                     android:gravity="center_vertical|left"

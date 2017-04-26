@@ -26,6 +26,8 @@ public class UrlConstants {
     public static final String USER_UPDATEUSERMENU = SERVER_PREFIX + "/user/api/updateusermenu";
     //删除自定义菜单
     public static final String USER_DELUSERMENU = SERVER_PREFIX + "/user/api/delusermenu";
+    //发送信息
+    public static final String USER_SENDMESSAGE = SERVER_PREFIX + "/user/api/sendMessage";
     //获取商机圈地址
     public static final String FRIEND_SHARELIST = SERVER_PREFIX + "/friend/api/shareList";
     //改变背景图片的地址
@@ -38,13 +40,18 @@ public class UrlConstants {
     public static final String FRIEND_SHAREPRAISE_DEL = SERVER_PREFIX + "/friend/api/delete";
     //发送朋友圈的地址
     public static final String FRIEND_SHAREPRAISE_ADD = SERVER_PREFIX + "/friend/api/add";
-    //群聊列表的的地址
+    //群聊列表的地址
     public static final String SESSION_SESSIONLIST = SERVER_PREFIX + "/session/api/userSessionList";
+    //创建群聊的地址
+    public static final String SESSION_ADD = SERVER_PREFIX + "/session/api/add";
     //万人群列表的的地址
     public static final String BBS_BBSLIST = SERVER_PREFIX + "/Bbs/api/bbslist";
     //添加万人群，行业圈地址
     public static final String BBS_BBSADD = SERVER_PREFIX + "/Bbs/api/bbsadd";
-
+    //获得万人群,行业圈的聊天消息列表
+    public static final String BBS_BBSREPLYLIST = SERVER_PREFIX + "/Bbs/api/bbsreplylist";
+    //发送万人群,行业圈的聊天消息
+    public static final String BBS_BBSREPLYADD = SERVER_PREFIX + "/Bbs/api/bbsreplyadd";
 
     //百万人脉后台
     public static final String BAIWANYUMIN = "shop.wei20.cn";

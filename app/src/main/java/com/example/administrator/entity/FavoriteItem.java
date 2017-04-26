@@ -3,11 +3,13 @@ package com.example.administrator.entity;
 import com.example.administrator.enumset.MessageType;
 import com.example.administrator.util.GsonUtil;
 
+import java.io.Serializable;
+
 /**
  * Created by dell on 2017/4/17.
  */
 
-public class FavoriteItem {
+public class FavoriteItem implements Serializable {
     private String id;
     private String uid;
     private String fid;

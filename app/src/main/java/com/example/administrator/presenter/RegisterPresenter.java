@@ -7,9 +7,9 @@ import com.example.administrator.interfaceview.IUPublicView;
 import com.example.administrator.util.NetworkUtil;
 import com.example.administrator.util.StringUtil;
 import com.example.administrator.util.UIUtil;
-import com.tandong.sa.loopj.AsyncHttpClient;
-import com.tandong.sa.loopj.AsyncHttpResponseHandler;
-import com.tandong.sa.loopj.RequestParams;
+import com.smartandroid.sa.loopj.AsyncHttpClient;
+import com.smartandroid.sa.loopj.AsyncHttpResponseHandler;
+import com.smartandroid.sa.loopj.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -33,7 +33,7 @@ public class RegisterPresenter {
         isnull = UIUtil.isNullMessage(context,tjr,"请输入推荐人ID")&&isnull;
         isnull = UIUtil.isNullMessage(context,phone,"请输入手机号")&&isnull;
         isnull = UIUtil.isNullMessage(context,password,"请输入密码")&&isnull;
-        if(!StringUtil.isMobileNum(phone)){
+        if(!StringUtil.isMobileNum(context,phone)){
             UIUtil.showMessage(context,"请输入正确的手机号码");
             isnull = true;
         }

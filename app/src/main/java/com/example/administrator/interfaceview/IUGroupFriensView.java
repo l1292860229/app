@@ -1,6 +1,6 @@
 package com.example.administrator.interfaceview;
 
-import com.example.administrator.entity.Room;
+import com.example.administrator.entity.Group;
 
 import java.util.ArrayList;
 
@@ -9,5 +9,6 @@ import java.util.ArrayList;
  */
 
 public interface IUGroupFriensView extends IUPublicView  {
-     void init(ArrayList<Room> roomList);
+     void init(ArrayList<Group> groupList);
+     void refreshsuccess(ArrayList<Group> groupList);
 }
