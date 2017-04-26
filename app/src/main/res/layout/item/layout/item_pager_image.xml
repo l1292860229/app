@@ -34,7 +34,7 @@
                 android:textSize="@dimen/text_size"
                 android:textColor="@color/white"/>
         </RelativeLayout>
-        <com.tandong.sa.zmImageview.ZoomImageView
+        <com.smartandroid.sa.zmImageview.ZoomImageView
             android:id="@+id/image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
