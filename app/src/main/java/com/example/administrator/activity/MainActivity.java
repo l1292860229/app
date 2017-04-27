@@ -15,6 +15,7 @@ import com.example.administrator.fragment.ChatFragment;
 import com.example.administrator.fragment.FatherContactsFragment;
 import com.example.administrator.fragment.FoundFragment;
 import com.example.administrator.fragment.ProfileFragment;
+import com.example.administrator.imservice.IMService;
 import com.example.administrator.interfaceview.IUMainView;
 import com.example.administrator.presenter.ChatFragmentPresenter;
 import com.example.administrator.util.UIUtil;
@@ -84,6 +85,8 @@ public class MainActivity extends BaseActivity implements IUMainView {
                 chatFragmentPresenter.clearSessionUnReadCount();
             }
         });
+        Intent it=new Intent(this, IMService.class);
+        startService(it);
     }
     public JPTabBar getTabbar() {
         return mainBinding.tabbar;

@@ -11,6 +11,7 @@ import com.example.administrator.databinding.SettingBinding;
 import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.entity.constant.UrlConstants;
 import com.example.administrator.entity.UserInfo;
+import com.example.administrator.imservice.IMService;
 import com.example.administrator.util.GetDataUtil;
 
 /**
@@ -60,6 +61,8 @@ public class SettingActivity extends BaseActivity {
         Intent intent = new Intent();
         intent.setClass(context, LoginActivity.class);
         startActivity(intent);
+        Intent serviceIntent = new Intent(context, IMService.class);
+        context.stopService(serviceIntent);
         this.finish();
     }
 

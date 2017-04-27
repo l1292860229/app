@@ -10,8 +10,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.administrator.R;
-import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.entity.Picture;
+import com.example.administrator.entity.constant.Constants;
 import com.example.administrator.util.GetDataUtil;
 import com.example.administrator.util.StringUtil;
 
